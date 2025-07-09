@@ -1,0 +1,22 @@
+# --- Node dependencies ---
+node_modules/
+
+# --- Compiled output ---
+dist/
+
+# --- Logs ---
+logs/
+*.log
+
+# --- Environment variables ---
+.env
+
+# --- System files ---
+.DS_Store
+Thumbs.db
+
+# --- Editor config ---
+.vscode/
+
+# --- TypeScript cache ---
+*.tsbuildinfo
