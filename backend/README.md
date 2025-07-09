@@ -1,5 +1,9 @@
 # Electro Atlas API
 
+**Live Demo:**
+- Frontend: [https://electroatlas.vercel.app](https://electroatlas.vercel.app)
+- Backend API: [https://electro-atlas-backend-production.up.railway.app](https://electro-atlas-backend-production.up.railway.app)
+
 A robust, scalable, and secure backend API for the Electro Atlas e-commerce platform. This service powers user authentication, product catalog, cart, orders, payments, reviews, and more, providing a comprehensive foundation for a modern online marketplace.
 
 ## Table of Contents

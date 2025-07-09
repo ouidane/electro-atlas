@@ -1,5 +1,9 @@
 # Electro Atlas – Next.js E-commerce Template
 
+**Live Demo:**
+- Frontend: [https://electroatlas.vercel.app](https://electroatlas.vercel.app)
+- Backend API: [https://electro-atlas-backend-production.up.railway.app](https://electro-atlas-backend-production.up.railway.app)
+
 Electro Atlas is a modern, feature-rich e-commerce frontend template built with Next.js, React, Redux Toolkit, and Tailwind CSS. Designed for scalability and developer productivity, it provides a robust foundation for building high-performance online stores with a beautiful, responsive UI.
 
 ## Features
