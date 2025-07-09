@@ -233,7 +233,7 @@ electro-atlas/
 
 ### Frontend (`frontend/.env.local`)
 
-- `NEXT_PUBLIC_API_URL` - URL of the backend API
+- `NEXT_PUBLIC_SERVER_URL` - URL of the backend API
 - ...and others as required
 
 ## Scripts
