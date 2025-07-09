@@ -13,15 +13,13 @@ import passport from "passport";
 import configurePassport from "./utils/passport";
 import { v1Routes, apiDocsRoute } from "./routes";
 import helmet from "helmet";
-import mongoSanitize from "express-mongo-sanitize";
 
 const configureServer = async (app: Express) => {
   //Security-related settings
-  //   app
-  //     .disable("x-powered-by")
-  //     .set("trust proxy", 1)
-  //     .use(helmet())
-  //     .use(mongoSanitize());
+    app
+      .disable("x-powered-by")
+      .set("trust proxy", 1)
+      .use(helmet())
 
   // logging & rate limiting
   app.use(assignRequestId);
