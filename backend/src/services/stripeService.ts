@@ -63,11 +63,13 @@ export class StripeService {
           images: item.product.image ? [item.product.image] : [],
           metadata: { id: item.product._id },
         },
-        unit_amount: item.product.variant.salePrice
-          ? item.product.variant.salePrice
-          : item.product.variant.globalPrice,
+        unit_amount: Math.round(
+          item.product.variant.salePrice
+            ? item.product.variant.salePrice
+            : item.product.variant.globalPrice
+        ),
       },
-      quantity: item.quantity,
+      quantity: Math.round(item.quantity),
     }));
   }
 
