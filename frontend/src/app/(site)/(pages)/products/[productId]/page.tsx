@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-const ShopDetailsPage = async ({ params }: { params: { productId: string } }) => {
+export default async function ShopDetailsPage({ params }: { params: Promise<{ productId: string }> }) {
   const awaitedParams = await params;
   const response = await getProductById(awaitedParams.productId);
   const product = response.data;
@@ -18,6 +18,4 @@ const ShopDetailsPage = async ({ params }: { params: { productId: string } }) =>
       <ShopDetails product={product} />
     </main>
   );
-};
-
-export default ShopDetailsPage;
+}
