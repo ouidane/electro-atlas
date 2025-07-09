@@ -256,11 +256,11 @@ Contributions are welcome! Please open issues and submit pull requests for new f
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](backend/LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-For questions, suggestions, or support, please contact [your-email@example.com].
+For questions, suggestions, or support, please contact [ouidanezakaria@gmail.com].
 
 ---
 
