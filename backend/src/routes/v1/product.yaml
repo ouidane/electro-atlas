@@ -1,0 +1,857 @@
+components:
+  schemas:
+    HighlightText:
+      type: object
+      properties:
+        value:
+          type: string
+        type:
+          type: string
+          enum: [text, hit]
+
+    SearchHighlight:
+      type: object
+      properties:
+        score:
+          type: number
+          format: float
+        path:
+          type: string
+        texts:
+          type: array
+          items:
+            $ref: "#/components/schemas/HighlightText"
+
+    ProductVariant:
+      type: object
+      properties:
+        variation:
+          type: string
+        sku:
+          type: string
+        color:
+          type: string
+        inventory:
+          type: number
+        isInStock:
+          type: boolean
+        globalPrice:
+          type: number
+        globalPriceDecimal:
+          type: string
+        salePrice:
+          type: number
+        salePriceDecimal:
+          type: string
+        discountPercent:
+          type: number
+        saleStartDate:
+          type: string
+          format: date-time
+        saleEndDate:
+          type: string
+          format: date-time
+
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        isFeatured:
+          type: boolean
+        variant:
+          $ref: "#/components/schemas/ProductVariant"
+        reviews:
+          type: object
+          properties:
+            count:
+              type: number
+            avgRate:
+              type: number
+            roundAvgRate:
+              type: number
+        image:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        score:
+          type: number
+          format: float
+        highlights:
+          type: array
+          items:
+            $ref: "#/components/schemas/SearchHighlight"
+
+    GetProductResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/Product"
+
+    GetProductsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+        Links:
+          $ref: "#/components/schemas/Links"
+
+    CreateProductResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+    ProductFilter:
+      type: object
+      properties:
+        color:
+          type: string
+          description: Comma-separated list of colors (e.g., `color=red,green`)
+        brand:
+          type: string
+          description: Comma-separated list of brands
+        query:
+          type: string
+          description: Search by product name (case-insensitive)
+        sellerId:
+          type: string
+          description: Filter by seller ID
+        subCategoryId:
+          type: string
+          description: Filter by category ID
+        categoryId:
+          type: string
+          description: Filter by parent category ID
+        isFeatured:
+          type: boolean
+          description: Whether the product is featured
+        minRating:
+          type: number
+          format: float
+          description: Minimum average rating
+        maxRating:
+          type: number
+          format: float
+          description: Maximum average rating
+        minPrice:
+          type: number
+          format: float
+          description: Minimum sale price
+        maxPrice:
+          type: number
+          format: float
+          description: Maximum sale price
+        minStock:
+          type: integer
+          description: Minimum stock quantity
+        maxStock:
+          type: integer
+          description: Maximum stock quantity
+        minDiscount:
+          type: number
+          format: float
+          description: Minimum discount percentage
+        maxDiscount:
+          type: number
+          format: float
+          description: Maximum discount percentage
+        createdAfter:
+          type: string
+          format: date-time
+          description: Filter products created after this date
+        createdBefore:
+          type: string
+          format: date-time
+          description: Filter products created before this date
+        updatedAfter:
+          type: string
+          format: date-time
+          description: Filter products updated after this date
+        updatedBefore:
+          type: string
+          format: date-time
+          description: Filter products updated before this date
+        # Specification-related parameters
+        connectivity:
+          type: string
+          description: Comma-separated list of connectivity options
+        aspectRatio:
+          type: string
+          description: Comma-separated list of aspect ratios
+        displayTechnology:
+          type: string
+          description: Comma-separated list of display technologies
+        refreshRate:
+          type: string
+          description: Comma-separated list of refresh rates
+        resolution:
+          type: string
+          description: Comma-separated list of resolutions
+        screenSize:
+          type: string
+          description: Comma-separated list of screen sizes
+        cameraFrameRate:
+          type: string
+          description: Comma-separated list of camera frame rates
+        opticalZoom:
+          type: string
+          description: Comma-separated list of optical zoom values
+        meteringDescription:
+          type: string
+          description: Comma-separated list of metering descriptions
+        supportedFileFormat:
+          type: string
+          description: Comma-separated list of supported file formats
+        maximumAperture:
+          type: string
+          description: Comma-separated list of maximum aperture values
+        imageStabilization:
+          type: string
+          description: Comma-separated list of image stabilization types
+        maximumFocalLength:
+          type: string
+          description: Comma-separated list of maximum focal lengths
+        expandedIsoMinimum:
+          type: string
+          description: Comma-separated list of expanded ISO minimum values
+        photoSensorTechnology:
+          type: string
+          description: Comma-separated list of photo sensor technologies
+        maximumWebcamImageResolution:
+          type: string
+          description: Comma-separated list of maximum webcam image resolutions
+        videoCaptureResolution:
+          type: string
+          description: Comma-separated list of video capture resolutions
+        flashMemoryType:
+          type: string
+          description: Comma-separated list of flash memory types
+        printingTechnology:
+          type: string
+          description: Comma-separated list of printing technologies
+        printerOutput:
+          type: string
+          description: Comma-separated list of printer output types
+        maximumPrintSpeed:
+          type: string
+          description: Comma-separated list of maximum print speeds
+        printerMediaSizeMaximum:
+          type: string
+          description: Comma-separated list of maximum printer media sizes
+        printMedia:
+          type: string
+          description: Comma-separated list of print media types
+        scannerType:
+          type: string
+          description: Comma-separated list of scanner types
+        compatibleDevices:
+          type: string
+          description: Comma-separated list of compatible devices
+        displayType:
+          type: string
+          description: Comma-separated list of display types
+        sheetSize:
+          type: string
+          description: Comma-separated list of sheet sizes
+        zoom:
+          type: string
+          description: Comma-separated list of zoom values
+        digitalZoom:
+          type: string
+          description: Comma-separated list of digital zoom values
+        lensConstruction:
+          type: string
+          description: Comma-separated list of lens constructions
+        lensType:
+          type: string
+          description: Comma-separated list of lens types
+        videoOutput:
+          type: string
+          description: Comma-separated list of video output types
+        photoSensorResolution:
+          type: string
+          description: Comma-separated list of photo sensor resolutions
+        audioInput:
+          type: string
+          description: Comma-separated list of audio input types
+        audioOutputType:
+          type: string
+          description: Comma-separated list of audio output types
+        batteryAverageLife:
+          type: string
+          description: Comma-separated list of battery average life values
+        sensorType:
+          type: string
+          description: Comma-separated list of sensor types
+        totalStillResolution:
+          type: string
+          description: Comma-separated list of total still resolutions
+        maximumImageSize:
+          type: string
+          description: Comma-separated list of maximum image sizes
+        compatibleMountings:
+          type: string
+          description: Comma-separated list of compatible mountings
+        maxPrintspeedMonochrome:
+          type: string
+          description: Comma-separated list of maximum monochrome print speeds
+        controllerType:
+          type: string
+          description: Comma-separated list of controller types
+        shape:
+          type: string
+          description: Comma-separated list of shapes
+        gps:
+          type: string
+          description: Comma-separated list of GPS features
+        chipsetBrand:
+          type: string
+          description: Comma-separated list of chipset brands
+        videoOutputInterface:
+          type: string
+          description: Comma-separated list of video output interfaces
+        cacheSize:
+          type: string
+          description: Comma-separated list of cache sizes
+        graphicsCardDescription:
+          type: string
+          description: Comma-separated list of graphics card descriptions
+        numberOfProcessors:
+          type: string
+          description: Comma-separated list of number of processors
+        hardDiskFormFactor:
+          type: string
+          description: Comma-separated list of hard disk form factors
+        hardDiskDescription:
+          type: string
+          description: Comma-separated list of hard disk descriptions
+        installationType:
+          type: string
+          description: Comma-separated list of installation types
+        movementDetectionTechnology:
+          type: string
+          description: Comma-separated list of movement detection technologies
+        mediaType:
+          type: string
+          description: Comma-separated list of media types
+        colorDepth:
+          type: string
+          description: Comma-separated list of color depths
+        standardSheetCapacity:
+          type: string
+          description: Comma-separated list of standard sheet capacities
+        opticalSensorTechnology:
+          type: string
+          description: Comma-separated list of optical sensor technologies
+        audioEncoding:
+          type: string
+          description: Comma-separated list of audio encoding types
+        audioOutputMode:
+          type: string
+          description: Comma-separated list of audio output modes
+        totalHdmiPorts:
+          type: string
+          description: Comma-separated list of total HDMI ports
+        surroundSoundChannelConfiguration:
+          type: string
+          description: Comma-separated list of surround sound channel configurations
+        careInstructions:
+          type: string
+          description: Comma-separated list of care instructions
+        speakerMaximumOutputPower:
+          type: string
+          description: Comma-separated list of speaker maximum output powers
+        speakerMaximumVolume:
+          type: string
+          description: Comma-separated list of speaker maximum volumes
+        fabricType:
+          type: string
+          description: Comma-separated list of fabric types
+        origin:
+          type: string
+          description: Comma-separated list of origins
+        operatingSystem:
+          type: string
+          description: Comma-separated list of operating systems
+        cellularTechnology:
+          type: string
+          description: Comma-separated list of cellular technologies
+        batteryPowerRating:
+          type: string
+          description: Comma-separated list of battery power ratings
+        batteryCapacity:
+          type: string
+          description: Comma-separated list of battery capacities
+        wirelessNetworkTechnology:
+          type: string
+          description: Comma-separated list of wireless network technologies
+        material:
+          type: string
+          description: Comma-separated list of materials
+        connectorType:
+          type: string
+          description: Comma-separated list of connector types
+        inputVoltage:
+          type: string
+          description: Comma-separated list of input voltages
+        mountingType:
+          type: string
+          description: Comma-separated list of mounting types
+        humanInterfaceInput:
+          type: string
+          description: Comma-separated list of human interface inputs
+        wirelessCommunicationStandard:
+          type: string
+          description: Comma-separated list of wireless communication standards
+        department:
+          type: string
+          description: Comma-separated list of departments
+        specificUsesForProduct:
+          type: string
+          description: Comma-separated list of specific uses for products
+        ramSize:
+          type: string
+          description: Comma-separated list of RAM sizes
+        ramMemoryTechnology:
+          type: string
+          description: Comma-separated list of RAM memory technologies
+        memorySpeed:
+          type: string
+          description: Comma-separated list of memory speeds
+        cpuModel:
+          type: string
+          description: Comma-separated list of CPU models
+        cpuBrand:
+          type: string
+          description: Comma-separated list of CPU brands
+        hardDriveInterface:
+          type: string
+          description: Comma-separated list of hard drive interfaces
+        hardDriveSize:
+          type: string
+          description: Comma-separated list of hard drive sizes
+        hardDrive:
+          type: string
+          description: Comma-separated list of hard drive types
+        graphicsCoprocessor:
+          type: string
+          description: Comma-separated list of graphics coprocessors
+        graphicsRamSize:
+          type: string
+          description: Comma-separated list of graphics RAM sizes
+        compatiblePlatform:
+          type: string
+          description: Comma-separated list of compatible platforms
+        lockType:
+          type: string
+          description: Comma-separated list of lock types
+        finishType:
+          type: string
+          description: Comma-separated list of finish types
+        lampType:
+          type: string
+          description: Comma-separated list of lamp types
+        shadeColor:
+          type: string
+          description: Comma-separated list of shade colors
+        shadeMaterial:
+          type: string
+          description: Comma-separated list of shade materials
+        switchType:
+          type: string
+          description: Comma-separated list of switch types
+        brightness:
+          type: string
+          description: Comma-separated list of brightness values
+        lightingMethod:
+          type: string
+          description: Comma-separated list of lighting methods
+        controlType:
+          type: string
+          description: Comma-separated list of control types
+        controlMethod:
+          type: string
+          description: Comma-separated list of control methods
+        bulbShapeSize:
+          type: string
+          description: Comma-separated list of bulb shape sizes
+        bulbBase:
+          type: string
+          description: Comma-separated list of bulb bases
+        lightColor:
+          type: string
+          description: Comma-separated list of light colors
+        capacity:
+          type: string
+          description: Comma-separated list of capacities
+        cutType:
+          type: string
+          description: Comma-separated list of cut types
+        telephoneType:
+          type: string
+          description: Comma-separated list of telephone types
+        powerSource:
+          type: string
+          description: Comma-separated list of power sources
+        answeringSystemType:
+          type: string
+          description: Comma-separated list of answering system types
+        supportedInternetServices:
+          type: string
+          description: Comma-separated list of supported internet services
+        memoryStorageCapacity:
+          type: string
+          description: Comma-separated list of memory storage capacities
+        wirelessCarrier:
+          type: string
+          description: Comma-separated list of wireless carriers
+        formFactor:
+          type: string
+          description: Comma-separated list of form factors
+
+    GetProductsFilterResponse:
+      type: object
+      properties:
+        filters:
+          type: object
+          properties:
+            categories:
+              type: array
+              items:
+                type: object
+                properties:
+                  category:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                  subcategories:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        name:
+                          type: string
+            priceRange:
+              type: array
+              items:
+                type: object
+                properties:
+                  highestPrice:
+                    type: integer
+                  lowestPrice:
+                    type: integer
+            specifications:
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  values:
+                    type: array
+                    items:
+                      type: string
+
+  requestBodies:
+    CreateProduct:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - name
+              - description
+              - brand
+              - subCategoryId
+              - variants
+              - specifications
+            properties:
+              name:
+                type: string
+                maxLength: 100
+              description:
+                type: string
+                maxLength: 1000
+              brand:
+                type: string
+              color:
+                type: string
+              subCategoryId:
+                type: string
+                description: MongoDB ObjectId
+              categoryId:
+                type: string
+                description: MongoDB ObjectId
+              variants:
+                type: array
+                minItems: 1
+                items:
+                  type: object
+                  required:
+                    - variation
+                    - sku
+                    - inventory
+                    - globalPrice
+                  properties:
+                    variation:
+                      type: string
+                    sku:
+                      type: string
+                    inventory:
+                      type: integer
+                      minimum: 0
+                    globalPrice:
+                      type: number
+                      minimum: 0
+                    salePrice:
+                      type: number
+                      minimum: 0
+                    discountPercent:
+                      type: number
+                      minimum: 0
+                      maximum: 100
+                    saleStartDate:
+                      type: string
+                      format: date-time
+                    saleEndDate:
+                      type: string
+                      format: date-time
+              specifications:
+                type: object
+                required:
+                  - certifications
+                properties:
+                  certifications:
+                    type: string
+                  ramSize:
+                    type: number
+                  graphics:
+                    type: string
+                  processor:
+                    type: string
+                  cpuSpeed:
+                    type: number
+                  cpuManufacturer:
+                    type: string
+                  graphicsProcessorManufacturer:
+                    type: string
+                  screenSize:
+                    type: number
+                  resolution:
+                    type: string
+                  storage:
+                    type: number
+                  memory:
+                    type: number
+                  cameraResolution:
+                    type: number
+                  operatingSystem:
+                    type: string
+                  audioOutput:
+                    type: string
+                  connectivity:
+                    type: string
+                  compatiblePlatform:
+                    type: string
+                  sensor:
+                    type: string
+                  energyEfficiency:
+                    type: string
+                  batteryLife:
+                    type: number
+                  weight:
+                    type: number
+                  waterResistance:
+                    type: boolean
+                  fitnessTracking:
+                    type: boolean
+                  sleepTracking:
+                    type: boolean
+                  voiceControl:
+                    type: boolean
+                  remoteControl:
+                    type: boolean
+              images:
+                type: array
+                items:
+                  type: string
+                  format: binary
+                  description: Multiple product image files.
+
+    UpdateProduct:
+      description: Product update with file uploads.
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 100
+              description:
+                type: string
+                maxLength: 1000
+              brand:
+                type: string
+              color:
+                type: string
+              subCategoryId:
+                type: string
+                description: MongoDB ObjectId
+              categoryId:
+                type: string
+                description: MongoDB ObjectId
+              variants:
+                type: array
+                minItems: 1
+                items:
+                  type: object
+                  required:
+                    - variation
+                    - sku
+                    - inventory
+                    - globalPrice
+                  properties:
+                    variation:
+                      type: string
+                    sku:
+                      type: string
+                    inventory:
+                      type: integer
+                      minimum: 0
+                    globalPrice:
+                      type: number
+                      minimum: 0
+                    salePrice:
+                      type: number
+                      minimum: 0
+                    discountPercent:
+                      type: number
+                      minimum: 0
+                      maximum: 100
+                    saleStartDate:
+                      type: string
+                      format: date-time
+                    saleEndDate:
+                      type: string
+                      format: date-time
+              specifications:
+                type: object
+                required:
+                  - certifications
+                properties:
+                  certifications:
+                    type: string
+                  ramSize:
+                    type: number
+                  graphics:
+                    type: string
+                  processor:
+                    type: string
+                  cpuSpeed:
+                    type: number
+                  cpuManufacturer:
+                    type: string
+                  graphicsProcessorManufacturer:
+                    type: string
+                  screenSize:
+                    type: number
+                  resolution:
+                    type: string
+                  storage:
+                    type: number
+                  memory:
+                    type: number
+                  cameraResolution:
+                    type: number
+                  operatingSystem:
+                    type: string
+                  audioOutput:
+                    type: string
+                  connectivity:
+                    type: string
+                  compatiblePlatform:
+                    type: string
+                  sensor:
+                    type: string
+                  energyEfficiency:
+                    type: string
+                  batteryLife:
+                    type: number
+                  weight:
+                    type: number
+                  waterResistance:
+                    type: boolean
+                  fitnessTracking:
+                    type: boolean
+                  sleepTracking:
+                    type: boolean
+                  voiceControl:
+                    type: boolean
+                  remoteControl:
+                    type: boolean
+              image:
+                type: string
+                nullable: true
+                description: Set to null to remove the image, or omit to leave unchanged.
+    
+    UpdateProductVisibility:
+      description: Update Product visibility.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              visibility:
+                type: boolean
+              
+  parameters:
+    ProductSort:
+      name: sort
+      in: query
+      schema:
+        type: string
+        pattern: "^[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability)(,[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability))*$"
+        default: createdAt
+      description: |
+        Sort order. Use commas to separate multiple fields.
+        Allowed fields: `createdAt`, `updatedAt`, `name`, `rating`, `numOfReviews`, `price`, `discount`, `popularity`, `bestSelling`, `stockAvailability`.
+        Prefix with `-` for descending order (e.g., `sort=createdAt,-popularity`).
+
+    ProductFilterParams:
+      name: filters
+      in: query
+      style: deepObject
+      explode: true
+      schema:
+        $ref: "#/components/schemas/ProductFilter"
+      description: Filter criteria for products
+
+    ProductId:
+      name: productId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the product

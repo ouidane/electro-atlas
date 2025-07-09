@@ -1,0 +1,46 @@
+openapi: "3.0.3"
+info:
+  title: "Electro Atlas API"
+  version: "1.0.0"
+
+servers:
+  - url: https://electroatlas.onrender.com/api/v1
+    description: Production server
+  - url: http://localhost:5000/api/v1
+    description: Local development server
+
+tags:
+  - name: auth
+    description: Authentication operations
+  - name: user-profile
+    description: User profile operations
+  - name: user-cart
+    description: User cart operations
+  - name: user-wishlist
+    description: User wishlist operations
+  - name: user-orders
+    description: User orders operations
+  - name: user
+    description: User operations
+  - name: cart
+    description: Cart operations
+  - name: departments
+    description: Departments operations
+  - name: category
+    description: Category operations
+  - name: wishlist
+    description: Wishlist operations
+  - name: product
+    description: Product operations
+  - name: discover
+    description: Discover operations
+  - name: filter
+    description: Products filter operations
+  - name: review
+    description: Review operations
+  - name: order
+    description: Order operations
+  - name: sale
+    description: Sales operations
+  - name: payment
+    description: Payment operations

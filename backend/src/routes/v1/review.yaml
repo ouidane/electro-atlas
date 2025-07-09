@@ -1,0 +1,109 @@
+components:
+  schemas:
+    Review:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the review
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: The rating given in the review (1-5)
+        comment:
+          type: string
+          description: The review comment
+        userId:
+          type: string
+          description: The ID of the user who created the review
+        productId:
+          type: string
+          description: The ID of the product being reviewed
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time when the review was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time when the review was last updated
+      required:
+        - rating
+        - comment
+        - userId
+        - productId
+
+    CreateReview:
+      type: object
+      properties:
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: The rating given in the review (1-5)
+        comment:
+          type: string
+          description: The review comment
+      required:
+        - rating
+        - comment
+
+    UpdateReview:
+      type: object
+      properties:
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: The rating given in the review (1-5)
+        comment:
+          type: string
+          description: The review comment
+      minProperties: 1
+
+    GetReviewsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Review"
+
+    GetReviewResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/Review"
+
+    CreateReviewResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+  requestBodies:
+    CreateReview:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateReview"
+
+    UpdateReview:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateReview"
+
+  parameters:
+    ReviewId:
+      name: reviewId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the review

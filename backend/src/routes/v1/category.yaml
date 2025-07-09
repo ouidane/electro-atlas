@@ -1,0 +1,174 @@
+components:
+  schemas:
+    Category:
+      type: object
+      required:
+        - _id
+        - name
+        - createdAt
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        image:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    SubCategory:
+      type: object
+      required:
+        - _id
+        - name
+        - categoryId
+        - createdAt
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        categoryId:
+          type: string
+        image:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    GetCategoriesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+
+    GetCategoryResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/Category"
+
+    GetSubCategoriesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubCategory"
+
+    GetSubCategoryResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/SubCategory"
+
+    CreateCategoryResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+    CreateSubCategoryResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+  requestBodies:
+    CreateCategory:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              image:
+                type: string
+                format: binary
+
+    UpdateCategory:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              image:
+                type: string
+                format: binary
+
+    CreateSubCategory:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              image:
+                type: string
+                format: binary
+
+    UpdateSubCategory:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              image:
+                type: string
+                format: binary
+
+  parameters:
+    CategoryId:
+      name: categoryId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Category Id
+
+    SubCategoryId:
+      name: subCategoryId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Sub Category ID

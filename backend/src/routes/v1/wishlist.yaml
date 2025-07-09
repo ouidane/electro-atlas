@@ -1,0 +1,58 @@
+components:
+  schemas:
+    GetWishlist:
+      type: object
+      properties:
+        _id:
+          type: string
+        productId:
+          type: string
+        productName:
+          type: string
+        image:
+          type: string
+        variant:
+          $ref: "#/components/schemas/ProductVariant"
+
+    GetWishlistResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/GetWishlist"
+
+    GetWishlistsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetWishlist"
+
+    AddWishlistItemResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+  requestBodies:
+    AddWishlistItem:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - productId
+            properties:
+              productId:
+                type: string
+
+  parameters:
+    WishlistId:
+      name: wishlistId
+      in: path
+      required: true
+      schema:
+        type: string

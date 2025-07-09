@@ -1,0 +1,156 @@
+components:
+  schemas:
+    SaleFilter:
+      type: object
+      properties:
+        productName:
+          type: string
+          description: Filter sales by product name
+        sellerId:
+          type: string
+          description: Filter sales by seller ID
+        minQuantity:
+          type: number
+          minimum: 0
+          description: Filter sales with a quantity greater than or equal to this value
+        maxQuantity:
+          type: number
+          minimum: 0
+          description: Filter sales with a quantity less than or equal to this value
+        minRefundedQuantity:
+          type: number
+          minimum: 0
+          description: Filter sales with a refunded quantity greater than or equal to this value
+        maxRefundedQuantity:
+          type: number
+          minimum: 0
+          description: Filter sales with a refunded quantity less than or equal to this value
+        minSalePrice:
+          type: number
+          minimum: 0
+          description: Filter sales with a sale price greater than or equal to this value
+        maxSalePrice:
+          type: number
+          minimum: 0
+          description: Filter sales with a sale price less than or equal to this value
+        minTotalPrice:
+          type: number
+          minimum: 0
+          description: Filter sales with a total price greater than or equal to this value
+        maxTotalPrice:
+          type: number
+          minimum: 0
+          description: Filter sales with a total price less than or equal to this value
+        createdAfter:
+          type: string
+          format: date-time
+          description: Filter sales created after this date
+        createdBefore:
+          type: string
+          format: date-time
+          description: Filter sales created before this date
+        updatedAfter:
+          type: string
+          format: date-time
+          description: Filter sales updated after this date
+        updatedBefore:
+          type: string
+          format: date-time
+          description: Filter sales updated before this date
+
+    GetSale:
+      type: object
+      properties:
+        _id:
+          type: string
+        orderId:
+          type: string
+        productId:
+          type: string
+        sellerId:
+          type: string
+        quantity:
+          type: number
+        salePrice:
+          type: number
+        totalPrice:
+          type: number
+        productName:
+          type: string
+        sku:
+          type: string
+        image:
+          type: string
+        isRefunded:
+          type: boolean
+        refundedQuantity:
+          type: number
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    GetSaleResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/GetSale"
+
+    GetSalesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetSaleResponse"
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+        Links:
+          $ref: "#/components/schemas/Links"
+
+  requestBodies:
+    UpdateRefundStatus:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - refundedQuantity
+            properties:
+              refundedQuantity:
+                type: number
+
+  parameters:
+    SaleId:
+      name: saleId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Sale ID
+
+    SaleSort:
+      name: sort
+      in: query
+      schema:
+        type: string
+        pattern: "^[+-]?(createdAt|updatedAt|productName|quantity|salePrice|totalPrice|refundedQuantity)(,[+-]?(createdAt|updatedAt|productName|quantity|salePrice|totalPrice|refundedQuantity))*$"
+        default: createdAt
+      description: |
+        Sort sale. Use commas to separate multiple fields.
+        Allowed fields: `createdAt`, `updatedAt`, `productName`, `quantity`, `salePrice`, `totalPrice`, `refundedQuantity`.
+        Prefix with `-` for descending sale (e.g., `sort=createdAt,-quantity`).
+
+    SaleFilterParams:
+      name: filters
+      in: query
+      style: deepObject
+      explode: true
+      schema:
+        $ref: "#/components/schemas/SaleFilter"
+      description: Filter criteria for sales

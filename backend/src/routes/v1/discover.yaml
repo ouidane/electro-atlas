@@ -1,0 +1,114 @@
+components:
+  schemas:
+    ProductVariant:
+      type: object
+      properties:
+        variation:
+          type: string
+        sku:
+          type: string
+        color:
+          type: string
+        inventory:
+          type: number
+        isInStock:
+          type: boolean
+        globalPrice:
+          type: number
+        globalPriceDecimal:
+          type: string
+        salePrice:
+          type: number
+        salePriceDecimal:
+          type: string
+        discountPercent:
+          type: number
+        saleStartDate:
+          type: string
+          format: date-time
+        saleEndDate:
+          type: string
+          format: date-time
+
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        isFeatured:
+          type: boolean
+        variant:
+          $ref: "#/components/schemas/ProductVariant"
+        reviews:
+          type: object
+          properties:
+            count:
+              type: number
+            avgRate:
+              type: number
+            roundAvgRate:
+              type: number
+        image:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CategoryWithProducts:
+      type: object
+      properties:
+        category:
+          type: object
+          properties:
+            _id:
+              type: string
+            name:
+              type: string
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+
+    GetRecommendedProductsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+
+    GetBestOffersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryWithProducts"
+
+    GetBestSellersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryWithProducts"
+
+  parameters:
+    CategoryIdQuery:
+      name: categoryId
+      in: query
+      schema:
+        type: string
+      description: Category ID for filtering products
+
+    ExcludeProductIdQuery:
+      name: excludeProductId
+      in: query
+      schema:
+        type: string
+      description: Exclude a specific product by ID

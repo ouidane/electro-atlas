@@ -1,0 +1,187 @@
+components:
+  schemas:
+    OrderFilter:
+      type: object
+      properties:
+        orderStatus:
+          type: string
+          enum:
+            - CREATED
+            - PROCESSING
+            - CONFIRMED
+            - SHIPPED
+            - DELIVERED
+            - CANCELLED
+            - REFUNDED
+            - ON_HOLD
+          description: Filter orders by order status
+        userId:
+          type: string
+          description: Filter orders by user ID
+        minAmount:
+          type: number
+          minimum: 0
+          description: Filter orders with an amount greater than or equal to this value
+        maxAmount:
+          type: number
+          minimum: 0
+          description: Filter orders with an amount less than or equal to this value
+        minTaxAmount:
+          type: number
+          minimum: 0
+          description: Filter orders with a tax amount greater than or equal to this value
+        maxTaxAmount:
+          type: number
+          minimum: 0
+          description: Filter orders with a tax amount less than or equal to this value
+        minShippingAmount:
+          type: number
+          minimum: 0
+          description: Filter orders with a shipping amount greater than or equal to this value
+        maxShippingAmount:
+          type: number
+          minimum: 0
+          description: Filter orders with a shipping amount less than or equal to this value
+        minDiscountAmount:
+          type: number
+          minimum: 0
+          description: Filter orders with a discount amount greater than or equal to this value
+        maxDiscountAmount:
+          type: number
+          minimum: 0
+          description: Filter orders with a discount amount less than or equal to this value
+        createdAfter:
+          type: string
+          format: date-time
+          description: Filter orders created after this date
+        createdBefore:
+          type: string
+          format: date-time
+          description: Filter orders created before this date
+        updatedAfter:
+          type: string
+          format: date-time
+          description: Filter orders updated after this date
+        updatedBefore:
+          type: string
+          format: date-time
+          description: Filter orders updated before this date
+
+    GetOrder:
+      type: object
+      properties:
+        _id:
+          type: string
+        userId:
+          type: string
+        deliveryId:
+          type: string
+        paymentId:
+          type: string
+        orderItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetSale"
+        totalAmount:
+          type: number
+          minimum: 0
+        taxAmount:
+          type: number
+          minimum: 0
+        shippingAmount:
+          type: number
+          minimum: 0
+        discountAmount:
+          type: number
+          minimum: 0
+        orderStatus:
+          type: string
+          enum:
+            - CREATED
+            - PROCESSING
+            - CONFIRMED
+            - SHIPPED
+            - DELIVERED
+            - CANCELLED
+            - REFUNDED
+            - ON_HOLD
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    GetOrderResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetOrder"
+
+    GetOrdersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetOrder"
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+        Links:
+          $ref: "#/components/schemas/Links"
+
+  requestBodies:
+    UpdateOrderStatus:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - orderStatus
+            properties:
+              orderStatus:
+                type: string
+                enum:
+                  - CREATED
+                  - PROCESSING
+                  - CONFIRMED
+                  - SHIPPED
+                  - DELIVERED
+                  - CANCELLED
+                  - REFUNDED
+                  - ON_HOLD
+
+  parameters:
+    OrderId:
+      name: orderId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Order ID
+
+    OrderSort:
+      name: sort
+      in: query
+      schema:
+        type: string
+        pattern: "^[+-]?(createdAt|updatedAt|amount|taxAmount|shippingAmount|discountAmount)(,[+-]?(createdAt|updatedAt|amount|taxAmount|shippingAmount|discountAmount))*$"
+        default: createdAt
+      description: |
+        Sort order. Use commas to separate multiple fields.
+        Allowed fields: `createdAt`, `updatedAt`, `amount`, `taxAmount`, `shippingAmount`, `discountAmount`.
+        Prefix with `-` for descending order (e.g., `sort=createdAt,-amount`).
+
+    OrderFilterParams:
+      name: filters
+      in: query
+      style: deepObject
+      explode: true
+      schema:
+        $ref: "#/components/schemas/OrderFilter"
+      description: Filter criteria for Orders

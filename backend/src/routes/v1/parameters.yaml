@@ -1,0 +1,67 @@
+components:
+  schemas:
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+        totalCount:
+          type: integer
+        limit:
+          type: integer
+
+    Metadata:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        totalDocs:
+          type: integer
+        totalPages:
+          type: integer
+        hasPrevPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
+        prevPage:
+          type: integer
+        nextPage:
+          type: integer
+        sort:
+          type: string
+        filters:
+          type: object
+
+    Links:
+      type: object
+      properties:
+        self:
+          type: string
+        next:
+          type: string
+        prev:
+          type: string
+
+  parameters:
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number for pagination
+
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+      description: Number of items per page

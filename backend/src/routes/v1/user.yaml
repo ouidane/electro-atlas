@@ -1,0 +1,190 @@
+components:
+  schemas:
+    Contact:
+      type: object
+      properties:
+        email:
+          type: string
+        phone:
+          type: string
+        website:
+          type: string
+
+    Address:
+      type: object
+      properties:
+        line1:
+          type: string
+        line2:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        postalCode:
+          type: string
+
+    Profile:
+      type: object
+      properties:
+        userId:
+          type: string
+        familyName:
+          type: string
+        givenName:
+          type: string
+        phone:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        isVerified:
+          type: boolean
+        profile:
+          $ref: "#/components/schemas/Profile"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UserFilter:
+      type: object
+      properties:
+        city:
+          type: string
+        country:
+          type: string
+        role:
+          type: string
+        query:
+          type: string
+        isVerified:
+          type: boolean
+        createdAfter:
+          type: string
+          format: date-time
+        createdBefore:
+          type: string
+          format: date-time
+        updatedAfter:
+          type: string
+          format: date-time
+        updatedBefore:
+          type: string
+          format: date-time
+
+    GetUserResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/User"
+
+    GetUsersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+        Links:
+          $ref: "#/components/schemas/Links"
+
+    UpdateUser:
+      type: object
+      properties:
+        familyName:
+          type: string
+        givenName:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+
+    CreateUser:
+      type: object
+      required:
+        - role
+        - familyName
+        - givenName
+        - email
+        - password
+        - confirmPassword
+      properties:
+        role:
+          type: string
+        familyName:
+          type: string
+        givenName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        confirmPassword:
+          type: string
+
+    CreateUserResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+  requestBodies:
+    CreateUserRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateUser"
+
+    UpdateUserRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateUser"
+
+  parameters:
+    UserId:
+      name: usertId
+      in: path
+      required: true
+      schema:
+        type: string
+
+    UserSort:
+      name: sort
+      in: query
+      schema:
+        type: string
+        pattern: "^[+-]?(createdAt|updatedAt|familyName|givenName)(,[+-]?(createdAt|updatedAt|familyName|givenName))*$"
+        default: createdAt
+      description: |
+        Sort order. Use commas to separate multiple fields.
+        Allowed fields: `createdAt`, `updatedAt`, `familyName`, `givenName`.
+        Prefix with `-` for descending order (e.g., `sort=createdAt,-familyName).
+
+    UserFilterParams:
+      name: filters
+      in: query
+      style: deepObject
+      explode: true
+      schema:
+        $ref: "#/components/schemas/UserFilter"
+      description: Filter criteria for Users

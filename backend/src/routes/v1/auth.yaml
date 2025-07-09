@@ -1,0 +1,170 @@
+components:
+  requestBodies:
+    RegisterUser:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - password
+              - confirmPassword
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                minLength: 8
+              confirmPassword:
+                type: string
+              wishlist:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - productId
+                  properties:
+                    productId:
+                      type: string
+              cartItems:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - quantity
+                    - productId
+                  properties:
+                    quantity:
+                      type: number
+                      minimum: 1
+                    productId:
+                      type: string
+
+    UserLogin:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+
+    VerifyEmail:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - verificationCode
+            properties:
+              email:
+                type: string
+                format: email
+              verificationCode:
+                type: string
+
+    ResendVerificationCode:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                format: email
+
+    ForgotPassword:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                format: email
+
+    ResetPassword:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - resetToken
+              - password
+              - confirmPassword
+            properties:
+              resetToken:
+                type: string
+              password:
+                type: string
+                minLength: 8
+              confirmPassword:
+                type: string
+
+  schemas:
+    UserLoginResponse:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+
+    RefreshTokenResponse:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+
+    ForgotPasswordResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+  securitySchemes:
+    AccessTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Access token must be sent in the Authorization header in the format:
+        Bearer <token>
+
+    RefreshTokenCookie:
+      type: apiKey
+      in: cookie
+      name: jid
+      description: Refresh token must be sent in the 'jid' cookie
+
+  parameters:
+    PlatformParam:
+      name: x-platform
+      in: header
+      required: true
+      schema:
+        type: string
+        enum: [marketplace, vendor]
+      description: Specifies the platform. Must be either "marketplace" or "vendor".

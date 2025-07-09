@@ -1,0 +1,48 @@
+components:
+  schemas:
+    ErrorModel:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+        errors:
+          type: string
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorModel"
+    NotFoundError:
+      description: Not found error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorModel"
+    BadRequestError:
+      description: Bad request error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorModel"
+    UnauthorizedError:
+      description: Unauthorized error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorModel"
+    ForbiddenError:
+      description: Forbidden error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorModel"
+    ConflictError:
+      description: Conflict error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorModel"

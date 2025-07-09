@@ -1,0 +1,211 @@
+components:
+  schemas:
+    CartFilter:
+      type: object
+      properties:
+        minAmount:
+          type: number
+          description: Filter carts with an amount greater than or equal to this value
+        maxAmount:
+          type: number
+          description: Filter carts with an amount less than or equal to this value
+        minTotalProducts:
+          type: integer
+          description: Filter carts with a total number of products greater than or equal to this value
+        maxTotalProducts:
+          type: integer
+          description: Filter carts with a total number of products less than or equal to this value
+        minTotalItems:
+          type: integer
+          description: Filter carts with a total number of items greater than or equal to this value
+        maxTotalItems:
+          type: integer
+          description: Filter carts with a total number of items less than or equal to this value
+        createdAfter:
+          type: string
+          format: date-time
+          description: Filter carts created after this date
+        createdBefore:
+          type: string
+          format: date-time
+          description: Filter carts created before this date
+        updatedAfter:
+          type: string
+          format: date-time
+          description: Filter carts updated after this date
+        updatedBefore:
+          type: string
+          format: date-time
+          description: Filter carts updated before this date
+
+    GetCart:
+      type: object
+      properties:
+        _id:
+          type: string
+        amount:
+          type: number
+          minimum: 0
+        totalProducts:
+          type: integer
+          minimum: 0
+        totalItems:
+          type: integer
+          minimum: 0
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetCartItem"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    GetCartItem:
+      type: object
+      properties:
+        itemId:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+        totalPrice:
+          type: number
+        totalPriceDecimal:
+          type: string
+        product:
+          type: object
+          properties:
+            _id:
+              type: string
+            name:
+              type: string
+            image:
+              type: string
+            variant:
+              $ref: "#/components/schemas/ProductVariant"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    GetCartsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetCart"
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+        Links:
+          $ref: "#/components/schemas/Links"
+
+    GetCartResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetCart"
+
+    GetCartItemResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/GetCartItem"
+
+    AddCartItemResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+  requestBodies:
+    AddCartItem:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - productId
+              - quantity
+            properties:
+              productId:
+                type: string
+              quantity:
+                type: integer
+                minimum: 1
+
+    UpdateItemInMyCart:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - quantity
+            properties:
+              quantity:
+                type: integer
+                minimum: 1
+
+    UpdateCartItem:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - quantity
+            properties:
+              quantity:
+                type: integer
+                minimum: 1
+
+  parameters:
+    CartId:
+      name: cartId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Cart ID
+
+    CartItemId:
+      name: itemId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Item ID
+
+    CartSort:
+      name: sort
+      in: query
+      schema:
+        type: string
+        pattern: "^[+-]?(createdAt|updatedAt|amount|totalProducts|totalItems)(,[+-]?(createdAt|updatedAt|amount|totalProducts|totalItems))*$"
+        default: createdAt
+      description: |
+        Sort order. Use commas to separate multiple fields.
+        Allowed fields: `createdAt`, `updatedAt`, `amount`, `totalProducts`, `totalItems`.
+        Prefix with `-` for descending order (e.g., `sort=createdAt,-amount,-totalProducts`).
+
+    CartFilterParams:
+      name: filters
+      in: query
+      style: deepObject
+      explode: true
+      schema:
+        $ref: "#/components/schemas/CartFilter"
+      description: Filter criteria for carts
