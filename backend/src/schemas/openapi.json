@@ -1,0 +1,5798 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Electro Atlas API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://electroatlas.onrender.com/api/v1",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:5000/api/v1",
+      "description": "Local development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentication operations"
+    },
+    {
+      "name": "user-profile",
+      "description": "User profile operations"
+    },
+    {
+      "name": "user-cart",
+      "description": "User cart operations"
+    },
+    {
+      "name": "user-wishlist",
+      "description": "User wishlist operations"
+    },
+    {
+      "name": "user-orders",
+      "description": "User orders operations"
+    },
+    {
+      "name": "user",
+      "description": "User operations"
+    },
+    {
+      "name": "cart",
+      "description": "Cart operations"
+    },
+    {
+      "name": "departments",
+      "description": "Departments operations"
+    },
+    {
+      "name": "category",
+      "description": "Category operations"
+    },
+    {
+      "name": "wishlist",
+      "description": "Wishlist operations"
+    },
+    {
+      "name": "product",
+      "description": "Product operations"
+    },
+    {
+      "name": "discover",
+      "description": "Discover operations"
+    },
+    {
+      "name": "filter",
+      "description": "Products filter operations"
+    },
+    {
+      "name": "review",
+      "description": "Review operations"
+    },
+    {
+      "name": "order",
+      "description": "Order operations"
+    },
+    {
+      "name": "sale",
+      "description": "Sales operations"
+    },
+    {
+      "name": "payment",
+      "description": "Payment operations"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "summary": "Register a new user",
+        "operationId": "registerUser",
+        "tags": [
+          "auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RegisterUser"
+        },
+        "responses": {
+          "204": {
+            "description": "User registered successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "409": {
+            "$ref": "#/components/responses/ConflictError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login a user",
+        "operationId": "loginUser",
+        "tags": [
+          "auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UserLogin"
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/refresh-token": {
+      "post": {
+        "summary": "Refresh access token",
+        "operationId": "refreshToken",
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "RefreshTokenCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/verify-email/confirm": {
+      "post": {
+        "summary": "Confirm email verification",
+        "operationId": "verifyEmail",
+        "tags": [
+          "auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/VerifyEmail"
+        },
+        "responses": {
+          "204": {
+            "description": "Email verified successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/verify-email/request": {
+      "post": {
+        "summary": "Request email verification code",
+        "operationId": "resendVerificationCode",
+        "tags": [
+          "auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ResendVerificationCode"
+        },
+        "responses": {
+          "204": {
+            "description": "Verification code resent successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/password-reset/request": {
+      "post": {
+        "summary": "Request password reset",
+        "operationId": "forgotPassword",
+        "tags": [
+          "auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ForgotPassword"
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset link sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForgotPasswordResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/password-reset/confirm": {
+      "post": {
+        "summary": "Confirm reset password",
+        "operationId": "resetPassword",
+        "tags": [
+          "auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ResetPassword"
+        },
+        "responses": {
+          "204": {
+            "description": "Password reset successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/oauth/google": {
+      "get": {
+        "summary": "Initiate Google Authentication",
+        "operationId": "initiateGoogleAuth",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [
+          {
+            "name": "callbackUrl",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "URL to redirect after successful authentication"
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "URL of Google's authorization endpoint"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout user",
+        "operationId": "logout",
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Logout successful"
+          }
+        }
+      }
+    },
+    "/carts": {
+      "get": {
+        "summary": "Get all carts (admin only)",
+        "operationId": "getAllCarts",
+        "tags": [
+          "cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Page"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/CartSort"
+          },
+          {
+            "$ref": "#/components/parameters/CartFilterParams"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCartsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/carts/{cartId}": {
+      "get": {
+        "summary": "Get a cart by ID",
+        "operationId": "getCartById",
+        "tags": [
+          "cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CartId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCartResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/carts/{cartId}/items": {
+      "post": {
+        "summary": "Add an item to a cart",
+        "operationId": "addItemToCart",
+        "tags": [
+          "cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CartId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/AddCartItem"
+        },
+        "responses": {
+          "201": {
+            "description": "Cart item added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCartItemResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Clear a cart",
+        "operationId": "clearCart",
+        "tags": [
+          "cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CartId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cart cleared successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/carts/{cartId}/items/{itemId}": {
+      "get": {
+        "summary": "Get an item by ID",
+        "operationId": "getItemById",
+        "tags": [
+          "cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CartId"
+          },
+          {
+            "$ref": "#/components/parameters/CartItemId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCartItemResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update an item in a cart",
+        "operationId": "updateItemInCart",
+        "tags": [
+          "cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CartId"
+          },
+          {
+            "$ref": "#/components/parameters/CartItemId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateCartItem"
+        },
+        "responses": {
+          "204": {
+            "description": "Cart item updated successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove an item from a cart",
+        "operationId": "RemoveItemFromCart",
+        "tags": [
+          "cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CartId"
+          },
+          {
+            "$ref": "#/components/parameters/CartItemId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cart item deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "summary": "Get all categories",
+        "operationId": "getParentCategories",
+        "tags": [
+          "category"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCategoriesResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new category (admin only)",
+        "operationId": "createCategory",
+        "tags": [
+          "category"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateCategory"
+        },
+        "responses": {
+          "201": {
+            "description": "Category created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCategoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/categories/{categoryId}": {
+      "get": {
+        "summary": "Get a category by ID",
+        "operationId": "getSingleCategory",
+        "tags": [
+          "category"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCategoryResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a category by ID (admin only)",
+        "operationId": "updateCategory",
+        "tags": [
+          "category"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateCategory"
+        },
+        "responses": {
+          "204": {
+            "description": "Category updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a category by ID (admin only)",
+        "operationId": "deleteCategory",
+        "tags": [
+          "category"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Category deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/categories/{categoryId}/subCategories": {
+      "get": {
+        "summary": "Get sub categories",
+        "operationId": "getChildCategories",
+        "tags": [
+          "category"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSubCategoriesResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a sub category (admin only)",
+        "operationId": "createSubCategory",
+        "tags": [
+          "category"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateSubCategory"
+        },
+        "responses": {
+          "201": {
+            "description": "Sub category created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSubCategoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/categories/{categoryId}/subCategories/{subCategoryId}": {
+      "get": {
+        "summary": "Get a sub category by ID",
+        "operationId": "getSingleSubCategory",
+        "tags": [
+          "category"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryId"
+          },
+          {
+            "$ref": "#/components/parameters/SubCategoryId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSubCategoryResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a sub category by ID (admin only)",
+        "operationId": "updateSubCategory",
+        "tags": [
+          "category"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryId"
+          },
+          {
+            "$ref": "#/components/parameters/SubCategoryId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateSubCategory"
+        },
+        "responses": {
+          "204": {
+            "description": "Sub category updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a sub category by ID (admin only)",
+        "operationId": "deleteSubCategory",
+        "tags": [
+          "category"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryId"
+          },
+          {
+            "$ref": "#/components/parameters/SubCategoryId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sub category deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/departments": {
+      "get": {
+        "summary": "Get all departments",
+        "operationId": "getDepartments",
+        "tags": [
+          "departments"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "allDepartments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "subCategories": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "_id": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/discover/recommendations": {
+      "get": {
+        "summary": "Get recommended products",
+        "operationId": "recommendedProducts",
+        "tags": [
+          "discover"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryIdQuery"
+          },
+          {
+            "$ref": "#/components/parameters/ExcludeProductIdQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetRecommendedProductsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/discover/best-offers": {
+      "get": {
+        "summary": "Get best offers",
+        "operationId": "bestOffers",
+        "tags": [
+          "discover"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBestOffersResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/discover/best-seller": {
+      "get": {
+        "summary": "Get best sellers",
+        "operationId": "bestSeller",
+        "tags": [
+          "discover"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBestSellersResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products-filter": {
+      "get": {
+        "summary": "Get products filter",
+        "operationId": "productsFilter",
+        "tags": [
+          "filter"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subCategoryId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "filters": {
+                      "type": "object",
+                      "properties": {
+                        "categories": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "category": {
+                                "type": "object",
+                                "properties": {
+                                  "_id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "subcategories": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "_id": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "priceRange": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "highestPrice": {
+                                "type": "integer"
+                              },
+                              "lowestPrice": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        },
+                        "specifications": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string"
+                              },
+                              "values": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "Get all orders (admin only)",
+        "operationId": "getAllOrders",
+        "tags": [
+          "order"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOrdersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/orders/{orderId}": {
+      "get": {
+        "summary": "Get order by id (admin only)",
+        "operationId": "getOrderById",
+        "tags": [
+          "order"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/OrderId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOrderResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update order status by id (admin only)",
+        "operationId": "updateOrderStatus",
+        "tags": [
+          "order"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/OrderId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateOrderStatus"
+        },
+        "responses": {
+          "204": {
+            "description": "Order status updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/payments/checkout": {
+      "post": {
+        "summary": "Create a checkout session",
+        "operationId": "createCheckoutSession",
+        "tags": [
+          "payment"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCheckoutSessionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "409": {
+            "$ref": "#/components/responses/ConflictError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "Get all products",
+        "operationId": "getAllProducts",
+        "tags": [
+          "product"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Page"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/ProductSort"
+          },
+          {
+            "$ref": "#/components/parameters/ProductFilterParams"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProductsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new product (admin only)",
+        "operationId": "createProduct",
+        "tags": [
+          "product"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateProduct"
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "summary": "Get a product by ID",
+        "operationId": "getProductById",
+        "tags": [
+          "product"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProductResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a product by ID (admin only)",
+        "operationId": "updateProduct",
+        "tags": [
+          "product"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateProduct"
+        },
+        "responses": {
+          "204": {
+            "description": "Product updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a product by ID (admin only)",
+        "operationId": "deleteProduct",
+        "tags": [
+          "product"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Product deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products/{productId}/visibility": {
+      "patch": {
+        "summary": "Update a product visibility by ID (admin only)",
+        "operationId": "updateProductVisibility",
+        "tags": [
+          "product"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateProductVisibility"
+        },
+        "responses": {
+          "204": {
+            "description": "Product updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products/{productId}/reviews": {
+      "get": {
+        "summary": "Get all reviews for a product",
+        "operationId": "getReviews",
+        "tags": [
+          "review"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetReviewsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new review",
+        "operationId": "createReview",
+        "tags": [
+          "review"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateReview"
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Review created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/products/{productId}/reviews/{reviewId}": {
+      "get": {
+        "summary": "Get a review by ID",
+        "operationId": "getReviewById",
+        "tags": [
+          "review"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          },
+          {
+            "$ref": "#/components/parameters/ReviewId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetReviewResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a review by ID",
+        "operationId": "updateReview",
+        "tags": [
+          "review"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          },
+          {
+            "$ref": "#/components/parameters/ReviewId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateReview"
+        },
+        "responses": {
+          "204": {
+            "description": "Review updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a review by ID",
+        "operationId": "deleteReview",
+        "tags": [
+          "review"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          },
+          {
+            "$ref": "#/components/parameters/ReviewId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Review deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/sales": {
+      "get": {
+        "summary": "Get all sales (admin only)",
+        "operationId": "getAllSales",
+        "tags": [
+          "sale"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSalesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/sales/{saleId}": {
+      "get": {
+        "summary": "Get sale by id (admin only)",
+        "operationId": "getSaleById",
+        "tags": [
+          "sale"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SaleId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSaleResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update refund status by id (admin only)",
+        "operationId": "updateRefundStatus",
+        "tags": [
+          "sale"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SaleId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateRefundStatus"
+        },
+        "responses": {
+          "204": {
+            "description": "Refund status updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/me/cart": {
+      "get": {
+        "summary": "Get my cart",
+        "operationId": "getMyCart",
+        "tags": [
+          "user-cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCartResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Clear my cart",
+        "operationId": "clearMyCart",
+        "tags": [
+          "user-cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cart cleared successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/me/cart/items": {
+      "post": {
+        "summary": "Add an item to my cart",
+        "operationId": "addItemToMyCart",
+        "tags": [
+          "user-cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/AddCartItem"
+        },
+        "responses": {
+          "201": {
+            "description": "Cart item added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCartItemResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/me/cart/items/:productId": {
+      "patch": {
+        "summary": "Update an item in my cart",
+        "operationId": "updateItemInMyCart",
+        "tags": [
+          "user-cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateItemInMyCart"
+        },
+        "responses": {
+          "204": {
+            "description": "Cart item updated successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove an item from my cart",
+        "operationId": "RemoveItemFromMyCart",
+        "tags": [
+          "user-cart"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cart item deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/me/wishlist": {
+      "get": {
+        "summary": "Get my wishlist",
+        "operationId": "getMyWishlist",
+        "tags": [
+          "user-wishlist"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWishlistResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Clear my wishlist",
+        "operationId": "clearMyWishlist",
+        "tags": [
+          "user-wishlist"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Wishlist cleared successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/me/wishlist/items": {
+      "post": {
+        "summary": "Add an item to my wishlist",
+        "operationId": "addItemToMyWishlist",
+        "tags": [
+          "user-wishlist"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/AddWishlistItem"
+        },
+        "responses": {
+          "201": {
+            "description": "Wishlist item added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddWishlistItemResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/me/wishlist/items/{productId}": {
+      "delete": {
+        "summary": "Remove an item from my wishlist",
+        "operationId": "deleteItemFromMyWishlist",
+        "tags": [
+          "user-wishlist"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ProductId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cart item deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/me/orders": {
+      "get": {
+        "summary": "Get my orders",
+        "operationId": "getMyOrders",
+        "tags": [
+          "user-orders"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOrdersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "The current authenticated user",
+        "operationId": "getCurrentUser",
+        "tags": [
+          "user-profile"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update the current authenticated user",
+        "operationId": "updateCurrentUser",
+        "tags": [
+          "user-profile"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateUserRequest"
+        },
+        "responses": {
+          "204": {
+            "description": "User updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get all users (admin only)",
+        "operationId": "getAllUsers",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Page"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/UserSort"
+          },
+          {
+            "$ref": "#/components/parameters/UserFilterParams"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUsersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "summary": "Get user by id (admin only)",
+        "operationId": "getUserById",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update user by id (admin only)",
+        "operationId": "updateUserById",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateUserRequest"
+        },
+        "responses": {
+          "204": {
+            "description": "User updated successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by id (admin only)",
+        "operationId": "deleteUserById",
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/wishlists": {
+      "get": {
+        "summary": "Get All Wishlist (admin only)",
+        "operationId": "getAllWishlists",
+        "tags": [
+          "wishlist"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Page"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWishlistsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Clear wishlist",
+        "operationId": "clearWishlist",
+        "tags": [
+          "wishlist"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Wishlist cleared successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/wishlists/{wishlistId}": {
+      "get": {
+        "summary": "Get a wishlist by ID",
+        "operationId": "getWishlistById",
+        "tags": [
+          "wishlist"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WishlistId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWishlistResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add an item to a wishlist",
+        "operationId": "addItemToWishlist",
+        "tags": [
+          "wishlist"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WishlistId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/AddWishlistItem"
+        },
+        "responses": {
+          "201": {
+            "description": "Cart item added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddWishlistItemResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove an item from a wishlist",
+        "operationId": "deleteItemFromWishlist",
+        "tags": [
+          "wishlist"
+        ],
+        "security": [
+          {
+            "AccessTokenAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WishlistId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cart item deleted successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "RegisterUser": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password",
+                "confirmPassword"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 8
+                },
+                "confirmPassword": {
+                  "type": "string"
+                },
+                "wishlist": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "productId"
+                    ],
+                    "properties": {
+                      "productId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "cartItems": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "quantity",
+                      "productId"
+                    ],
+                    "properties": {
+                      "quantity": {
+                        "type": "number",
+                        "minimum": 1
+                      },
+                      "productId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserLogin": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "VerifyEmail": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "verificationCode"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "verificationCode": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ResendVerificationCode": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "email"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ForgotPassword": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "email"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ResetPassword": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "resetToken",
+                "password",
+                "confirmPassword"
+              ],
+              "properties": {
+                "resetToken": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 8
+                },
+                "confirmPassword": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AddCartItem": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "productId",
+                "quantity"
+              ],
+              "properties": {
+                "productId": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateItemInMyCart": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "quantity"
+              ],
+              "properties": {
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateCartItem": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "quantity"
+              ],
+              "properties": {
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateCategory": {
+        "required": true,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateCategory": {
+        "required": true,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateSubCategory": {
+        "required": true,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateSubCategory": {
+        "required": true,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateOrderStatus": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "orderStatus"
+              ],
+              "properties": {
+                "orderStatus": {
+                  "type": "string",
+                  "enum": [
+                    "CREATED",
+                    "PROCESSING",
+                    "CONFIRMED",
+                    "SHIPPED",
+                    "DELIVERED",
+                    "CANCELLED",
+                    "REFUNDED",
+                    "ON_HOLD"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateProduct": {
+        "required": true,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "name",
+                "description",
+                "brand",
+                "subCategoryId",
+                "variants",
+                "specifications"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 1000
+                },
+                "brand": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "subCategoryId": {
+                  "type": "string",
+                  "description": "MongoDB ObjectId"
+                },
+                "categoryId": {
+                  "type": "string",
+                  "description": "MongoDB ObjectId"
+                },
+                "variants": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "variation",
+                      "sku",
+                      "inventory",
+                      "globalPrice"
+                    ],
+                    "properties": {
+                      "variation": {
+                        "type": "string"
+                      },
+                      "sku": {
+                        "type": "string"
+                      },
+                      "inventory": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "globalPrice": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "salePrice": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "discountPercent": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      "saleStartDate": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "saleEndDate": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                },
+                "specifications": {
+                  "type": "object",
+                  "required": [
+                    "certifications"
+                  ],
+                  "properties": {
+                    "certifications": {
+                      "type": "string"
+                    },
+                    "ramSize": {
+                      "type": "number"
+                    },
+                    "graphics": {
+                      "type": "string"
+                    },
+                    "processor": {
+                      "type": "string"
+                    },
+                    "cpuSpeed": {
+                      "type": "number"
+                    },
+                    "cpuManufacturer": {
+                      "type": "string"
+                    },
+                    "graphicsProcessorManufacturer": {
+                      "type": "string"
+                    },
+                    "screenSize": {
+                      "type": "number"
+                    },
+                    "resolution": {
+                      "type": "string"
+                    },
+                    "storage": {
+                      "type": "number"
+                    },
+                    "memory": {
+                      "type": "number"
+                    },
+                    "cameraResolution": {
+                      "type": "number"
+                    },
+                    "operatingSystem": {
+                      "type": "string"
+                    },
+                    "audioOutput": {
+                      "type": "string"
+                    },
+                    "connectivity": {
+                      "type": "string"
+                    },
+                    "compatiblePlatform": {
+                      "type": "string"
+                    },
+                    "sensor": {
+                      "type": "string"
+                    },
+                    "energyEfficiency": {
+                      "type": "string"
+                    },
+                    "batteryLife": {
+                      "type": "number"
+                    },
+                    "weight": {
+                      "type": "number"
+                    },
+                    "waterResistance": {
+                      "type": "boolean"
+                    },
+                    "fitnessTracking": {
+                      "type": "boolean"
+                    },
+                    "sleepTracking": {
+                      "type": "boolean"
+                    },
+                    "voiceControl": {
+                      "type": "boolean"
+                    },
+                    "remoteControl": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Multiple product image files."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateProduct": {
+        "description": "Product update with file uploads.",
+        "required": true,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 1000
+                },
+                "brand": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "subCategoryId": {
+                  "type": "string",
+                  "description": "MongoDB ObjectId"
+                },
+                "categoryId": {
+                  "type": "string",
+                  "description": "MongoDB ObjectId"
+                },
+                "variants": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "variation",
+                      "sku",
+                      "inventory",
+                      "globalPrice"
+                    ],
+                    "properties": {
+                      "variation": {
+                        "type": "string"
+                      },
+                      "sku": {
+                        "type": "string"
+                      },
+                      "inventory": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "globalPrice": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "salePrice": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "discountPercent": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                      },
+                      "saleStartDate": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "saleEndDate": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                },
+                "specifications": {
+                  "type": "object",
+                  "required": [
+                    "certifications"
+                  ],
+                  "properties": {
+                    "certifications": {
+                      "type": "string"
+                    },
+                    "ramSize": {
+                      "type": "number"
+                    },
+                    "graphics": {
+                      "type": "string"
+                    },
+                    "processor": {
+                      "type": "string"
+                    },
+                    "cpuSpeed": {
+                      "type": "number"
+                    },
+                    "cpuManufacturer": {
+                      "type": "string"
+                    },
+                    "graphicsProcessorManufacturer": {
+                      "type": "string"
+                    },
+                    "screenSize": {
+                      "type": "number"
+                    },
+                    "resolution": {
+                      "type": "string"
+                    },
+                    "storage": {
+                      "type": "number"
+                    },
+                    "memory": {
+                      "type": "number"
+                    },
+                    "cameraResolution": {
+                      "type": "number"
+                    },
+                    "operatingSystem": {
+                      "type": "string"
+                    },
+                    "audioOutput": {
+                      "type": "string"
+                    },
+                    "connectivity": {
+                      "type": "string"
+                    },
+                    "compatiblePlatform": {
+                      "type": "string"
+                    },
+                    "sensor": {
+                      "type": "string"
+                    },
+                    "energyEfficiency": {
+                      "type": "string"
+                    },
+                    "batteryLife": {
+                      "type": "number"
+                    },
+                    "weight": {
+                      "type": "number"
+                    },
+                    "waterResistance": {
+                      "type": "boolean"
+                    },
+                    "fitnessTracking": {
+                      "type": "boolean"
+                    },
+                    "sleepTracking": {
+                      "type": "boolean"
+                    },
+                    "voiceControl": {
+                      "type": "boolean"
+                    },
+                    "remoteControl": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "image": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Set to null to remove the image, or omit to leave unchanged."
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateProductVisibility": {
+        "description": "Update Product visibility.",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "visibility": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateReview": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateReview"
+            }
+          }
+        }
+      },
+      "UpdateReview": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateReview"
+            }
+          }
+        }
+      },
+      "UpdateRefundStatus": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "refundedQuantity"
+              ],
+              "properties": {
+                "refundedQuantity": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateUserRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateUser"
+            }
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateUser"
+            }
+          }
+        }
+      },
+      "AddWishlistItem": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "productId"
+              ],
+              "properties": {
+                "productId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "UserLoginResponse": {
+        "type": "object",
+        "required": [
+          "accessToken"
+        ],
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "RefreshTokenResponse": {
+        "type": "object",
+        "required": [
+          "accessToken"
+        ],
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "ForgotPasswordResponse": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "CartFilter": {
+        "type": "object",
+        "properties": {
+          "minAmount": {
+            "type": "number",
+            "description": "Filter carts with an amount greater than or equal to this value"
+          },
+          "maxAmount": {
+            "type": "number",
+            "description": "Filter carts with an amount less than or equal to this value"
+          },
+          "minTotalProducts": {
+            "type": "integer",
+            "description": "Filter carts with a total number of products greater than or equal to this value"
+          },
+          "maxTotalProducts": {
+            "type": "integer",
+            "description": "Filter carts with a total number of products less than or equal to this value"
+          },
+          "minTotalItems": {
+            "type": "integer",
+            "description": "Filter carts with a total number of items greater than or equal to this value"
+          },
+          "maxTotalItems": {
+            "type": "integer",
+            "description": "Filter carts with a total number of items less than or equal to this value"
+          },
+          "createdAfter": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter carts created after this date"
+          },
+          "createdBefore": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter carts created before this date"
+          },
+          "updatedAfter": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter carts updated after this date"
+          },
+          "updatedBefore": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter carts updated before this date"
+          }
+        }
+      },
+      "GetCart": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "totalProducts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "totalItems": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCartItem"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetCartItem": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "totalPrice": {
+            "type": "number"
+          },
+          "totalPriceDecimal": {
+            "type": "string"
+          },
+          "product": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "variant": {
+                "$ref": "#/components/schemas/ProductVariant"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetCartsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCart"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "Links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "GetCartResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCart"
+            }
+          }
+        }
+      },
+      "GetCartItemResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCartItem"
+            }
+          }
+        }
+      },
+      "AddCartItemResponse": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "required": [
+          "_id",
+          "name",
+          "createdAt"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SubCategory": {
+        "type": "object",
+        "required": [
+          "_id",
+          "name",
+          "categoryId",
+          "createdAt"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetCategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            }
+          }
+        }
+      },
+      "GetCategoryResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Category"
+          }
+        }
+      },
+      "GetSubCategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubCategory"
+            }
+          }
+        }
+      },
+      "GetSubCategoryResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SubCategory"
+          }
+        }
+      },
+      "CreateCategoryResponse": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateSubCategoryResponse": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ProductVariant": {
+        "type": "object",
+        "properties": {
+          "variation": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "inventory": {
+            "type": "number"
+          },
+          "isInStock": {
+            "type": "boolean"
+          },
+          "globalPrice": {
+            "type": "number"
+          },
+          "globalPriceDecimal": {
+            "type": "string"
+          },
+          "salePrice": {
+            "type": "number"
+          },
+          "salePriceDecimal": {
+            "type": "string"
+          },
+          "discountPercent": {
+            "type": "number"
+          },
+          "saleStartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "saleEndDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isFeatured": {
+            "type": "boolean"
+          },
+          "variant": {
+            "$ref": "#/components/schemas/ProductVariant"
+          },
+          "reviews": {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "number"
+              },
+              "avgRate": {
+                "type": "number"
+              },
+              "roundAvgRate": {
+                "type": "number"
+              }
+            }
+          },
+          "image": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "score": {
+            "type": "number",
+            "format": "float"
+          },
+          "highlights": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchHighlight"
+            }
+          }
+        }
+      },
+      "CategoryWithProducts": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          }
+        }
+      },
+      "GetRecommendedProductsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          }
+        }
+      },
+      "GetBestOffersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryWithProducts"
+            }
+          }
+        }
+      },
+      "GetBestSellersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryWithProducts"
+            }
+          }
+        }
+      },
+      "ErrorModel": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "string"
+          }
+        }
+      },
+      "OrderFilter": {
+        "type": "object",
+        "properties": {
+          "orderStatus": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "PROCESSING",
+              "CONFIRMED",
+              "SHIPPED",
+              "DELIVERED",
+              "CANCELLED",
+              "REFUNDED",
+              "ON_HOLD"
+            ],
+            "description": "Filter orders by order status"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Filter orders by user ID"
+          },
+          "minAmount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter orders with an amount greater than or equal to this value"
+          },
+          "maxAmount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter orders with an amount less than or equal to this value"
+          },
+          "minTaxAmount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter orders with a tax amount greater than or equal to this value"
+          },
+          "maxTaxAmount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter orders with a tax amount less than or equal to this value"
+          },
+          "minShippingAmount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter orders with a shipping amount greater than or equal to this value"
+          },
+          "maxShippingAmount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter orders with a shipping amount less than or equal to this value"
+          },
+          "minDiscountAmount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter orders with a discount amount greater than or equal to this value"
+          },
+          "maxDiscountAmount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter orders with a discount amount less than or equal to this value"
+          },
+          "createdAfter": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter orders created after this date"
+          },
+          "createdBefore": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter orders created before this date"
+          },
+          "updatedAfter": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter orders updated after this date"
+          },
+          "updatedBefore": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter orders updated before this date"
+          }
+        }
+      },
+      "GetOrder": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "deliveryId": {
+            "type": "string"
+          },
+          "paymentId": {
+            "type": "string"
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetSale"
+            }
+          },
+          "totalAmount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "taxAmount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "shippingAmount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "discountAmount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "orderStatus": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "PROCESSING",
+              "CONFIRMED",
+              "SHIPPED",
+              "DELIVERED",
+              "CANCELLED",
+              "REFUNDED",
+              "ON_HOLD"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetOrderResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetOrder"
+            }
+          }
+        }
+      },
+      "GetOrdersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetOrder"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "Links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "currentPage": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
+          },
+          "totalCount": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          }
+        }
+      },
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "totalDocs": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
+          },
+          "hasPrevPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          },
+          "prevPage": {
+            "type": "integer"
+          },
+          "nextPage": {
+            "type": "integer"
+          },
+          "sort": {
+            "type": "string"
+          },
+          "filters": {
+            "type": "object"
+          }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
+          },
+          "next": {
+            "type": "string"
+          },
+          "prev": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateCheckoutSessionResponse": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to redirect the user to for payment"
+          }
+        }
+      },
+      "HighlightText": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "hit"
+            ]
+          }
+        }
+      },
+      "SearchHighlight": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number",
+            "format": "float"
+          },
+          "path": {
+            "type": "string"
+          },
+          "texts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HighlightText"
+            }
+          }
+        }
+      },
+      "GetProductResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Product"
+          }
+        }
+      },
+      "GetProductsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "Links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CreateProductResponse": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ProductFilter": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "description": "Comma-separated list of colors (e.g., `color=red,green`)"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Comma-separated list of brands"
+          },
+          "query": {
+            "type": "string",
+            "description": "Search by product name (case-insensitive)"
+          },
+          "sellerId": {
+            "type": "string",
+            "description": "Filter by seller ID"
+          },
+          "subCategoryId": {
+            "type": "string",
+            "description": "Filter by category ID"
+          },
+          "categoryId": {
+            "type": "string",
+            "description": "Filter by parent category ID"
+          },
+          "isFeatured": {
+            "type": "boolean",
+            "description": "Whether the product is featured"
+          },
+          "minRating": {
+            "type": "number",
+            "format": "float",
+            "description": "Minimum average rating"
+          },
+          "maxRating": {
+            "type": "number",
+            "format": "float",
+            "description": "Maximum average rating"
+          },
+          "minPrice": {
+            "type": "number",
+            "format": "float",
+            "description": "Minimum sale price"
+          },
+          "maxPrice": {
+            "type": "number",
+            "format": "float",
+            "description": "Maximum sale price"
+          },
+          "minStock": {
+            "type": "integer",
+            "description": "Minimum stock quantity"
+          },
+          "maxStock": {
+            "type": "integer",
+            "description": "Maximum stock quantity"
+          },
+          "minDiscount": {
+            "type": "number",
+            "format": "float",
+            "description": "Minimum discount percentage"
+          },
+          "maxDiscount": {
+            "type": "number",
+            "format": "float",
+            "description": "Maximum discount percentage"
+          },
+          "createdAfter": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter products created after this date"
+          },
+          "createdBefore": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter products created before this date"
+          },
+          "updatedAfter": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter products updated after this date"
+          },
+          "updatedBefore": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter products updated before this date"
+          },
+          "connectivity": {
+            "type": "string",
+            "description": "Comma-separated list of connectivity options"
+          },
+          "aspectRatio": {
+            "type": "string",
+            "description": "Comma-separated list of aspect ratios"
+          },
+          "displayTechnology": {
+            "type": "string",
+            "description": "Comma-separated list of display technologies"
+          },
+          "refreshRate": {
+            "type": "string",
+            "description": "Comma-separated list of refresh rates"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Comma-separated list of resolutions"
+          },
+          "screenSize": {
+            "type": "string",
+            "description": "Comma-separated list of screen sizes"
+          },
+          "cameraFrameRate": {
+            "type": "string",
+            "description": "Comma-separated list of camera frame rates"
+          },
+          "opticalZoom": {
+            "type": "string",
+            "description": "Comma-separated list of optical zoom values"
+          },
+          "meteringDescription": {
+            "type": "string",
+            "description": "Comma-separated list of metering descriptions"
+          },
+          "supportedFileFormat": {
+            "type": "string",
+            "description": "Comma-separated list of supported file formats"
+          },
+          "maximumAperture": {
+            "type": "string",
+            "description": "Comma-separated list of maximum aperture values"
+          },
+          "imageStabilization": {
+            "type": "string",
+            "description": "Comma-separated list of image stabilization types"
+          },
+          "maximumFocalLength": {
+            "type": "string",
+            "description": "Comma-separated list of maximum focal lengths"
+          },
+          "expandedIsoMinimum": {
+            "type": "string",
+            "description": "Comma-separated list of expanded ISO minimum values"
+          },
+          "photoSensorTechnology": {
+            "type": "string",
+            "description": "Comma-separated list of photo sensor technologies"
+          },
+          "maximumWebcamImageResolution": {
+            "type": "string",
+            "description": "Comma-separated list of maximum webcam image resolutions"
+          },
+          "videoCaptureResolution": {
+            "type": "string",
+            "description": "Comma-separated list of video capture resolutions"
+          },
+          "flashMemoryType": {
+            "type": "string",
+            "description": "Comma-separated list of flash memory types"
+          },
+          "printingTechnology": {
+            "type": "string",
+            "description": "Comma-separated list of printing technologies"
+          },
+          "printerOutput": {
+            "type": "string",
+            "description": "Comma-separated list of printer output types"
+          },
+          "maximumPrintSpeed": {
+            "type": "string",
+            "description": "Comma-separated list of maximum print speeds"
+          },
+          "printerMediaSizeMaximum": {
+            "type": "string",
+            "description": "Comma-separated list of maximum printer media sizes"
+          },
+          "printMedia": {
+            "type": "string",
+            "description": "Comma-separated list of print media types"
+          },
+          "scannerType": {
+            "type": "string",
+            "description": "Comma-separated list of scanner types"
+          },
+          "compatibleDevices": {
+            "type": "string",
+            "description": "Comma-separated list of compatible devices"
+          },
+          "displayType": {
+            "type": "string",
+            "description": "Comma-separated list of display types"
+          },
+          "sheetSize": {
+            "type": "string",
+            "description": "Comma-separated list of sheet sizes"
+          },
+          "zoom": {
+            "type": "string",
+            "description": "Comma-separated list of zoom values"
+          },
+          "digitalZoom": {
+            "type": "string",
+            "description": "Comma-separated list of digital zoom values"
+          },
+          "lensConstruction": {
+            "type": "string",
+            "description": "Comma-separated list of lens constructions"
+          },
+          "lensType": {
+            "type": "string",
+            "description": "Comma-separated list of lens types"
+          },
+          "videoOutput": {
+            "type": "string",
+            "description": "Comma-separated list of video output types"
+          },
+          "photoSensorResolution": {
+            "type": "string",
+            "description": "Comma-separated list of photo sensor resolutions"
+          },
+          "audioInput": {
+            "type": "string",
+            "description": "Comma-separated list of audio input types"
+          },
+          "audioOutputType": {
+            "type": "string",
+            "description": "Comma-separated list of audio output types"
+          },
+          "batteryAverageLife": {
+            "type": "string",
+            "description": "Comma-separated list of battery average life values"
+          },
+          "sensorType": {
+            "type": "string",
+            "description": "Comma-separated list of sensor types"
+          },
+          "totalStillResolution": {
+            "type": "string",
+            "description": "Comma-separated list of total still resolutions"
+          },
+          "maximumImageSize": {
+            "type": "string",
+            "description": "Comma-separated list of maximum image sizes"
+          },
+          "compatibleMountings": {
+            "type": "string",
+            "description": "Comma-separated list of compatible mountings"
+          },
+          "maxPrintspeedMonochrome": {
+            "type": "string",
+            "description": "Comma-separated list of maximum monochrome print speeds"
+          },
+          "controllerType": {
+            "type": "string",
+            "description": "Comma-separated list of controller types"
+          },
+          "shape": {
+            "type": "string",
+            "description": "Comma-separated list of shapes"
+          },
+          "gps": {
+            "type": "string",
+            "description": "Comma-separated list of GPS features"
+          },
+          "chipsetBrand": {
+            "type": "string",
+            "description": "Comma-separated list of chipset brands"
+          },
+          "videoOutputInterface": {
+            "type": "string",
+            "description": "Comma-separated list of video output interfaces"
+          },
+          "cacheSize": {
+            "type": "string",
+            "description": "Comma-separated list of cache sizes"
+          },
+          "graphicsCardDescription": {
+            "type": "string",
+            "description": "Comma-separated list of graphics card descriptions"
+          },
+          "numberOfProcessors": {
+            "type": "string",
+            "description": "Comma-separated list of number of processors"
+          },
+          "hardDiskFormFactor": {
+            "type": "string",
+            "description": "Comma-separated list of hard disk form factors"
+          },
+          "hardDiskDescription": {
+            "type": "string",
+            "description": "Comma-separated list of hard disk descriptions"
+          },
+          "installationType": {
+            "type": "string",
+            "description": "Comma-separated list of installation types"
+          },
+          "movementDetectionTechnology": {
+            "type": "string",
+            "description": "Comma-separated list of movement detection technologies"
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Comma-separated list of media types"
+          },
+          "colorDepth": {
+            "type": "string",
+            "description": "Comma-separated list of color depths"
+          },
+          "standardSheetCapacity": {
+            "type": "string",
+            "description": "Comma-separated list of standard sheet capacities"
+          },
+          "opticalSensorTechnology": {
+            "type": "string",
+            "description": "Comma-separated list of optical sensor technologies"
+          },
+          "audioEncoding": {
+            "type": "string",
+            "description": "Comma-separated list of audio encoding types"
+          },
+          "audioOutputMode": {
+            "type": "string",
+            "description": "Comma-separated list of audio output modes"
+          },
+          "totalHdmiPorts": {
+            "type": "string",
+            "description": "Comma-separated list of total HDMI ports"
+          },
+          "surroundSoundChannelConfiguration": {
+            "type": "string",
+            "description": "Comma-separated list of surround sound channel configurations"
+          },
+          "careInstructions": {
+            "type": "string",
+            "description": "Comma-separated list of care instructions"
+          },
+          "speakerMaximumOutputPower": {
+            "type": "string",
+            "description": "Comma-separated list of speaker maximum output powers"
+          },
+          "speakerMaximumVolume": {
+            "type": "string",
+            "description": "Comma-separated list of speaker maximum volumes"
+          },
+          "fabricType": {
+            "type": "string",
+            "description": "Comma-separated list of fabric types"
+          },
+          "origin": {
+            "type": "string",
+            "description": "Comma-separated list of origins"
+          },
+          "operatingSystem": {
+            "type": "string",
+            "description": "Comma-separated list of operating systems"
+          },
+          "cellularTechnology": {
+            "type": "string",
+            "description": "Comma-separated list of cellular technologies"
+          },
+          "batteryPowerRating": {
+            "type": "string",
+            "description": "Comma-separated list of battery power ratings"
+          },
+          "batteryCapacity": {
+            "type": "string",
+            "description": "Comma-separated list of battery capacities"
+          },
+          "wirelessNetworkTechnology": {
+            "type": "string",
+            "description": "Comma-separated list of wireless network technologies"
+          },
+          "material": {
+            "type": "string",
+            "description": "Comma-separated list of materials"
+          },
+          "connectorType": {
+            "type": "string",
+            "description": "Comma-separated list of connector types"
+          },
+          "inputVoltage": {
+            "type": "string",
+            "description": "Comma-separated list of input voltages"
+          },
+          "mountingType": {
+            "type": "string",
+            "description": "Comma-separated list of mounting types"
+          },
+          "humanInterfaceInput": {
+            "type": "string",
+            "description": "Comma-separated list of human interface inputs"
+          },
+          "wirelessCommunicationStandard": {
+            "type": "string",
+            "description": "Comma-separated list of wireless communication standards"
+          },
+          "department": {
+            "type": "string",
+            "description": "Comma-separated list of departments"
+          },
+          "specificUsesForProduct": {
+            "type": "string",
+            "description": "Comma-separated list of specific uses for products"
+          },
+          "ramSize": {
+            "type": "string",
+            "description": "Comma-separated list of RAM sizes"
+          },
+          "ramMemoryTechnology": {
+            "type": "string",
+            "description": "Comma-separated list of RAM memory technologies"
+          },
+          "memorySpeed": {
+            "type": "string",
+            "description": "Comma-separated list of memory speeds"
+          },
+          "cpuModel": {
+            "type": "string",
+            "description": "Comma-separated list of CPU models"
+          },
+          "cpuBrand": {
+            "type": "string",
+            "description": "Comma-separated list of CPU brands"
+          },
+          "hardDriveInterface": {
+            "type": "string",
+            "description": "Comma-separated list of hard drive interfaces"
+          },
+          "hardDriveSize": {
+            "type": "string",
+            "description": "Comma-separated list of hard drive sizes"
+          },
+          "hardDrive": {
+            "type": "string",
+            "description": "Comma-separated list of hard drive types"
+          },
+          "graphicsCoprocessor": {
+            "type": "string",
+            "description": "Comma-separated list of graphics coprocessors"
+          },
+          "graphicsRamSize": {
+            "type": "string",
+            "description": "Comma-separated list of graphics RAM sizes"
+          },
+          "compatiblePlatform": {
+            "type": "string",
+            "description": "Comma-separated list of compatible platforms"
+          },
+          "lockType": {
+            "type": "string",
+            "description": "Comma-separated list of lock types"
+          },
+          "finishType": {
+            "type": "string",
+            "description": "Comma-separated list of finish types"
+          },
+          "lampType": {
+            "type": "string",
+            "description": "Comma-separated list of lamp types"
+          },
+          "shadeColor": {
+            "type": "string",
+            "description": "Comma-separated list of shade colors"
+          },
+          "shadeMaterial": {
+            "type": "string",
+            "description": "Comma-separated list of shade materials"
+          },
+          "switchType": {
+            "type": "string",
+            "description": "Comma-separated list of switch types"
+          },
+          "brightness": {
+            "type": "string",
+            "description": "Comma-separated list of brightness values"
+          },
+          "lightingMethod": {
+            "type": "string",
+            "description": "Comma-separated list of lighting methods"
+          },
+          "controlType": {
+            "type": "string",
+            "description": "Comma-separated list of control types"
+          },
+          "controlMethod": {
+            "type": "string",
+            "description": "Comma-separated list of control methods"
+          },
+          "bulbShapeSize": {
+            "type": "string",
+            "description": "Comma-separated list of bulb shape sizes"
+          },
+          "bulbBase": {
+            "type": "string",
+            "description": "Comma-separated list of bulb bases"
+          },
+          "lightColor": {
+            "type": "string",
+            "description": "Comma-separated list of light colors"
+          },
+          "capacity": {
+            "type": "string",
+            "description": "Comma-separated list of capacities"
+          },
+          "cutType": {
+            "type": "string",
+            "description": "Comma-separated list of cut types"
+          },
+          "telephoneType": {
+            "type": "string",
+            "description": "Comma-separated list of telephone types"
+          },
+          "powerSource": {
+            "type": "string",
+            "description": "Comma-separated list of power sources"
+          },
+          "answeringSystemType": {
+            "type": "string",
+            "description": "Comma-separated list of answering system types"
+          },
+          "supportedInternetServices": {
+            "type": "string",
+            "description": "Comma-separated list of supported internet services"
+          },
+          "memoryStorageCapacity": {
+            "type": "string",
+            "description": "Comma-separated list of memory storage capacities"
+          },
+          "wirelessCarrier": {
+            "type": "string",
+            "description": "Comma-separated list of wireless carriers"
+          },
+          "formFactor": {
+            "type": "string",
+            "description": "Comma-separated list of form factors"
+          }
+        }
+      },
+      "GetProductsFilterResponse": {
+        "type": "object",
+        "properties": {
+          "filters": {
+            "type": "object",
+            "properties": {
+              "categories": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "subcategories": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "priceRange": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "highestPrice": {
+                      "type": "integer"
+                    },
+                    "lowestPrice": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "specifications": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string"
+                    },
+                    "values": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The unique identifier of the review"
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "The rating given in the review (1-5)"
+          },
+          "comment": {
+            "type": "string",
+            "description": "The review comment"
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the user who created the review"
+          },
+          "productId": {
+            "type": "string",
+            "description": "The ID of the product being reviewed"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the review was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the review was last updated"
+          }
+        },
+        "required": [
+          "rating",
+          "comment",
+          "userId",
+          "productId"
+        ]
+      },
+      "CreateReview": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "The rating given in the review (1-5)"
+          },
+          "comment": {
+            "type": "string",
+            "description": "The review comment"
+          }
+        },
+        "required": [
+          "rating",
+          "comment"
+        ]
+      },
+      "UpdateReview": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "The rating given in the review (1-5)"
+          },
+          "comment": {
+            "type": "string",
+            "description": "The review comment"
+          }
+        },
+        "minProperties": 1
+      },
+      "GetReviewsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Review"
+            }
+          }
+        }
+      },
+      "GetReviewResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Review"
+          }
+        }
+      },
+      "CreateReviewResponse": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "SaleFilter": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string",
+            "description": "Filter sales by product name"
+          },
+          "sellerId": {
+            "type": "string",
+            "description": "Filter sales by seller ID"
+          },
+          "minQuantity": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter sales with a quantity greater than or equal to this value"
+          },
+          "maxQuantity": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter sales with a quantity less than or equal to this value"
+          },
+          "minRefundedQuantity": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter sales with a refunded quantity greater than or equal to this value"
+          },
+          "maxRefundedQuantity": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter sales with a refunded quantity less than or equal to this value"
+          },
+          "minSalePrice": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter sales with a sale price greater than or equal to this value"
+          },
+          "maxSalePrice": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter sales with a sale price less than or equal to this value"
+          },
+          "minTotalPrice": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter sales with a total price greater than or equal to this value"
+          },
+          "maxTotalPrice": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Filter sales with a total price less than or equal to this value"
+          },
+          "createdAfter": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter sales created after this date"
+          },
+          "createdBefore": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter sales created before this date"
+          },
+          "updatedAfter": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter sales updated after this date"
+          },
+          "updatedBefore": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Filter sales updated before this date"
+          }
+        }
+      },
+      "GetSale": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "orderId": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "sellerId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "salePrice": {
+            "type": "number"
+          },
+          "totalPrice": {
+            "type": "number"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "isRefunded": {
+            "type": "boolean"
+          },
+          "refundedQuantity": {
+            "type": "number"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetSaleResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/GetSale"
+          }
+        }
+      },
+      "GetSalesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetSaleResponse"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "Links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "line1": {
+            "type": "string"
+          },
+          "line2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          }
+        }
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "familyName": {
+            "type": "string"
+          },
+          "givenName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "isVerified": {
+            "type": "boolean"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UserFilter": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "isVerified": {
+            "type": "boolean"
+          },
+          "createdAfter": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBefore": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAfter": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedBefore": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetUserResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "GetUsersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "Links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "properties": {
+          "familyName": {
+            "type": "string"
+          },
+          "givenName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "CreateUser": {
+        "type": "object",
+        "required": [
+          "role",
+          "familyName",
+          "givenName",
+          "email",
+          "password",
+          "confirmPassword"
+        ],
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "familyName": {
+            "type": "string"
+          },
+          "givenName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateUserResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "GetWishlist": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "variant": {
+            "$ref": "#/components/schemas/ProductVariant"
+          }
+        }
+      },
+      "GetWishlistResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/GetWishlist"
+          }
+        }
+      },
+      "GetWishlistsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetWishlist"
+            }
+          }
+        }
+      },
+      "AddWishlistItemResponse": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "AccessTokenAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Access token must be sent in the Authorization header in the format:\nBearer <token>\n"
+      },
+      "RefreshTokenCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "jid",
+        "description": "Refresh token must be sent in the 'jid' cookie"
+      }
+    },
+    "parameters": {
+      "PlatformParam": {
+        "name": "x-platform",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "marketplace",
+            "vendor"
+          ]
+        },
+        "description": "Specifies the platform. Must be either \"marketplace\" or \"vendor\"."
+      },
+      "CartId": {
+        "name": "cartId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Cart ID"
+      },
+      "CartItemId": {
+        "name": "itemId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Item ID"
+      },
+      "CartSort": {
+        "name": "sort",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "pattern": "^[+-]?(createdAt|updatedAt|amount|totalProducts|totalItems)(,[+-]?(createdAt|updatedAt|amount|totalProducts|totalItems))*$",
+          "default": "createdAt"
+        },
+        "description": "Sort order. Use commas to separate multiple fields.\nAllowed fields: `createdAt`, `updatedAt`, `amount`, `totalProducts`, `totalItems`.\nPrefix with `-` for descending order (e.g., `sort=createdAt,-amount,-totalProducts`).\n"
+      },
+      "CartFilterParams": {
+        "name": "filters",
+        "in": "query",
+        "style": "deepObject",
+        "explode": true,
+        "schema": {
+          "$ref": "#/components/schemas/CartFilter"
+        },
+        "description": "Filter criteria for carts"
+      },
+      "CategoryId": {
+        "name": "categoryId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Category Id"
+      },
+      "SubCategoryId": {
+        "name": "subCategoryId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Sub Category ID"
+      },
+      "CategoryIdQuery": {
+        "name": "categoryId",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "description": "Category ID for filtering products"
+      },
+      "ExcludeProductIdQuery": {
+        "name": "excludeProductId",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "description": "Exclude a specific product by ID"
+      },
+      "OrderId": {
+        "name": "orderId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Order ID"
+      },
+      "OrderSort": {
+        "name": "sort",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "pattern": "^[+-]?(createdAt|updatedAt|amount|taxAmount|shippingAmount|discountAmount)(,[+-]?(createdAt|updatedAt|amount|taxAmount|shippingAmount|discountAmount))*$",
+          "default": "createdAt"
+        },
+        "description": "Sort order. Use commas to separate multiple fields.\nAllowed fields: `createdAt`, `updatedAt`, `amount`, `taxAmount`, `shippingAmount`, `discountAmount`.\nPrefix with `-` for descending order (e.g., `sort=createdAt,-amount`).\n"
+      },
+      "OrderFilterParams": {
+        "name": "filters",
+        "in": "query",
+        "style": "deepObject",
+        "explode": true,
+        "schema": {
+          "$ref": "#/components/schemas/OrderFilter"
+        },
+        "description": "Filter criteria for Orders"
+      },
+      "Page": {
+        "name": "page",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        },
+        "description": "Page number for pagination"
+      },
+      "Limit": {
+        "name": "limit",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 10
+        },
+        "description": "Number of items per page"
+      },
+      "ProductSort": {
+        "name": "sort",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "pattern": "^[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability)(,[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability))*$",
+          "default": "createdAt"
+        },
+        "description": "Sort order. Use commas to separate multiple fields.\nAllowed fields: `createdAt`, `updatedAt`, `name`, `rating`, `numOfReviews`, `price`, `discount`, `popularity`, `bestSelling`, `stockAvailability`.\nPrefix with `-` for descending order (e.g., `sort=createdAt,-popularity`).\n"
+      },
+      "ProductFilterParams": {
+        "name": "filters",
+        "in": "query",
+        "style": "deepObject",
+        "explode": true,
+        "schema": {
+          "$ref": "#/components/schemas/ProductFilter"
+        },
+        "description": "Filter criteria for products"
+      },
+      "ProductId": {
+        "name": "productId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "ID of the product"
+      },
+      "ReviewId": {
+        "name": "reviewId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "ID of the review"
+      },
+      "SaleId": {
+        "name": "saleId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Sale ID"
+      },
+      "SaleSort": {
+        "name": "sort",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "pattern": "^[+-]?(createdAt|updatedAt|productName|quantity|salePrice|totalPrice|refundedQuantity)(,[+-]?(createdAt|updatedAt|productName|quantity|salePrice|totalPrice|refundedQuantity))*$",
+          "default": "createdAt"
+        },
+        "description": "Sort sale. Use commas to separate multiple fields.\nAllowed fields: `createdAt`, `updatedAt`, `productName`, `quantity`, `salePrice`, `totalPrice`, `refundedQuantity`.\nPrefix with `-` for descending sale (e.g., `sort=createdAt,-quantity`).\n"
+      },
+      "SaleFilterParams": {
+        "name": "filters",
+        "in": "query",
+        "style": "deepObject",
+        "explode": true,
+        "schema": {
+          "$ref": "#/components/schemas/SaleFilter"
+        },
+        "description": "Filter criteria for sales"
+      },
+      "UserId": {
+        "name": "usertId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "UserSort": {
+        "name": "sort",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "pattern": "^[+-]?(createdAt|updatedAt|familyName|givenName)(,[+-]?(createdAt|updatedAt|familyName|givenName))*$",
+          "default": "createdAt"
+        },
+        "description": "Sort order. Use commas to separate multiple fields.\nAllowed fields: `createdAt`, `updatedAt`, `familyName`, `givenName`.\nPrefix with `-` for descending order (e.g., `sort=createdAt,-familyName).\n"
+      },
+      "UserFilterParams": {
+        "name": "filters",
+        "in": "query",
+        "style": "deepObject",
+        "explode": true,
+        "schema": {
+          "$ref": "#/components/schemas/UserFilter"
+        },
+        "description": "Filter criteria for Users"
+      },
+      "WishlistId": {
+        "name": "wishlistId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "InternalServerError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorModel"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Not found error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorModel"
+            }
+          }
+        }
+      },
+      "BadRequestError": {
+        "description": "Bad request error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorModel"
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorModel"
+            }
+          }
+        }
+      },
+      "ForbiddenError": {
+        "description": "Forbidden error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorModel"
+            }
+          }
+        }
+      },
+      "ConflictError": {
+        "description": "Conflict error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorModel"
+            }
+          }
+        }
+      }
+    }
+  }
+}
