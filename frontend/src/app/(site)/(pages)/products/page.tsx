@@ -4,8 +4,8 @@ import { Metadata } from "next";
 import { getProducts } from "@/actions/product/queries";
 
 export const metadata: Metadata = {
-  title: "Shop Page | NextCommerce Nextjs E-commerce template",
-  description: "This is Shop Page for NextCommerce Template",
+  title: "Shop Electronics | Electro Atlas",
+  description: "Browse and shop the latest electronics, gadgets, and accessories at Electro Atlas. Find top deals and new arrivals.",
   // other metadata
 };
 

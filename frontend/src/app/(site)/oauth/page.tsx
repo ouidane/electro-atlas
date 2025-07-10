@@ -10,17 +10,13 @@ const OAuthCallbackPage = () => {
 
   useEffect(() => {
     const token = searchParams.get("token");
-    const redirect = searchParams.get("redirect");
     if (token) {
       localStorage.setItem("accessToken", token);
-      if (redirect) {
-        router.replace(redirect);
-      } else {
-        router.replace("/");
-      }
+      router.replace("/");
     } else {
       setError("Missing access token in callback URL.");
       setLoading(false);
+      router.replace("/signin");
     }
   }, [router, searchParams]);
 
@@ -43,4 +39,4 @@ const OAuthCallbackPage = () => {
   return null;
 };
 
-export default OAuthCallbackPage; 
+export default OAuthCallbackPage;
