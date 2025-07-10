@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 const accountSchema = z.object({
   givenName: z.string().min(1, "First name is required"),
   familyName: z.string().min(1, "Last name is required"),
-  phone: z.string().optional(),
+  phone: z.string().min(1, "Phone is required"),
   address: z.object({
     line1: z.string().min(1, "Address line 1 is required"),
     line2: z.string().optional(),
@@ -373,14 +373,14 @@ const MyAccount = () => {
               }`}
             >
               <p className="text-dark">
-                Hello Annie (not Annie?
-                <a
-                  href="#"
-                  className="text-red ease-out duration-200 hover:underline"
+                Hello {userData?.data?.profile?.givenName || "User"} (not {userData?.data?.profile?.givenName || "User"}?
+                <button
+                  type="button"
+                  className="text-red ease-out duration-200 hover:underline bg-transparent border-none p-0 m-0 inline cursor-pointer"
                   onClick={handleLogout}
                 >
                   Log Out
-                </a>
+                </button>
                 )
               </p>
 
@@ -658,7 +658,7 @@ const MyAccount = () => {
                   </div>
                   <div className="mb-5">
                     <label htmlFor="phone" className="block mb-2.5">
-                      Phone
+                      Phone <span className="text-red">*</span>
                     </label>
                     <Input
                       type="text"
