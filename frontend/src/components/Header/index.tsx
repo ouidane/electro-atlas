@@ -67,15 +67,15 @@ const Header = () => {
   let cartTotal = "0.00";
   if (accessToken) {
     if (cartData && Array.isArray(cartData.data.cartItems)) {
-      cartCount = cartData.data.totalItems;
-      cartTotal = cartData.data.amountDecimal;
+      cartCount = cartData.data.totalItems || 0;
+      cartTotal = cartData.data.amountDecimal || "0.00";
     }
   } else {
     cartCount = cartItemsRedux.reduce(
       (sum, item) => sum + (item.quantity || 0),
       0
     );
-    cartTotal = totalPrice;
+    cartTotal = totalPrice || "0.00";
   }
 
   return (
@@ -304,7 +304,7 @@ const Header = () => {
                     </svg>
 
                     <span className="flex items-center justify-center font-medium text-2xs absolute -right-2 -top-2.5 bg-blue w-4.5 h-4.5 rounded-full text-white">
-                      {cartLoading && accessToken ? "..." : cartCount}
+                      {cartLoading && accessToken ? "0" : cartCount}
                     </span>
                   </span>
 
@@ -313,7 +313,7 @@ const Header = () => {
                       cart
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
-                      {`$${cartLoading && accessToken ? "..." : cartTotal}`}
+                      {`$${cartLoading && accessToken ? "0.00" : cartTotal}`}
                     </p>
                   </div>
                 </button>
