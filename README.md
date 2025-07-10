@@ -3,6 +3,7 @@
 **Live Demo:**
 - Frontend: [https://electroatlas.vercel.app](https://electroatlas.vercel.app)
 - Backend API: [https://electro-atlas-backend-production.up.railway.app](https://electro-atlas-backend-production.up.railway.app)
+- API Docs: [https://electro-atlas-backend-production.up.railway.app/api-docs](https://electro-atlas-backend-production.up.railway.app/api-docs)
 
 Electro Atlas is a modern, full-stack e-commerce platform designed for scalability, performance, and a seamless user experience. It features a robust backend API and a dynamic frontend, supporting a wide range of e-commerce functionalities.
 
