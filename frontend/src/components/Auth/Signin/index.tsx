@@ -33,11 +33,14 @@ const Signin = () => {
     setSuccess(null);
     setServerError(null);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
       if (res.status === 200) {
         const result = await res.json();
         if (result.accessToken) {
@@ -50,7 +53,9 @@ const Signin = () => {
         }
       } else if (res.status === 400) {
         const err = await res.json();
-        setServerError(err.message || "Invalid input. Please check your details.");
+        setServerError(
+          err.message || "Invalid input. Please check your details."
+        );
       } else if (res.status === 401) {
         const err = await res.json();
         setServerError(err.message || "Invalid email or password.");
@@ -67,7 +72,6 @@ const Signin = () => {
 
   const handleGoogleSignIn = () => {
     setGoogleLoading(true);
-    // const callbackUrl = window.location.origin;
     window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/oauth/google`;
   };
 
@@ -85,8 +89,16 @@ const Signin = () => {
             </div>
 
             <div>
-              {success && <div className="mb-4 text-green-600 text-center font-medium">{success}</div>}
-              {serverError && <div className="mb-4 text-red-600 text-center font-medium">{serverError}</div>}
+              {success && (
+                <div className="mb-4 text-green-600 text-center font-medium">
+                  {success}
+                </div>
+              )}
+              {serverError && (
+                <div className="mb-4 text-red-600 text-center font-medium">
+                  {serverError}
+                </div>
+              )}
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="mb-5">
                   <label htmlFor="email" className="block mb-2.5">
@@ -99,7 +111,11 @@ const Signin = () => {
                     autoComplete="email"
                     {...register("email")}
                   />
-                  {errors.email && <p className="text-red text-sm mt-1">{errors.email.message}</p>}
+                  {errors.email && (
+                    <p className="text-red text-sm mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
                 <div className="mb-5">
                   <label htmlFor="password" className="block mb-2.5">
@@ -112,7 +128,11 @@ const Signin = () => {
                     autoComplete="current-password"
                     {...register("password")}
                   />
-                  {errors.password && <p className="text-red text-sm mt-1">{errors.password.message}</p>}
+                  {errors.password && (
+                    <p className="text-red text-sm mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
                 </div>
                 <Button
                   type="submit"

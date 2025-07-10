@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import Link from "next/link";
 import React from "react";
@@ -12,7 +12,9 @@ import { useRouter } from "next/navigation";
 const signupSchema = z
   .object({
     email: z.string().email({ message: "Invalid email address" }),
-    password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -42,21 +44,26 @@ const Signup = () => {
     setSuccess(null);
     setServerError(null);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+          }),
+        }
+      );
       if (res.status === 204) {
         // Redirect to /verify-email
         router.push("/verify-email");
         return;
       } else if (res.status === 400) {
         const err = await res.json();
-        setServerError(err.message || "Invalid input. Please check your details.");
+        setServerError(
+          err.message || "Invalid input. Please check your details."
+        );
       } else if (res.status === 409) {
         const err = await res.json();
         setServerError(err.message || "User already exists.");
@@ -70,7 +77,6 @@ const Signup = () => {
 
   const handleGoogleSignUp = () => {
     setGoogleLoading(true);
-    // const callbackUrl = window.location.origin;
     window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/oauth/google`;
   };
 
@@ -149,10 +155,14 @@ const Signup = () => {
 
             <div className="mt-5.5">
               {success && (
-                <div className="mb-4 text-green-600 text-center font-medium">{success}</div>
+                <div className="mb-4 text-green-600 text-center font-medium">
+                  {success}
+                </div>
               )}
               {serverError && (
-                <div className="mb-4 text-red-600 text-center font-medium">{serverError}</div>
+                <div className="mb-4 text-red-600 text-center font-medium">
+                  {serverError}
+                </div>
               )}
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="mb-5">
@@ -167,7 +177,9 @@ const Signup = () => {
                     {...register("email")}
                   />
                   {errors.email && (
-                    <p className="text-red text-sm mt-1">{errors.email.message}</p>
+                    <p className="text-red text-sm mt-1">
+                      {errors.email.message}
+                    </p>
                   )}
                 </div>
 
@@ -183,7 +195,9 @@ const Signup = () => {
                     {...register("password")}
                   />
                   {errors.password && (
-                    <p className="text-red text-sm mt-1">{errors.password.message}</p>
+                    <p className="text-red text-sm mt-1">
+                      {errors.password.message}
+                    </p>
                   )}
                 </div>
 
@@ -199,7 +213,9 @@ const Signup = () => {
                     {...register("confirmPassword")}
                   />
                   {errors.confirmPassword && (
-                    <p className="text-red text-sm mt-1">{errors.confirmPassword.message}</p>
+                    <p className="text-red text-sm mt-1">
+                      {errors.confirmPassword.message}
+                    </p>
                   )}
                 </div>
 
