@@ -12,7 +12,7 @@ const OAuthCallbackPage = () => {
     const token = searchParams.get("token");
     if (token) {
       localStorage.setItem("accessToken", token);
-      router.replace("/");
+      window.location.href = "/";
     } else {
       setError("Missing access token in callback URL.");
       setLoading(false);
