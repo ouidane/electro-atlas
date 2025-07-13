@@ -8,7 +8,7 @@ interface SubCategory {
     large: string;
   };
   description?: string;
-  categoryId: string;
+  categoryId?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
