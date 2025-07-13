@@ -1,43 +1,43 @@
 const data = [
   {
-    title: "Televisions",
-    id: 1,
-    img: "/images/categories/categories-01.png",
-  },
-  {
-    title: "Laptop & PC",
-    id: 2,
+    title: "Gaming Laptops",
+    id: "65a0a8e63e8480d8cc796b5e",
     img: "/images/categories/categories-02.png",
   },
   {
-    title: "Mobile & Tablets",
-    id: 3,
+    title: "Smartphones",
+    id: "65a0a8e63e8480d8cc796b42",
     img: "/images/categories/categories-03.png",
   },
   {
-    title: "Games & Videos",
-    id: 4,
+    title: "Macbooks",
+    id: "65a0a8e63e8480d8cc796b60",
     img: "/images/categories/categories-04.png",
   },
   {
-    title: "Home Appliances",
-    id: 5,
+    title: "Tablets",
+    id: "65a0a8e63e8480d8cc796b43",
     img: "/images/categories/categories-05.png",
   },
   {
-    title: "Health & Sports",
-    id: 6,
+    title: "Mouses",
+    id: "65a0a8e63e8480d8cc796b64",
     img: "/images/categories/categories-06.png",
   },
   {
     title: "Watches",
-    id: 7,
+    id: "65a0a8e63e8480d8cc796b45",
     img: "/images/categories/categories-07.png",
   },
   {
+    title: "Headphones",
+    id: "65a0a8e73e8480d8cc796b70",
+    img: "/images/categories/categories-08.png",
+  },
+  {
     title: "Televisions",
-    id: 8,
-    img: "/images/categories/categories-04.png",
+    id: "65a0a8e53e8480d8cc796b28",
+    img: "/images/categories/categories-01.png",
   },
 ];
 
