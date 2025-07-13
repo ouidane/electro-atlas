@@ -72,7 +72,7 @@ export default function ToggleMenu() {
       <SheetTrigger asChild>
         <Button
           aria-label="Browse all departments"
-          className="flex items-center px-2 sm:px-4 py-2 rounded-lg bg-slate-100 hover:bg-blue-50 transition-colors duration-200 font-semibold text-black cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 text-xs sm:text-sm lg:text-sm"
+          className="flex items-center px-2 sm:px-4 py-2 rounded-lg bg-blue-light-5 hover:bg-blue-light-4 transition-colors duration-200 font-semibold text-dark cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-dark text-xs sm:text-sm lg:text-sm"
         >
           <Menu className="mr-1" size={18} />
           <span className="hidden sm:flex">All Departments</span>
@@ -85,7 +85,7 @@ export default function ToggleMenu() {
         <SheetDescription className="sr-only">
           Navigation menu for browsing product categories and departments
         </SheetDescription>
-        <SheetHeader className="bg-blue-500 px-4 py-5 border-b border-blue-600 relative">
+        <SheetHeader className="bg-blue px-4 py-5 border-b border-blue-dark relative">
           <div className="flex items-center justify-between">
             <SheetTitle className="flex-1">
               <Link href="/" className="block">
@@ -94,7 +94,7 @@ export default function ToggleMenu() {
             </SheetTitle>
             <button
               onClick={() => setOpenMenu(false)}
-              className="p-2 rounded-full hover:bg-blue-600 transition-colors duration-200 text-white hover:text-white"
+              className="p-2 rounded-full hover:bg-blue-dark transition-colors duration-200 text-white hover:text-white"
               aria-label="Close menu"
             >
               <X size={20} />
@@ -122,23 +122,24 @@ export default function ToggleMenu() {
                     : ""
                 }`}
               >
-                <div className="mb-4 px-4 pt-6 text-xl font-bold text-black border-b border-gray-100 pb-3">
+                <div className="mb-4 px-4 pt-6 text-xl font-bold text-dark border-b border-gray-3 pb-3">
                   All Departments
                 </div>
-                <ul className="divide-y divide-gray-100">
+                <ul className="divide-y divide-gray-3">
                   {allDepartments.map((data) => (
                     <li key={data._id}>
                       <div className="flex items-center justify-between w-full">
-                        <Link
-                          className="flex-1 py-4 px-4 rounded-lg hover:bg-blue-50 focus:bg-blue-50 transition-colors duration-200 text-black font-medium text-base hover:text-blue-600 focus:text-blue-600 cursor-pointer text-left"
-                          href={`/products?filters[categoryId]=${data._id}`}
+                        <button
+                          className="flex-1 py-4 px-4 rounded-lg hover:bg-blue-light-5 focus:bg-blue-light-5 transition-colors duration-200 text-dark font-medium text-base hover:text-blue focus:text-blue cursor-pointer text-left"
+                          onClick={() => handleDepartmentNameClick(data._id)}
+                          aria-label={`Browse ${data.name} department`}
                         >
                           <span className="capitalize">{data.name}</span>
-                        </Link>
+                        </button>
                         {data.subCategories &&
                           data.subCategories.length > 0 && (
                             <button
-                              className="p-2 mr-4 hover:bg-blue-100 focus:bg-blue-100 transition-colors duration-200 rounded-lg group cursor-pointer ml-2"
+                              className="p-2 mr-4 hover:bg-blue-light-4 focus:bg-blue-light-4 transition-colors duration-200 rounded-lg group cursor-pointer ml-2"
                               onClick={() =>
                                 handleChevronClick(
                                   data.subCategories,
@@ -149,7 +150,7 @@ export default function ToggleMenu() {
                             >
                               <ChevronRight
                                 size={18}
-                                className="text-gray-500 group-hover:text-blue-600 transition-colors duration-200"
+                                className="text-gray-5 group-hover:text-blue transition-colors duration-200"
                               />
                             </button>
                           )}
@@ -181,35 +182,36 @@ export default function ToggleMenu() {
                     : ""
                 }`}
               >
-                <div className="flex items-center px-4 pt-6 mb-4 border-b border-gray-100 pb-3">
+                <div className="flex items-center px-4 pt-6 mb-4 border-b border-gray-3 pb-3">
                   <button
                     onClick={handleBack}
-                    className="mr-3 p-2 rounded-lg hover:bg-blue-100 focus:bg-blue-100 transition-colors duration-200 group cursor-pointer"
+                    className="mr-3 p-2 rounded-lg hover:bg-blue-light-4 focus:bg-blue-light-4 transition-colors duration-200 group cursor-pointer"
                     aria-label="Back to departments"
                   >
                     <ChevronLeft
                       size={20}
-                      className="text-black group-hover:text-blue-600 transition-colors duration-200"
+                      className="text-dark group-hover:text-blue transition-colors duration-200"
                     />
                   </button>
-                  <span className="text-xl font-bold capitalize text-black">
+                  <span className="text-xl font-bold capitalize text-dark">
                     {selectedDepartment}
                   </span>
                 </div>
-                <ul className="divide-y divide-gray-100">
+                <ul className="divide-y divide-gray-3">
                   {subContainerEntries && subContainerEntries.length > 0 ? (
                     subContainerEntries.map(({ _id, name }) => (
                       <li key={_id}>
-                        <Link
-                          className="w-full block py-4 px-4 rounded-lg text-left hover:bg-blue-50 focus:bg-blue-50 transition-colors duration-200 capitalize text-black font-medium text-base hover:text-blue-600 focus:text-blue-600 cursor-pointer"
-                          href={`/products?filters[subCategoryId]=${_id}`}
+                        <button
+                          className="w-full block py-4 px-4 rounded-lg text-left hover:bg-blue-light-5 focus:bg-blue-light-5 transition-colors duration-200 capitalize text-dark font-medium text-base hover:text-blue focus:text-blue cursor-pointer"
+                          onClick={() => handleSubcategoryClick(_id)}
+                          aria-label={`Browse ${name} subcategory`}
                         >
                           {name}
-                        </Link>
+                        </button>
                       </li>
                     ))
                   ) : (
-                    <li className="px-4 py-6 text-gray-400 italic text-center">
+                    <li className="px-4 py-6 text-gray-5 italic text-center">
                       <div className="text-sm">No subcategories available</div>
                     </li>
                   )}
