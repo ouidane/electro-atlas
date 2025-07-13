@@ -206,7 +206,7 @@ export default function SearchBar() {
 
     return parts.map((part, index) =>
       regex.test(part) ? (
-        <span key={index} className="bg-yellow-200 font-semibold">
+        <span key={index} className="bg-blue-light-4 font-semibold">
           {part}
         </span>
       ) : (
@@ -226,14 +226,17 @@ export default function SearchBar() {
       return highlightQuery(product[field] || "", query);
     }
 
-    return highlight.texts.map((text, index) => (
-      <span
-        key={index}
-        className={text.type === "hit" ? "bg-yellow-200 font-semibold" : ""}
-      >
-        {text.value}
-      </span>
-    ));
+    // highlight.texts is always an array of { value: string; type: "hit" | "text" }
+    return Array.isArray(highlight.texts)
+      ? highlight.texts.map((text, index) => (
+          <span
+            key={index}
+            className={text.type === "hit" ? "bg-blue-light-4 font-semibold" : ""}
+          >
+            {text.value}
+          </span>
+        ))
+      : null;
   };
 
   const renderSearchItem = (
@@ -243,15 +246,16 @@ export default function SearchBar() {
   ) => {
     const isSelected = index === selectedIndex;
     const baseClasses =
-      "p-3 hover:bg-gray-50 focus:bg-gray-50 cursor-pointer transition-colors duration-200 flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-inset";
+      "p-3 hover:bg-gray-1 focus:bg-gray-1 cursor-pointer transition-colors duration-200 flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-blue focus:ring-inset";
     const selectedClasses = isSelected
-      ? "bg-yellow-50 border-l-4 border-yellow-400"
+      ? "bg-blue-light-5 border-l-4 border-blue"
       : "";
 
     if (type === "result") {
       const product = item as Product;
       const price = product.variant?.salePrice || product.variant?.globalPrice;
       const isOnSale = product.variant?.inventory > 0;
+      const hasDiscount = product.variant && product.variant.salePrice < product.variant.globalPrice;
 
       return (
         <Link
@@ -290,7 +294,7 @@ export default function SearchBar() {
             <div className="flex items-center justify-between mt-1">
               {price && (
                 <div className="text-xs font-semibold">
-                  {isOnSale ? (
+                  {isOnSale && hasDiscount ? (
                     <div className="flex items-center gap-1">
                       <span className="text-red-600">
                         ${(product.variant.salePrice! / 100).toFixed(2)}
@@ -301,7 +305,7 @@ export default function SearchBar() {
                     </div>
                   ) : (
                     <span className="text-gray-900">
-                      ${(price / 100).toFixed(2)}
+                      ${((product.variant.globalPrice || 0) / 100).toFixed(2)}
                     </span>
                   )}
                 </div>
@@ -355,7 +359,7 @@ export default function SearchBar() {
     <div className="relative max-w-[475px] w-full" ref={containerRef}>
       <form
         onSubmit={handleSubmit}
-        className="relative flex items-center justify-between w-full border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus-within:ring-2 focus-within:ring-yellow-400 focus-within:border-yellow-400"
+        className="relative flex items-center justify-between w-full border border-gray-3 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus-within:ring-2 focus-within:ring-blue focus-within:border-blue"
         role="search"
         onFocus={() => setShowResults(true)}
         onClick={() => setShowResults(true)}
@@ -427,7 +431,7 @@ export default function SearchBar() {
 
         <Button
           type="submit"
-          className="py-2 px-3 sm:px-6 text-xs sm:text-sm font-medium text-gray-800 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 focus:from-yellow-500 focus:to-yellow-600 transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-md border-l border-yellow-300/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer rounded-none rounded-r-lg"
+          className="py-2 px-3 sm:px-6 text-xs sm:text-sm font-medium text-gray-7 bg-gradient-to-r from-blue to-blue-dark hover:from-blue-dark hover:to-blue focus:from-blue-dark focus:to-blue transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-md border-l border-blue/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer rounded-none rounded-r-lg"
           aria-label="Search"
           disabled={loading}
         >
@@ -437,7 +441,7 @@ export default function SearchBar() {
             <>
               {/* <span className="hidden sm:block font-medium">Search</span> */}
               {/* <Search size={16} strokeWidth={2.5} className="sm:hidden" /> */}
-              <Search size={16} strokeWidth={2.5} />
+              <Search size={16} strokeWidth={2.5} className="text-white" />
             </>
           )}
         </Button>
