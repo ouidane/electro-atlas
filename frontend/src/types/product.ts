@@ -3,7 +3,7 @@ export type Product = {
   name: string;
   brand?: string;
   isFeatured: boolean;
-  image: {
+  image?: {
     publicId: string;
     tiny: string;
     medium: string;
@@ -38,4 +38,18 @@ export type Product = {
       type: "hit" | "text";
     }[];
   }[];
+
+  // Additional fields from rich data
+  modelName?: string;
+  description?: string;
+  features?: string[];
+  whatsInTheBox?: string[];
+  specifications?: { [key: string]: string };
+  popularity?: number;
+  salesCount?: number;
+  visibility?: boolean;
+  subCategoryId?: string;
+  categoryId?: string;
+  __v?: number;
+  id?: string;
 };
