@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import ProductItem from "@/components/Common/ProductItem";
+import SingleGridItem from "@/components/Shop/SingleGridItem";
 import shopData from "@/components/Shop/shopData";
 
 const NewArrival = () => {
@@ -49,7 +49,7 @@ const NewArrival = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-7.5 gap-y-9">
           {/* <!-- New Arrivals item --> */}
           {shopData.data.map((item, key) => (
-            <ProductItem item={item} key={key} />
+            <SingleGridItem item={item} key={item._id} />
           ))}
         </div>
       </div>
