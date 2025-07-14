@@ -6,30 +6,61 @@ import Newsletter from "../Common/Newsletter";
 import RecentlyViewdItems from "./RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { Product } from "@/types/product";
+import { CheckCircle, XCircle, ImageOff } from "lucide-react";
+import { AppDispatch} from "@/redux/store";
+import { addItemToCart as addItemToCartRedux, selectCartItems } from "@/redux/features/cart-slice";
+import { useAddItemToCartMutation } from "@/redux/features/cart-slice";
+import { useDispatch, useSelector } from "react-redux";
 
 interface ShopDetailsProps {
   product: Product;
 }
 
 const ShopDetails: React.FC<ShopDetailsProps> = ({ product }) => {
-  const [activeColor, setActiveColor] = useState("blue");
   const { openPreviewModal } = usePreviewSlider();
-  const [storage, setStorage] = useState("gb128");
-  const [type, setType] = useState("active");
-  const [sim, setSim] = useState("dual");
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState("tabOne");
   
   // pass the product here when you get the real data.
   const handlePreviewSlider = () => {
     openPreviewModal();
   };
 
+  const dispatch = useDispatch<AppDispatch>();
+  const [addItemToCart, { isLoading: isAdding }] = useAddItemToCartMutation();
+  const cartItems = useSelector(selectCartItems);
+  
+  // Get current quantity in cart for this product
+  const currentCartQuantity = cartItems.find(item => item.product._id === product._id)?.quantity || 0;
+  
+  // Calculate maximum available quantity (inventory minus what's already in cart)
+  const maxAvailableQuantity = product.variant.inventory - currentCartQuantity;
+
+  // Reset quantity when product changes or cart updates
+  useEffect(() => {
+    setQuantity(Math.min(1, maxAvailableQuantity));
+  }, [product._id, currentCartQuantity, maxAvailableQuantity]);
+
+  // add to cart
+  const handleAddToCart = async () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+    if (token) {
+      await addItemToCart({ productId: product._id, quantity });
+    } else {
+      dispatch(
+        addItemToCartRedux({
+          product: { ...product, image: product.image.medium },
+          quantity,
+        })
+      );
+    }
+    setQuantity(1);
+  };
+
   return (
     <>
       <Breadcrumb title={"Shop Details"} pages={["shop details"]} />
       {product.name === "" ? (
-        "Please add product"
+        <div>Please add product</div>
       ) : (
         <>
           <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28">
@@ -60,12 +91,18 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({ product }) => {
                         </svg>
                       </button>
 
-                      <Image
-                        src={product.image?.large || product.image?.medium || product.image?.tiny || "/images/404.svg"}
-                        alt="products-details"
-                        width={400}
-                        height={400}
-                      />
+                      {product.image?.large ? (
+                        <Image
+                          src={product.image.large}
+                          alt="products-details"
+                          width={400}
+                          height={400}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <ImageOff className="w-16 h-16 text-meta-4" />
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -73,62 +110,85 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({ product }) => {
                     <button
                       className={`flex items-center justify-center w-15 sm:w-25 h-15 sm:h-25 overflow-hidden rounded-lg bg-gray-2 shadow-1 ease-out duration-200 border-2 border-blue`}
                     >
-                      <Image
-                        width={50}
-                        height={50}
-                        src={product.image?.tiny || product.image?.medium || product.image?.large || "/images/404.svg"}
-                        alt="thumbnail"
-                      />
+                      {product.image?.tiny ? (
+                        <Image
+                          width={50}
+                          height={50}
+                          src={product.image.tiny}
+                          alt="thumbnail"
+                        />
+                      ) : (
+                        <ImageOff className="w-6 h-6 text-meta-4" />
+                      )}
                     </button>
                   </div>
                 </div>
 
                 <div className="max-w-[539px] w-full">
-                  <div className="flex items-center justify-between mb-3">
-                    <h2 className="font-semibold text-xl sm:text-2xl xl:text-custom-3 text-dark">
+                  <div className="mb-3">
+                    <h2 className="font-semibold text-xl sm:text-2xl xl:text-custom-3 text-dark mb-2">
                       {product.name}
                     </h2>
-
-                    <div className="inline-flex font-medium text-custom-sm text-white bg-blue rounded py-0.5 px-2.5">
-                      {product.variant.discountPercent > 0 ? `${product.variant.discountPercent}% OFF` : null}
+                    
+                    <div className="flex items-center gap-2">
+                      {product.variant.discountPercent > 0 && (
+                        <div className="inline-flex font-medium text-custom-sm text-white bg-red rounded py-0.5 px-2.5">
+                          {product.variant.discountPercent}% OFF
+                        </div>
+                      )}
+                      {product.variant.inventory <= 5 && product.variant.inventory > 0 && (
+                        <div className="inline-flex font-medium text-custom-sm text-white bg-orange rounded py-0.5 px-2.5">
+                          Only {product.variant.inventory} left
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-5.5 mb-4.5">
-                    <div className="flex items-center gap-2.5">
-                      <div className="flex items-center gap-1">
-                        {/* Star icons here */}
-                      </div>
-
-                      <span> (5 customer reviews) </span>
-                    </div>
-
+                  <div className="flex flex-wrap items-center gap-5 mb-6">
                     <div className="flex items-center gap-1.5">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clipPath="url(#clip0_375_9221)">
-                          <path
-                            d="M10 0.5625C4.78125 0.5625 0.5625 4.78125 0.5625 10C0.5625 15.2188 4.78125 19.4688 10 19.4688C15.2188 19.4688 19.4688 15.2188 19.4688 10C19.4688 4.78125 15.2188 0.5625 10 0.5625ZM10 18.0625C5.5625 18.0625 1.96875 14.4375 1.96875 10C1.96875 5.5625 5.5625 1.96875 10 1.96875C14.4375 1.96875 18.0625 5.59375 18.0625 10.0312C18.0625 14.4375 14.4375 18.0625 10 18.0625Z"
-                            fill="#22AD5C"
-                          />
-                          <path
-                            d="M12.6875 7.09374L8.9688 10.7187L7.2813 9.06249C7.00005 8.78124 6.56255 8.81249 6.2813 9.06249C6.00005 9.34374 6.0313 9.78124 6.2813 10.0625L8.2813 12C8.4688 12.1875 8.7188 12.2812 8.9688 12.2812C9.2188 12.2812 9.4688 12.1875 9.6563 12L13.6875 8.12499C13.9688 7.84374 13.9688 7.40624 13.6875 7.12499C13.4063 6.84374 12.9688 6.84374 12.6875 7.09374Z"
-                            fill="#22AD5C"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_375_9221">
-                            <rect width="20" height="20" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
+                      {/* Render stars based on product.reviews.roundAvgRate */}
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <svg
+                            key={i}
+                            className={i < product.reviews.roundAvgRate ? "fill-yellow" : "fill-gray-4"}
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clipPath="url(#clip0_375_9172)">
+                              <path
+                                d="M16.7906 6.72187L11.7 5.93438L9.39377 1.09688C9.22502 0.759375 8.77502 0.759375 8.60627 1.09688L6.30002 5.9625L1.23752 6.72187C0.871891 6.77812 0.731266 7.25625 1.01252 7.50938L4.69689 11.3063L3.82502 16.6219C3.76877 16.9875 4.13439 17.2969 4.47189 17.0719L9.05627 14.5687L13.6125 17.0719C13.9219 17.2406 14.3156 16.9594 14.2313 16.6219L13.3594 11.3063L17.0438 7.50938C17.2688 7.25625 17.1563 6.77812 16.7906 6.72187Z"
+                                fill=""
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_375_9172">
+                                <rect width="18" height="18" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        ))}
+                      </div>
+                      <span>
+                        <span className="font-medium text-dark">
+                          {product.reviews.avgRate.toFixed(1)} Rating
+                        </span>
+                        <span className="text-dark-2"> ({product.reviews.count} reviews) </span>
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {product.variant.inventory > 0 ? (
+                        <CheckCircle className="w-5 h-5 text-green" />
+                      ) : (
+                        <XCircle className="w-5 h-5 text-red" />
+                      )}
 
-                      <span className="text-green"> In Stock </span>
+                      <span className={`font-medium ${product.variant.inventory > 0 ? "text-green" : "text-red"}`}>
+                        {product.variant.inventory > 0 ? "In Stock" : "Out of Stock"}
+                      </span>
                     </div>
                   </div>
 
@@ -198,10 +258,11 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({ product }) => {
                       <div className="flex items-center rounded-md border border-gray-3">
                         <button
                           aria-label="button for remove product"
-                          className="flex items-center justify-center w-12 h-12 ease-out duration-200 hover:text-blue"
-                          onClick={() =>
-                            quantity > 1 && setQuantity(quantity - 1)
-                          }
+                          className={`flex items-center justify-center w-12 h-12 ease-out duration-200 ${
+                            quantity > 1 ? 'hover:text-blue' : 'text-gray-4 cursor-not-allowed'
+                          }`}
+                          onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+                          disabled={quantity <= 1}
                         >
                           <svg
                             className="fill-current"
@@ -223,9 +284,12 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({ product }) => {
                         </span>
 
                         <button
-                          onClick={() => setQuantity(quantity + 1)}
+                          onClick={() => quantity < maxAvailableQuantity && setQuantity(quantity + 1)}
                           aria-label="button for add product"
-                          className="flex items-center justify-center w-12 h-12 ease-out duration-200 hover:text-blue"
+                          className={`flex items-center justify-center w-12 h-12 ease-out duration-200 ${
+                            quantity < maxAvailableQuantity ? 'hover:text-blue' : 'text-gray-4 cursor-not-allowed'
+                          }`}
+                          disabled={quantity >= maxAvailableQuantity}
                         >
                           <svg
                             className="fill-current"
@@ -246,13 +310,33 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({ product }) => {
                           </svg>
                         </button>
                       </div>
+                      
+                      {currentCartQuantity > 0 && (
+                        <div className="text-xs text-meta-4 mt-1">
+                          {currentCartQuantity} in cart • {maxAvailableQuantity} available
+                        </div>
+                      )}
 
-                      <a
-                        href="#"
-                        className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
+                      <div className="flex flex-wrap items-center gap-4">
+                      <button
+                        disabled={quantity === 0 || isAdding || maxAvailableQuantity <= 0}
+                        onClick={() => handleAddToCart()}
+                        className={`inline-flex font-medium text-white py-3 px-7 rounded-md ease-out duration-200 ${
+                          maxAvailableQuantity > 0 ? 'bg-blue hover:bg-blue-dark' : 'bg-gray-4 cursor-not-allowed'
+                        } ${isAdding ? 'opacity-60 cursor-not-allowed' : ''}`}
                       >
-                        Purchase Now
-                      </a>
+                        {isAdding ? (
+                          <>
+                            <svg className="animate-spin mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                            </svg>
+                            Adding...
+                          </>
+                        ) : (
+                          'Add to Cart'
+                        )}
+                      </button>
 
                       <a
                         href="#"
@@ -275,6 +359,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({ product }) => {
                         </svg>
                       </a>
                     </div>
+                  </div>
                   </form>
                 </div>
               </div>
