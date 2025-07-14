@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { addItemToCart as addItemToCartRedux } from "@/redux/features/cart-slice";
+import { addItemToCart as addItemToCartRedux, selectCartItems } from "@/redux/features/cart-slice";
 import { useAddItemToCartMutation } from "@/redux/features/cart-slice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { updateproductDetails } from "@/redux/features/product-details";
-import { ImageOff } from "lucide-react";
+import { ImageOff, CheckCircle, XCircle } from "lucide-react";
 
 const QuickViewModal = () => {
   const { isModalOpen, closeModal } = useModalContext();
@@ -17,9 +17,16 @@ const QuickViewModal = () => {
   const [quantity, setQuantity] = useState(1);
 
   const dispatch = useDispatch<AppDispatch>();
+  const cartItems = useSelector(selectCartItems);
 
   // get the product data
   const product = useAppSelector((state) => state.quickViewReducer.value);
+  
+  // Get current quantity in cart for this product
+  const currentCartQuantity = cartItems.find(item => item.product._id === product._id)?.quantity || 0;
+  
+  // Calculate maximum available quantity (inventory minus what's already in cart)
+  const maxAvailableQuantity = product.variant.inventory - currentCartQuantity;
 
   // preview modal
   const handlePreviewSlider = () => {
@@ -29,6 +36,11 @@ const QuickViewModal = () => {
   };
 
   const [addItemToCart, { isLoading: isAdding }] = useAddItemToCartMutation();
+
+  // Reset quantity when product changes or cart updates
+  useEffect(() => {
+    setQuantity(Math.min(1, maxAvailableQuantity));
+  }, [product._id, currentCartQuantity, maxAvailableQuantity]);
 
   // add to cart
   const handleAddToCart = async () => {
@@ -76,7 +88,7 @@ const QuickViewModal = () => {
           <button
             onClick={() => closeModal()}
             aria-label="button for close modal"
-            className="absolute top-0 right-0 sm:top-6 sm:right-6 flex items-center justify-center w-10 h-10 rounded-full ease-in duration-150 bg-meta text-body hover:text-dark"
+            className="absolute top-0 right-0 sm:top-6 sm:right-6 flex items-center justify-center w-10 h-10 rounded-full ease-in duration-150 bg-meta-5 text-body hover:text-dark"
           >
             <svg
               className="fill-current"
@@ -113,7 +125,7 @@ const QuickViewModal = () => {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <ImageOff className="w-6 h-6 text-muted-foreground" />
+                        <ImageOff className="w-6 h-6 text-meta-4" />
                       </div>
                     )}
                   </button>
@@ -154,7 +166,7 @@ const QuickViewModal = () => {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <ImageOff className="w-6 h-6 text-muted-foreground" />
+                        <ImageOff className="w-6 h-6 text-meta-4" />
                       </div>
                     )}
                   </div>
@@ -168,12 +180,17 @@ const QuickViewModal = () => {
                   SALE {product.variant.discountPercent}% OFF
                 </span>
               )}
+              {product.variant.inventory <= 5 && product.variant.inventory > 0 && (
+                <span className="inline-block text-custom-xs font-medium text-white py-1 px-3 bg-orange mb-6.5 ml-2">
+                  Only {product.variant.inventory} left
+                </span>
+              )}
 
               <h3 className="font-semibold text-xl xl:text-heading-5 text-dark mb-4">
                 {product.name}
               </h3>
               {product.brand && (
-                <div className="mb-2 text-sm text-gray-500">Brand: {product.brand}</div>
+                <div className="mb-2 text-sm text-meta-4">Brand: {product.brand}</div>
               )}
 
               <div className="flex flex-wrap items-center gap-5 mb-6">
@@ -183,7 +200,7 @@ const QuickViewModal = () => {
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
-                        className={i < product.reviews.roundAvgRate ? "fill-[#FFA645]" : "fill-gray-4"}
+                        className={i < product.reviews.roundAvgRate ? "fill-yellow" : "fill-gray-4"}
                         width="18"
                         height="18"
                         viewBox="0 0 18 18"
@@ -212,31 +229,13 @@ const QuickViewModal = () => {
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g clipPath="url(#clip0_375_9221)">
-                      <path
-                        d="M10 0.5625C4.78125 0.5625 0.5625 4.78125 0.5625 10C0.5625 15.2188 4.78125 19.4688 10 19.4688C15.2188 19.4688 19.4688 15.2188 19.4688 10C19.4688 4.78125 15.2188 0.5625 10 0.5625ZM10 18.0625C5.5625 18.0625 1.96875 14.4375 1.96875 10C1.96875 5.5625 5.5625 1.96875 10 1.96875C14.4375 1.96875 18.0625 5.59375 18.0625 10.0312C18.0625 14.4375 14.4375 18.0625 10 18.0625Z"
-                        fill="#22AD5C"
-                      />
-                      <path
-                        d="M12.6875 7.09374L8.9688 10.7187L7.2813 9.06249C7.00005 8.78124 6.56255 8.81249 6.2813 9.06249C6.00005 9.34374 6.0313 9.78124 6.2813 10.0625L8.2813 12C8.4688 12.1875 8.7188 12.2812 8.9688 12.2812C9.2188 12.2812 9.4688 12.1875 9.6563 12L13.6875 8.12499C13.9688 7.84374 13.9688 7.40624 13.6875 7.12499C13.4063 6.84374 12.9688 6.84374 12.6875 7.09374Z"
-                        fill="#22AD5C"
-                      />
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_375_9221">
-                        <rect width="20" height="20" fill="white" />
-                      </clipPath>
-                    </defs>
-                  </svg>
+                  {product.variant.isInStock ? (
+                    <CheckCircle className="w-5 h-5 text-green" />
+                  ) : (
+                    <XCircle className="w-5 h-5 text-red" />
+                  )}
 
-                  <span className={`font-medium ${product.variant.isInStock ? "text-dark" : "text-red-500"}`}>
+                  <span className={`font-medium ${product.variant.isInStock ? "text-green" : "text-red"}`}>
                     {product.variant.isInStock ? "In Stock" : "Out of Stock"}
                   </span>
                 </div>
@@ -254,12 +253,20 @@ const QuickViewModal = () => {
                   </h4>
 
                   <span className="flex items-center gap-2">
-                    <span className="font-semibold text-dark text-xl xl:text-heading-4">
-                      ${product.variant.salePriceDecimal}
-                    </span>
-                    <span className="font-medium text-dark-4 text-lg xl:text-2xl line-through">
-                      ${product.variant.globalPriceDecimal}
-                    </span>
+                    {product.variant.discountPercent > 0 ? (
+                      <>
+                        <span className="font-semibold text-dark text-xl xl:text-heading-4">
+                          ${product.variant.salePriceDecimal}
+                        </span>
+                        <span className="font-medium text-dark-4 text-lg xl:text-2xl line-through">
+                          ${product.variant.globalPriceDecimal}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="font-semibold text-dark text-xl xl:text-heading-4">
+                        ${product.variant.globalPriceDecimal}
+                      </span>
+                    )}
                   </span>
                 </div>
 
@@ -272,8 +279,10 @@ const QuickViewModal = () => {
                     <button
                       onClick={() => quantity > 1 && setQuantity(quantity - 1)}
                       aria-label="button for remove product"
-                      className="flex items-center justify-center w-10 h-10 rounded-[5px] bg-gray-2 text-dark ease-out duration-200 hover:text-blue"
-                      disabled={quantity < 0 && true}
+                      className={`flex items-center justify-center w-10 h-10 rounded-[5px] bg-gray-2 ease-out duration-200 ${
+                        quantity > 1 ? 'text-dark hover:text-blue' : 'text-gray-4 cursor-not-allowed'
+                      }`}
+                      disabled={quantity <= 1}
                     >
                       <svg
                         className="fill-current"
@@ -300,9 +309,12 @@ const QuickViewModal = () => {
                     </span>
 
                     <button
-                      onClick={() => setQuantity(quantity + 1)}
+                      onClick={() => quantity < maxAvailableQuantity && setQuantity(quantity + 1)}
                       aria-label="button for add product"
-                      className="flex items-center justify-center w-10 h-10 rounded-[5px] bg-gray-2 text-dark ease-out duration-200 hover:text-blue"
+                      className={`flex items-center justify-center w-10 h-10 rounded-[5px] bg-gray-2 ease-out duration-200 ${
+                        quantity < maxAvailableQuantity ? 'text-dark hover:text-blue' : 'text-gray-4 cursor-not-allowed'
+                      }`}
+                      disabled={quantity >= maxAvailableQuantity}
                     >
                       <svg
                         className="fill-current"
@@ -328,14 +340,21 @@ const QuickViewModal = () => {
                     </button>
                   </div>
                 </div>
+                
               </div>
+              {currentCartQuantity > 0 && (
+                <div className="text-xs text-meta-4 mb-7.5">
+                  {currentCartQuantity} in cart • {maxAvailableQuantity} available
+                </div>
+              )}
 
               <div className="flex flex-wrap items-center gap-4">
                 <button
-                  disabled={quantity === 0 || isAdding}
+                  disabled={quantity === 0 || isAdding || maxAvailableQuantity <= 0}
                   onClick={() => handleAddToCart()}
-                  className={`inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark
-                  ${isAdding ? 'opacity-60 cursor-not-allowed' : ''}`}
+                  className={`inline-flex font-medium text-white py-3 px-7 rounded-md ease-out duration-200 ${
+                    maxAvailableQuantity > 0 ? 'bg-blue hover:bg-blue-dark' : 'bg-gray-4 cursor-not-allowed'
+                  } ${isAdding ? 'opacity-60 cursor-not-allowed' : ''}`}
                 >
                   {isAdding ? (
                     <>
