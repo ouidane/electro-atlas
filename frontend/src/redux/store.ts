@@ -3,6 +3,7 @@ import { cartApi } from "./features/cart-slice";
 import { userApi } from "./features/user-slice";
 import { authApi } from "./features/auth-slice";
 import { checkoutApi } from "./features/checkout-slice";
+import { wishlistApi } from "./features/wishlist-slice";
 
 import quickViewReducer from "./features/quickView-slice";
 import cartReducer from "./features/cart-slice";
@@ -21,13 +22,15 @@ export const store = configureStore({
     [cartApi.reducerPath]: cartApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [checkoutApi.reducerPath]: checkoutApi.reducer,
+    [wishlistApi.reducerPath]: wishlistApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       cartApi.middleware,
       authApi.middleware,
       userApi.middleware,
-      checkoutApi.middleware
+      checkoutApi.middleware,
+      wishlistApi.middleware
     ),
 });
 
