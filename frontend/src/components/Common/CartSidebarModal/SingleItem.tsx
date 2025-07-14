@@ -1,8 +1,8 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { removeItemFromCart } from "@/redux/features/cart-slice";
-import { useRemoveCartItemMutation } from "@/redux/features/cart-slice";
+import { useRemoveCartItemMutation, selectCartItems, useGetCartQuery } from "@/redux/features/cart-slice";
 import Image from "next/image";
 import Link from "next/link";
 import { ImageOff } from "lucide-react";
@@ -33,6 +33,21 @@ interface SingleItemProps {
 const SingleItem: React.FC<SingleItemProps> = ({ item, isLoggedIn}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [removeCartItem, { isLoading: isRemoving }] = useRemoveCartItemMutation();
+
+  // Get cart items from Redux or API
+  const reduxCartItems = useSelector(selectCartItems);
+  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  const { data: apiCart } = useGetCartQuery(undefined, { skip: !token });
+
+  let cartItems = reduxCartItems;
+  if (token && apiCart && apiCart.data && apiCart.data.cartItems) {
+    cartItems = apiCart.data.cartItems;
+  }
+
+  // Get current quantity in cart for this product
+  const currentCartQuantity = cartItems.find(cartItem => cartItem.product?._id === (item.product?._id || item._id))?.quantity || 0;
+  // Calculate maximum available quantity (inventory minus what's already in cart)
+  const maxAvailableQuantity = item.product?.variant?.inventory - currentCartQuantity;
 
   const handleRemoveFromCart = async () => {
     if (isLoggedIn) {
@@ -69,6 +84,9 @@ const SingleItem: React.FC<SingleItemProps> = ({ item, isLoggedIn}) => {
           <p className="text-custom-sm">Price: ${item.product?.variant?.salePriceDecimal} <span className="ml-2">x {item.quantity}</span></p>
           {((item.product?.variant?.isInStock === false)) && (
             <span className="text-red-500 text-xs font-semibold">Out of Stock</span>
+          )}
+          {item.quantity > item.product?.variant?.inventory && (
+            <span className="text-red-500 text-xs font-semibold block mt-1">Quantity exceeds available stock!</span>
           )}
         </div>
       </div>
