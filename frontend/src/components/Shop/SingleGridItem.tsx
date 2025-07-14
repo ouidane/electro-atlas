@@ -2,10 +2,10 @@
 import React from "react";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart as addItemToCartRedux } from "@/redux/features/cart-slice";
+import { addItemToCart as addItemToCartRedux, selectCartItems } from "@/redux/features/cart-slice";
 import { useAddItemToCartMutation } from "@/redux/features/cart-slice";
 import { addItemToWishlist } from "@/redux/features/wishlist-slice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
 import Image from "next/image";
@@ -16,6 +16,13 @@ const SingleGridItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
 
   const dispatch = useDispatch<AppDispatch>();
+  const cartItems = useSelector(selectCartItems);
+
+  // Get current quantity in cart for this product
+  const currentCartQuantity = cartItems.find(cartItem => cartItem.product._id === item._id)?.quantity || 0;
+  
+  // Calculate maximum available quantity (inventory minus what's already in cart)
+  const maxAvailableQuantity = item.variant.inventory - currentCartQuantity;
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
@@ -24,6 +31,9 @@ const SingleGridItem = ({ item }: { item: Product }) => {
 
   const [addItemToCart, { isLoading: isAdding }] = useAddItemToCartMutation();
   const handleAddToCart = async () => {
+    // Don't add if no inventory available
+    if (maxAvailableQuantity <= 0) return;
+    
     const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
     if (token) {
       await addItemToCart({ productId: item._id, quantity: 1 });
@@ -52,21 +62,30 @@ const SingleGridItem = ({ item }: { item: Product }) => {
   return (
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-white shadow-1 min-h-[270px] mb-4">
+        {item.variant?.discountPercent > 0 && (
+          <span className="absolute top-2 left-2 z-10 bg-red text-white text-xs font-bold px-2 py-1 rounded">
+            -{item.variant.discountPercent}%
+          </span>
+        )}
+        {item.variant.inventory <= 5 && (
+          <span className="absolute top-2 right-2 z-10 bg-orange text-white text-xs font-bold px-2 py-1 rounded">
+            Only {item.variant.inventory} left
+          </span>
+        )}
         {item.image?.large ? (
           <Image
             src={item.image.large}
             alt={item.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-contain p-2"
+            className="object-contain p-6"
             priority={true}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <ImageOff className="w-6 h-6 text-muted-foreground" />
+            <ImageOff className="w-6 h-6 text-meta-4" />
           </div>
         )}
-        {/* <Image src={item.image.large} alt="" width={250} height={250} /> */}
 
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
           <button
@@ -103,8 +122,10 @@ const SingleGridItem = ({ item }: { item: Product }) => {
 
           <button
             onClick={() => handleAddToCart()}
-            disabled={isAdding}
-            className={`inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] bg-blue text-white ease-out duration-200 hover:bg-blue-dark ${isAdding ? 'opacity-60 cursor-not-allowed' : ''}`}
+            disabled={isAdding || maxAvailableQuantity <= 0}
+            className={`inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] text-white ease-out duration-200 ${
+              maxAvailableQuantity > 0 ? 'bg-blue hover:bg-blue-dark' : 'bg-gray-4 cursor-not-allowed'
+            } ${isAdding ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             {isAdding ? (
               <>
@@ -146,39 +167,31 @@ const SingleGridItem = ({ item }: { item: Product }) => {
 
       <div className="flex items-center gap-2.5 mb-2">
         <div className="flex items-center gap-1">
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={15}
-            height={15}
-          />
+          {(() => {
+            const rating = Number(item.reviews.avgRate) || 0;
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating - fullStars >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            const stars = [];
+            for (let i = 0; i < fullStars; i++) {
+              stars.push(
+                <svg key={`full-${i}`} width="15" height="15" viewBox="0 0 20 20" fill="currentColor" className="text-yellow" aria-label="Full star"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.967z" /></svg>
+              );
+            }
+            if (hasHalfStar) {
+              stars.push(
+                <svg key="half" width="15" height="15" viewBox="0 0 20 20" fill="currentColor" className="text-yellow" aria-label="Half star"><defs><linearGradient id="half-grad"><stop offset="50%" stopColor="currentColor"/><stop offset="50%" stopColor="transparent"/></linearGradient></defs><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.967z" fill="url(#half-grad)"/></svg>
+              );
+            }
+            for (let i = 0; i < emptyStars; i++) {
+              stars.push(
+                <svg key={`empty-${i}`} width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-yellow" aria-label="Empty star"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.967z" /></svg>
+              );
+            }
+            return stars;
+          })()}
         </div>
-
-        <p className="text-custom-sm">({item.reviews.roundAvgRate})</p>
+        <p className="text-custom-sm">({Number(item.reviews.avgRate).toFixed(1)})</p>
       </div>
 
       <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
@@ -188,7 +201,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
           tabIndex={0}
           title={item.name}
         >
-          <h4 className="line-clamp-2 break-words leading-5 sm:leading-6 hover:text-blue-600">
+          <h4 className="line-clamp-2 break-words leading-5 sm:leading-6 hover:text-blue">
             {item.name}
           </h4>
         </Link>
