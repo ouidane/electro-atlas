@@ -6,7 +6,7 @@ export const rawBodyMiddleware = (
   res: Response,
   next: NextFunction,
 ) => {
-  if (req.originalUrl === "/api/v1/payment/webhook") {
+  if (req.originalUrl === "/api/v1/payments/webhook") {
     bodyParser.raw({ type: "application/json" })(req, res, next);
   } else {
     bodyParser.json()(req, res, next);
