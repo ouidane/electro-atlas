@@ -27,7 +27,7 @@ class WishlistController {
 
   async removeItemFromMyWishlist(req: Request, res: Response) {
     const userId = req.user?.id as string;
-    const { productId } = req.body;
+    const { productId } = req.params;
     await WishlistService.deleteItemFromMyWishlist({ userId, productId });
     res.sendStatus(204);
   }
