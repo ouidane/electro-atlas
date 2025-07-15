@@ -6,12 +6,8 @@
   },
   "servers": [
     {
-      "url": "https://electroatlas.onrender.com/api/v1",
+      "url": "https://electro-atlas-backend-production.up.railway.app/api/v1",
       "description": "Production server"
-    },
-    {
-      "url": "http://localhost:5000/api/v1",
-      "description": "Local development server"
     }
   ],
   "tags": [
