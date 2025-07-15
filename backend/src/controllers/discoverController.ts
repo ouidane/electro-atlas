@@ -31,7 +31,7 @@ class DiscoverController {
 
     const data = await discoverService.getRecommendedProducts(
       categoryId as string,
-      excludeProductId as string
+      excludeProductId as string,
     );
 
     res.status(200).json({ data });
