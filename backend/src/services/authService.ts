@@ -22,7 +22,7 @@ export class AuthService {
 
     // Filter out old requests
     const requestHistory = user.verificationTokenRequestHistory?.filter(
-      (timestamp: Date) => currentTime - timestamp.getTime() < oneHour
+      (timestamp: Date) => currentTime - timestamp.getTime() < oneHour,
     );
 
     // Limit the number of requests
@@ -60,14 +60,14 @@ export class AuthService {
     const token = await Token.findOneAndUpdate(
       { userId },
       { $inc: { tokenVersion: 1 }, isValid: false },
-      { new: true }
+      { new: true },
     );
     return token;
   }
 
   static async findOrCreateToken(
     user: Pick<UserDoc, "_id" | "role">,
-    requestInfo: { ip: string; userAgent: string }
+    requestInfo: { ip: string; userAgent: string },
   ): Promise<TokenDoc> {
     let token = await Token.findOne({ userId: user._id });
     let refreshToken;
@@ -176,7 +176,7 @@ export class AuthService {
 
   static async loginUser(
     userData: LoginSchema,
-    requestInfo: { ip: string; userAgent: string }
+    requestInfo: { ip: string; userAgent: string },
   ) {
     const user = await this.validateUserCredentials(userData);
 
@@ -242,14 +242,14 @@ export class AuthService {
     // Filter out requests older than one month
     const requestHistory = (user.passwordTokenRequestHistory ?? []).filter(
       (timestamp: Date) =>
-        currentTime.getTime() - timestamp.getTime() < ONE_MONTH
+        currentTime.getTime() - timestamp.getTime() < ONE_MONTH,
     );
 
     // Limit the number of requests
     if (requestHistory.length >= MAX_REQUESTS_PER_MONTH) {
       throw createError(
         400,
-        "You've requested too many reset password codes. Please try again later."
+        "You've requested too many reset password codes. Please try again later.",
       );
     }
 
@@ -316,7 +316,7 @@ export class AuthService {
 
   static async refreshToken(
     cookie: string,
-    requestInfo: { ip: string; userAgent: string }
+    requestInfo: { ip: string; userAgent: string },
   ) {
     if (!cookie) {
       throw createError(401, "Invalid or expired token");
