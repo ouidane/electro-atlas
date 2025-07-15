@@ -23,7 +23,7 @@ export interface AggregatePaginateModel<T extends Document> extends Model<T> {
       page?: number;
       limit?: number;
       [key: string]: unknown;
-    }
+    },
   ): Promise<{
     docs: R[];
     totalDocs: number;
@@ -91,7 +91,7 @@ const UserSchema = new Schema(
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  }
+  },
 );
 
 UserSchema.plugin(aggregatePaginate);
@@ -142,11 +142,11 @@ UserSchema.pre(
     } catch (err) {
       next(err as Error);
     }
-  }
+  },
 );
 
 const UserModel = model<UserDoc, AggregatePaginateModel<UserDoc>>(
   "User",
-  UserSchema
+  UserSchema,
 );
 export default UserModel;

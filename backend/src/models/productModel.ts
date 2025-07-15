@@ -20,7 +20,7 @@ export interface AggregatePaginateModel<T extends Document> extends Model<T> {
       page?: number;
       limit?: number;
       [key: string]: unknown;
-    }
+    },
   ): Promise<{
     docs: R[];
     totalDocs: number;
@@ -62,7 +62,7 @@ const ProductSchema = new Schema(
           roundAvgRate: { type: Number, default: 0 },
           count: { type: Number, default: 0 },
         },
-        { _id: false }
+        { _id: false },
       ),
       default: () => ({}),
     },
@@ -81,7 +81,7 @@ const ProductSchema = new Schema(
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-  }
+  },
 );
 
 ProductSchema.plugin(aggregatePaginate);
@@ -99,7 +99,7 @@ ProductSchema.pre(
     } catch (err) {
       next(err as Error);
     }
-  }
+  },
 );
 
 // Infer the schema type
@@ -107,7 +107,7 @@ export type ProductDoc = Document & InferSchemaType<typeof ProductSchema>;
 
 const Product = model<ProductDoc, AggregatePaginateModel<ProductDoc>>(
   "Product",
-  ProductSchema
+  ProductSchema,
 );
 
 export default Product;

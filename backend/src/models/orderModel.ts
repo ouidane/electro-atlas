@@ -20,7 +20,7 @@ export interface PaginateModel<T extends Document> extends Model<T> {
   paginate(
     query?: unknown,
     options?: unknown,
-    callback?: (err: unknown, result: PaginateResult<T>) => void
+    callback?: (err: unknown, result: PaginateResult<T>) => void,
   ): Promise<PaginateResult<T>>;
 }
 
@@ -40,7 +40,7 @@ const OrderSchema = new Schema(
     },
     notes: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 OrderSchema.plugin(mongoosePaginate);

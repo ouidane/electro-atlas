@@ -98,7 +98,7 @@ export const ProductSpecificationsSchema = new Schema(
   },
   {
     _id: false,
-  }
+  },
 );
 
 // Infer the type directly from schema

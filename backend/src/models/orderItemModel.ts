@@ -20,7 +20,7 @@ export interface PaginateModel<T extends Document> extends Model<T> {
   paginate(
     query?: unknown,
     options?: unknown,
-    callback?: (err: unknown, result: PaginateResult<T>) => void
+    callback?: (err: unknown, result: PaginateResult<T>) => void,
   ): Promise<PaginateResult<T>>;
 }
 
@@ -37,7 +37,7 @@ const OrderItemSchema = new Schema(
     refundedQuantity: { type: Number, default: 0, min: 0 },
     notes: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 OrderItemSchema.plugin(mongooseLeanVirtuals);
@@ -61,7 +61,7 @@ export type OrderItemDoc = Document & InferSchemaType<typeof OrderItemSchema>;
 
 const OrderItem = model<OrderItemDoc, PaginateModel<OrderItemDoc>>(
   "OrderItem",
-  OrderItemSchema
+  OrderItemSchema,
 );
 
 export default OrderItem;

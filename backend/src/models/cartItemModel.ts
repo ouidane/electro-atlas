@@ -14,7 +14,11 @@ const CartItemSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
+  {
+    timestamps: true,
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true },
+  },
 );
 
 CartItemSchema.virtual("product", {

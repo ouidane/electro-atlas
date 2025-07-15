@@ -11,7 +11,7 @@ const WishlistSchema = new Schema(
     items: [
       {
         product: { type: Schema.Types.ObjectId, ref: "Product" },
-      }
+      },
     ],
   },
   { timestamps: true },

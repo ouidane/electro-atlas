@@ -21,7 +21,7 @@ export interface PaginateModel<T extends Document> extends Model<T> {
   paginate(
     query?: unknown,
     options?: unknown,
-    callback?: (err: unknown, result: PaginateResult<T>) => void
+    callback?: (err: unknown, result: PaginateResult<T>) => void,
   ): Promise<PaginateResult<T>>;
 }
 
@@ -31,7 +31,7 @@ const CategorySchema = new Schema(
     image: ImageSchema,
     description: { type: String, trim: true, maxlength: 1000 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 CategorySchema.plugin(mongoosePaginate);

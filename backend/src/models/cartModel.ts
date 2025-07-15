@@ -21,7 +21,7 @@ export interface PaginateModel<T extends Document> extends Model<T> {
   paginate(
     query?: unknown,
     options?: unknown,
-    callback?: (err: unknown, result: PaginateResult<T>) => void
+    callback?: (err: unknown, result: PaginateResult<T>) => void,
   ): Promise<PaginateResult<T>>;
 }
 
@@ -36,7 +36,7 @@ const CartSchema = new Schema(
     totalProducts: { type: Number, default: 0 },
     totalItems: { type: Number, default: 0 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 CartSchema.virtual("cartItems", {
@@ -65,7 +65,7 @@ CartSchema.pre(
     } catch (err) {
       next(err as Error);
     }
-  }
+  },
 );
 
 export type CartDoc = Document & InferSchemaType<typeof CartSchema>;
