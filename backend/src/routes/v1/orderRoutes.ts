@@ -43,7 +43,7 @@ router.get(
   requireAuth,
   permit(ROLE.ADMIN),
   validateGetOrdersQuery,
-  orderController.getOrders
+  orderController.getOrders,
 );
 
 /**
@@ -78,7 +78,7 @@ router.get(
   "/:orderId",
   requireAuth,
   permit(ROLE.ADMIN),
-  orderController.getOrderById
+  orderController.getOrderById,
 );
 
 /**
@@ -114,5 +114,5 @@ router.patch(
   requireAuth,
   permit(ROLE.ADMIN),
   validateUpdateOrderStatus,
-  orderController.updateOrderStatus
+  orderController.updateOrderStatus,
 );

@@ -47,7 +47,7 @@ router.get(
   "/me/cart",
   requireAuth,
   permit(ROLE.BUYER),
-  cartController.getCartByUserId
+  cartController.getCartByUserId,
 );
 
 /**
@@ -76,7 +76,7 @@ router.put(
   "/me/cart",
   requireAuth,
   permit(ROLE.BUYER),
-  cartController.clearMyCart
+  cartController.clearMyCart,
 );
 
 /**
@@ -112,7 +112,7 @@ router.post(
   requireAuth,
   permit(ROLE.BUYER),
   validateAddToCart,
-  cartController.addItemToMyCart
+  cartController.addItemToMyCart,
 );
 
 /**
@@ -146,7 +146,7 @@ router.patch(
   requireAuth,
   permit(ROLE.BUYER),
   validateUpdateMyCart,
-  cartController.updateItemInMyCart
+  cartController.updateItemInMyCart,
 );
 
 /**
@@ -177,7 +177,7 @@ router.delete(
   "/me/cart/items/:productId",
   requireAuth,
   permit(ROLE.BUYER),
-  cartController.removeItemFromMyCart
+  cartController.removeItemFromMyCart,
 );
 
 /**
@@ -210,7 +210,7 @@ router.get(
   "/me/wishlist",
   requireAuth,
   permit(ROLE.BUYER),
-  wishlistController.getWishlistByUserId
+  wishlistController.getWishlistByUserId,
 );
 
 /**
@@ -245,7 +245,7 @@ router.post(
   "/me/wishlist/items",
   requireAuth,
   permit(ROLE.BUYER),
-  wishlistController.addItemToMyWishlist
+  wishlistController.addItemToMyWishlist,
 );
 
 /**
@@ -274,7 +274,7 @@ router.put(
   "/me/wishlist",
   requireAuth,
   permit(ROLE.BUYER),
-  wishlistController.clearMyWishlist
+  wishlistController.clearMyWishlist,
 );
 
 /**
@@ -291,7 +291,7 @@ router.put(
  *       - $ref: '#/components/parameters/ProductId'
  *     responses:
  *       '204':
- *         description: Cart item deleted successfully
+ *         description: Item deleted successfully
  *       '401':
  *         $ref: '#/components/responses/UnauthorizedError'
  *       '403':
@@ -302,10 +302,10 @@ router.put(
  *         $ref: '#/components/responses/InternalServerError'
  */
 router.delete(
-  "/me/wishlist/items/{productId}",
+  "/me/wishlist/items/:productId",
   requireAuth,
   permit(ROLE.BUYER),
-  wishlistController.removeItemFromMyWishlist
+  wishlistController.removeItemFromMyWishlist,
 );
 
 /**
@@ -341,7 +341,7 @@ router.get(
   requireAuth,
   permit(ROLE.BUYER),
   validateGetMyOrdersQuery,
-  orderController.getMyOrders
+  orderController.getMyOrders,
 );
 
 /**
@@ -402,7 +402,7 @@ router.patch(
   "/me",
   requireAuth,
   validateUpdateSelfUser,
-  userController.updateCurrentUser
+  userController.updateCurrentUser,
 );
 
 /**
@@ -441,7 +441,7 @@ router.get(
   requireAuth,
   permit(ROLE.ADMIN),
   validateGetUsersQuery,
-  userController.getUsers
+  userController.getUsers,
 );
 
 /**
@@ -476,7 +476,7 @@ router.get(
   "/:userId",
   requireAuth,
   permit(ROLE.ADMIN),
-  userController.getUserById
+  userController.getUserById,
 );
 
 /**
@@ -512,7 +512,7 @@ router.patch(
   requireAuth,
   permit(ROLE.ADMIN),
   validateUpdateUser,
-  userController.updateUserById
+  userController.updateUserById,
 );
 
 /**
@@ -543,5 +543,5 @@ router.delete(
   "/:userId",
   requireAuth,
   permit(ROLE.ADMIN),
-  userController.deleteUserById
+  userController.deleteUserById,
 );

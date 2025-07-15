@@ -41,7 +41,7 @@ router.get(
   "/",
   requireAuth,
   permit(ROLE.ADMIN),
-  wishlistController.getWishlists
+  wishlistController.getWishlists,
 );
 
 /**
@@ -71,7 +71,7 @@ router.put(
   requireAuth,
   permit(ROLE.BUYER, ROLE.ADMIN),
   wishlistAccess,
-  wishlistController.clearWishlist
+  wishlistController.clearWishlist,
 );
 
 /**
@@ -107,7 +107,7 @@ router.get(
   requireAuth,
   permit(ROLE.BUYER, ROLE.ADMIN),
   wishlistAccess,
-  wishlistController.getWishlistById
+  wishlistController.getWishlistById,
 );
 
 /**
@@ -146,7 +146,7 @@ router.post(
   permit(ROLE.BUYER, ROLE.ADMIN),
   wishlistAccess,
   validateAddItem,
-  wishlistController.addItemToWishlist
+  wishlistController.addItemToWishlist,
 );
 
 /**
@@ -178,5 +178,5 @@ router.delete(
   requireAuth,
   permit(ROLE.BUYER, ROLE.ADMIN),
   wishlistAccess,
-  wishlistController.deleteItemFromWishlist
+  wishlistController.deleteItemFromWishlist,
 );

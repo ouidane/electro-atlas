@@ -46,7 +46,7 @@ router.get(
   requireAuth,
   permit(ROLE.ADMIN),
   validateGetCartsQuery,
-  cartController.getCarts
+  cartController.getCarts,
 );
 
 /**
@@ -82,7 +82,7 @@ router.get(
   requireAuth,
   permit(ROLE.BUYER, ROLE.ADMIN),
   cartAccess,
-  cartController.getCartById
+  cartController.getCartById,
 );
 
 /**
@@ -121,7 +121,7 @@ router.post(
   permit(ROLE.BUYER, ROLE.ADMIN),
   cartAccess,
   validateAddToCart,
-  cartController.addItemToCart
+  cartController.addItemToCart,
 );
 
 /**
@@ -153,7 +153,7 @@ router.put(
   requireAuth,
   permit(ROLE.BUYER, ROLE.ADMIN),
   cartAccess,
-  cartController.clearCart
+  cartController.clearCart,
 );
 
 /**
@@ -190,7 +190,7 @@ router.get(
   requireAuth,
   permit(ROLE.BUYER, ROLE.ADMIN),
   cartAccess,
-  cartController.getItemById
+  cartController.getItemById,
 );
 
 /**
@@ -226,7 +226,7 @@ router.patch(
   permit(ROLE.BUYER, ROLE.ADMIN),
   cartAccess,
   validateUpdateCart,
-  cartController.updateItemInCart
+  cartController.updateItemInCart,
 );
 
 /**
@@ -259,5 +259,5 @@ router.delete(
   requireAuth,
   permit(ROLE.BUYER, ROLE.ADMIN),
   cartAccess,
-  cartController.removeItemFromCart
+  cartController.removeItemFromCart,
 );

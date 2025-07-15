@@ -111,7 +111,7 @@ router.post("/refresh-token", authController.refreshToken);
 router.post(
   "/verify-email/confirm",
   validateVerifyEmail,
-  authController.verifyEmail
+  authController.verifyEmail,
 );
 
 /**
@@ -165,7 +165,7 @@ router.post("/verify-email/request", authController.resendVerificationCode);
 router.post(
   "/password-reset/request",
   validateForgotPassword,
-  authController.forgotPassword
+  authController.forgotPassword,
 );
 
 /**
@@ -193,7 +193,7 @@ router.post(
 router.post(
   "/password-reset/confirm",
   validateResetPassword,
-  authController.resetPassword
+  authController.resetPassword,
 );
 
 /**

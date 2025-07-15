@@ -72,7 +72,7 @@ router.post(
   permit(ROLE.ADMIN),
   uploadImage,
   validateProduct,
-  productController.createProduct
+  productController.createProduct,
 );
 
 /**
@@ -131,7 +131,7 @@ router.put(
   permit(ROLE.ADMIN),
   uploadImage,
   validateUpdateProduct,
-  productController.updateProduct
+  productController.updateProduct,
 );
 
 /**
@@ -163,7 +163,7 @@ router.delete(
   requireAuth,
   permit(ROLE.ADMIN),
 
-  productController.deleteProduct
+  productController.deleteProduct,
 );
 
 /**
@@ -199,5 +199,5 @@ router.patch(
   requireAuth,
   permit(ROLE.ADMIN),
   validateUpdateProductVisibility,
-  productController.updateProductVisibility
+  productController.updateProductVisibility,
 );

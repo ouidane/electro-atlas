@@ -59,7 +59,7 @@ router.post(
   requireAuth,
   permit(ROLE.ADMIN),
   uploadImage,
-  categoryController.createCategory
+  categoryController.createCategory,
 );
 
 /**
@@ -119,7 +119,7 @@ router.put(
   requireAuth,
   permit(ROLE.ADMIN),
   uploadImage,
-  categoryController.updateCategory
+  categoryController.updateCategory,
 );
 
 /**
@@ -150,7 +150,7 @@ router.delete(
   "/:categoryId",
   requireAuth,
   permit(ROLE.ADMIN),
-  categoryController.deleteCategory
+  categoryController.deleteCategory,
 );
 
 /**
@@ -212,7 +212,7 @@ router.post(
   requireAuth,
   permit(ROLE.ADMIN),
   uploadImage,
-  categoryController.createSubCategory
+  categoryController.createSubCategory,
 );
 
 /**
@@ -240,7 +240,7 @@ router.post(
  */
 router.get(
   "/:categoryId/subCategories/:subCategoryId",
-  categoryController.getSingleSubCategory
+  categoryController.getSingleSubCategory,
 );
 
 /**
@@ -277,7 +277,7 @@ router.put(
   requireAuth,
   permit(ROLE.ADMIN),
   uploadImage,
-  categoryController.updateSubCategory
+  categoryController.updateSubCategory,
 );
 
 /**
@@ -309,5 +309,5 @@ router.delete(
   "/:categoryId/subCategories/:subCategoryId",
   requireAuth,
   permit(ROLE.ADMIN),
-  categoryController.deleteSubCategory
+  categoryController.deleteSubCategory,
 );
