@@ -30,7 +30,7 @@ export class JwtService {
 
   static generateGenericToken(
     payload: object,
-    expiresIn: SignOptions["expiresIn"] = "10m"
+    expiresIn: SignOptions["expiresIn"] = "10m",
   ) {
     return this.sign(payload, secretKey, { expiresIn });
   }
@@ -44,7 +44,7 @@ export class JwtService {
       },
       accessTokenSecret,
       // { expiresIn: "15m" },
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
   }
 
@@ -55,7 +55,7 @@ export class JwtService {
         tokenVersion: payload.tokenVersion,
       },
       refreshTokenSecret,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
   }
 

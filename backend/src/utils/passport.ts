@@ -42,7 +42,7 @@ export default (passport: PassportStatic): void => {
       {
         clientID: config.auth.google.clientId,
         clientSecret: config.auth.google.clientSecret,
-        callbackURL: "/api/v1/auth/google/callback",
+        callbackURL: config.auth.google.callbackURL,
       },
       async (token, refreshToken, profile, done) => {
         const email = profile.emails?.[0].value;

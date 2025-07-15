@@ -10,7 +10,7 @@ type QueryParamsType = {
 function paginateResponse(
   data: PaginateResult<unknown>,
   queryParams: unknown,
-  baseUrl: string
+  baseUrl: string,
 ) {
   const { limit, page, sort, filters } = queryParams as QueryParamsType;
 
@@ -30,7 +30,7 @@ function paginateResponse(
   const queryBaseObj: Record<string, string> = {
     limit: limit.toString(),
     ...Object.fromEntries(
-      Object.entries(filters || {}).map(([k, v]) => [`filter.${k}`, v])
+      Object.entries(filters || {}).map(([k, v]) => [`filter.${k}`, v]),
     ),
   };
   if (sort) {
