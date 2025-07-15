@@ -277,7 +277,7 @@ export class CartService {
   // and removes them from all other carts (excluding the one just checked out),
   static async handleOutOfStockProduct(
     order: OrderDoc,
-    excludeCartId?: string
+    excludeCartId?: string,
   ) {
     const operations = [];
     const orderItems = order.orderItems as unknown as OrderItemDoc[];
@@ -287,7 +287,7 @@ export class CartService {
 
     const products = await Product.find(
       { _id: { $in: productIds } },
-      { variants: 1 }
+      { variants: 1 },
     ).lean();
 
     const productMap = new Map<string, ProductDoc>();
@@ -439,7 +439,9 @@ export class CartService {
   // ==========================================
 
   private static async findCartById(cartId: string) {
-    const cart = await Cart.findById(cartId).select("-__v").lean({ virtuals: true });
+    const cart = await Cart.findById(cartId)
+      .select("-__v")
+      .lean({ virtuals: true });
     if (!cart) {
       throw createError(404, "Cart not found");
     }
@@ -447,8 +449,10 @@ export class CartService {
   }
 
   private static async findCartByUserId(userId: string) {
-    const cart = await Cart.findOne({ userId }).select("-__v").lean({ virtuals: true });
-    if (!cart) return null
+    const cart = await Cart.findOne({ userId })
+      .select("-__v")
+      .lean({ virtuals: true });
+    if (!cart) return null;
     return cart;
   }
 
@@ -551,7 +555,7 @@ export class CartService {
     const totalItems = cartItems.length;
     const totalProducts = cartItems.reduce(
       (acc, item) => acc + item.quantity,
-      0
+      0,
     );
     const totalPrice = cartItems.reduce((acc, item) => {
       const product = item.productId as unknown as ProductDoc;
