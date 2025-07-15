@@ -30,7 +30,8 @@ export default [
           endOfLine: "auto",
         },
       ],
+      "no-console": "error",
     },
   },
-  // eslintPluginPrettierRecommended,
+  eslintPluginPrettierRecommended,
 ];
