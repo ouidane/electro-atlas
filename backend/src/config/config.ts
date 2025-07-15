@@ -17,7 +17,7 @@ export default {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || "", // Google OAuth client ID
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "", // Google OAuth client secret
-      callbackURL: `${process.env.BASE_URL}/api/v1/auth/google/callback`, // Google OAuth callback URL
+      callbackURL: `${process.env.BASE_URL}/api/v1/auth/oauth/google/callback`, // Google OAuth callback URL
     },
   },
   jwt: {
