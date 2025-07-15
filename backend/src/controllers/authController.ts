@@ -22,7 +22,7 @@ class AuthController {
 
     const { accessToken, refreshToken } = await AuthService.loginUser(
       req.body,
-      { ip, userAgent }
+      { ip, userAgent },
     );
 
     JwtService.sendRefreshToken(res, refreshToken);
@@ -118,7 +118,7 @@ class AuthController {
       async (err: Error | null, user: Express.User | false, info: unknown) => {
         if (!user || err) {
           return res.redirect(
-            `${origin}/login?error=Failed to sign in with Google`
+            `${origin}/signin?error=Failed to sign in with Google`,
           );
         }
 
@@ -137,13 +137,13 @@ class AuthController {
           JwtService.sendRefreshToken(res, token.refreshToken);
 
           res.redirect(
-            `${origin}/auth/oauth/callback?token=${accessToken}&redirect=${redirectUrl}`
+            `${origin}/oauth?token=${accessToken}&redirect=${redirectUrl}`,
           );
         } catch (error) {
           logger.error("Google auth error", error);
-          return res.redirect(`${origin}/login?error=Authentication error`);
+          return res.redirect(`${origin}/signin?error=Authentication error`);
         }
-      }
+      },
     )(req, res, next);
   }
 
