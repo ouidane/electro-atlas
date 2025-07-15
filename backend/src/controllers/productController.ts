@@ -26,7 +26,7 @@ class ProductController {
   async createProduct(req: Request, res: Response) {
     await productService.createProduct(
       req.body,
-      req.file as Express.Multer.File
+      req.file as Express.Multer.File,
     );
     res.status(201).json({ message: "Product created" });
   }
@@ -37,7 +37,7 @@ class ProductController {
     await productService.updateProduct(
       productId,
       req.body,
-      req.file as Express.Multer.File
+      req.file as Express.Multer.File,
     );
     res.sendStatus(204);
   }
@@ -50,7 +50,10 @@ class ProductController {
 
   // Update product visibility
   async updateProductVisibility(req: Request, res: Response) {
-    await productService.updateProductVisibility(req.params.productId, req.body);
+    await productService.updateProductVisibility(
+      req.params.productId,
+      req.body,
+    );
     res.sendStatus(204);
   }
 }
