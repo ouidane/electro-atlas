@@ -20,7 +20,7 @@ const registerSchema = z
       .array(
         z.object({
           productId: createObjectIdSchema("Invalid product ID"),
-        })
+        }),
       )
       .optional(),
     cartItems: z
@@ -28,7 +28,7 @@ const registerSchema = z
         z.object({
           quantity: z.number().min(1),
           productId: createObjectIdSchema("Invalid product ID"),
-        })
+        }),
       )
       .optional(),
   })

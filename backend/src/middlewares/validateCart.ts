@@ -30,7 +30,7 @@ const getCartsQuerySchema = z
     sort: z
       .string()
       .regex(
-        /^[+-]?(createdAt|updatedAt|amount|totalProducts|totalItems)(,[+-]?(createdAt|updatedAt|amount|totalProducts|totalItems))*$/
+        /^[+-]?(createdAt|updatedAt|amount|totalProducts|totalItems)(,[+-]?(createdAt|updatedAt|amount|totalProducts|totalItems))*$/,
       )
       .optional()
       .default("createdAt"),
@@ -59,7 +59,7 @@ const getCartsQuerySchema = z
     {
       message: "minAmount must be less than or equal to maxAmount",
       path: ["filters", "minAmount"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -72,7 +72,7 @@ const getCartsQuerySchema = z
       message:
         "minTotalProducts must be less than or equal to maxTotalProducts",
       path: ["filters", "minTotalProducts"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -84,7 +84,7 @@ const getCartsQuerySchema = z
     {
       message: "minTotalItems must be less than or equal to maxTotalItems",
       path: ["filters", "minTotalItems"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -99,7 +99,7 @@ const getCartsQuerySchema = z
     {
       message: "createdAfter must be before or equal to createdBefore",
       path: ["filters", "createdAfter"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -114,7 +114,7 @@ const getCartsQuerySchema = z
     {
       message: "updatedAfter must be before or equal to updatedBefore",
       path: ["filters", "updatedAfter"],
-    }
+    },
   );
 export type GetCartsQueryType = z.infer<typeof getCartsQuerySchema>;
 

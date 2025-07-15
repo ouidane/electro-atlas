@@ -12,24 +12,24 @@ const productVariantBaseSchema = z.object({
   color: z.string().optional(),
   inventory: z.preprocess(
     (val) => (typeof val === "string" ? parseInt(val) : val),
-    z.number().int().min(0)
+    z.number().int().min(0),
   ),
   globalPrice: z.preprocess(
     (val) => (typeof val === "string" ? parseInt(val) : val),
-    z.number().int().min(0)
+    z.number().int().min(0),
   ),
   salePrice: z.preprocess(
     (val) =>
       val === "" ? undefined : typeof val === "string" ? parseInt(val) : val,
-    z.number().int().min(0).optional()
+    z.number().int().min(0).optional(),
   ),
   saleStartDate: z.preprocess(
     (val) => (typeof val === "string" ? new Date(val) : val),
-    z.date().optional()
+    z.date().optional(),
   ),
   saleEndDate: z.preprocess(
     (val) => (typeof val === "string" ? new Date(val) : val),
-    z.date().optional()
+    z.date().optional(),
   ),
 });
 
@@ -39,7 +39,7 @@ const productVariantSchema = productVariantBaseSchema
     const discountPercent =
       data.globalPrice > 0
         ? Math.round(
-            ((data.globalPrice - finalSalePrice) / data.globalPrice) * 100
+            ((data.globalPrice - finalSalePrice) / data.globalPrice) * 100,
           )
         : 0;
 
@@ -57,7 +57,7 @@ const productVariantSchema = productVariantBaseSchema
     {
       message: "saleEndDate must be after saleStartDate",
       path: ["saleEndDate"],
-    }
+    },
   );
 export type ProductVariant = z.infer<typeof productVariantSchema>;
 
@@ -354,7 +354,7 @@ const getProductsQuerySchema = z
     sort: z
       .string()
       .regex(
-        /^[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability|score)(,[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability|score))*$/
+        /^[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability|score)(,[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability|score))*$/,
       )
       .optional(),
     filters: queryFiltersSchema.optional(),
@@ -369,7 +369,7 @@ const getProductsQuerySchema = z
     {
       message: "minRating must be less than or equal to maxRating",
       path: ["filters", "minRating"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -381,7 +381,7 @@ const getProductsQuerySchema = z
     {
       message: "minPrice must be less than or equal to maxPrice",
       path: ["filters", "minPrice"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -393,7 +393,7 @@ const getProductsQuerySchema = z
     {
       message: "minStock must be less than or equal to maxStock",
       path: ["filters", "minStock"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -405,7 +405,7 @@ const getProductsQuerySchema = z
     {
       message: "minDiscount must be less than or equal to maxDiscount",
       path: ["filters", "minDiscount"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -420,7 +420,7 @@ const getProductsQuerySchema = z
     {
       message: "createdAfter must be before or equal to createdBefore",
       path: ["filters", "createdAfter"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -435,7 +435,7 @@ const getProductsQuerySchema = z
     {
       message: "updatedAfter must be before or equal to updatedBefore",
       path: ["filters", "updatedAfter"],
-    }
+    },
   );
 export type GetProductsQueryType = z.infer<typeof getProductsQuerySchema>;
 
@@ -444,7 +444,7 @@ export const validateUpdateProduct = validateBody(UpdateProductSchema);
 export const validateUpdateProductVisibility = validateBody(
   z.object({
     visibility: z.boolean(),
-  })
+  }),
 );
 export const validateQueryFilters = validateQuery(queryFiltersSchema);
 export const validateGetProductsQuery = validateQuery(getProductsQuerySchema);

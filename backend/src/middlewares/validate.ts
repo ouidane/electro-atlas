@@ -58,5 +58,5 @@ export const stringToArraySchema = z.preprocess(
       : Array.isArray(val)
         ? val
         : [],
-  z.array(z.string())
+  z.array(z.string()),
 );

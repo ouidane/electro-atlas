@@ -21,14 +21,14 @@ const createUserSchema = z
       .min(1, "FamilyName is required")
       .regex(
         /^[a-zA-Z\s-]+$/,
-        "FamilyName must contain only letters, spaces, or hyphens"
+        "FamilyName must contain only letters, spaces, or hyphens",
       ),
     givenName: z
       .string()
       .min(1, "GivenName is required")
       .regex(
         /^[a-zA-Z\s-]+$/,
-        "GivenName must contain only letters, spaces, or hyphens"
+        "GivenName must contain only letters, spaces, or hyphens",
       ),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -43,14 +43,14 @@ const updateSelfUserSchema = z.object({
     .min(1, "FamilyName is required")
     .regex(
       /^[a-zA-Z\s-]+$/,
-      "FamilyName must contain only letters, spaces, or hyphens"
+      "FamilyName must contain only letters, spaces, or hyphens",
     ),
   givenName: z
     .string()
     .min(1, "GivenName is required")
     .regex(
       /^[a-zA-Z\s-]+$/,
-      "GivenName must contain only letters, spaces, or hyphens"
+      "GivenName must contain only letters, spaces, or hyphens",
     ),
   phone: z.string().regex(phoneRegex, "Invalid phone number"),
   address: z.object({
@@ -84,7 +84,7 @@ const getUsersQuerySchema = z
     sort: z
       .string()
       .regex(
-        /^[+-]?(createdAt|updatedAt|familyName|givenName)(,[+-]?(createdAt|updatedAt|familyName|givenName))*$/
+        /^[+-]?(createdAt|updatedAt|familyName|givenName)(,[+-]?(createdAt|updatedAt|familyName|givenName))*$/,
       )
       .optional()
       .default("createdAt"),
@@ -118,7 +118,7 @@ const getUsersQuerySchema = z
     {
       message: "createdAfter must be before or equal to createdBefore",
       path: ["filters", "createdAfter"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -133,7 +133,7 @@ const getUsersQuerySchema = z
     {
       message: "updatedAfter must be before or equal to updatedBefore",
       path: ["filters", "updatedAfter"],
-    }
+    },
   );
 export type GetUsersQueryType = z.infer<typeof getUsersQuerySchema>;
 
