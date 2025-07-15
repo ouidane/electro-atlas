@@ -58,4 +58,3 @@ process.on("unhandledRejection", async (reason: unknown) => {
   });
   await flushLogsAndExit(1);
 });
-
