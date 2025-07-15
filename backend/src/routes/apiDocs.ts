@@ -31,7 +31,7 @@ router.get("/", swaggerUi.setup(openapiDoc, swaggerOptions));
 
 router.use(
   "/openapi.json",
-  express.static(path.join(__dirname, "../schemas/openapi.json"))
+  express.static(path.join(__dirname, "../schemas/openapi.json")),
 );
 
 export default router;
