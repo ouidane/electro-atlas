@@ -18,21 +18,21 @@ export const extractZodErrors = (zodError: ZodError): string => {
       acc[error.path.join(".")] = error.message;
       return acc;
     },
-    {} as Record<string, string>
+    {} as Record<string, string>,
   );
   return JSON.stringify(errors);
 };
 
 // Helper to extract errors from Mongoose ValidationError
 const extractMongooseValidationErrors = (
-  error: mongoose.Error.ValidationError
+  error: mongoose.Error.ValidationError,
 ): string => {
   const errors = Object.values(error.errors).reduce(
     (acc, item) => ({
       ...acc,
       [item.path]: item.message,
     }),
-    {}
+    {},
   );
   return JSON.stringify(errors);
 };
@@ -43,7 +43,7 @@ const isObject = (value: unknown): value is Record<string, unknown> =>
 
 // Helper to extract errors from Mongoose Duplicate Key Error
 const extractDuplicateKeyError = (
-  error: unknown
+  error: unknown,
 ): { message: string; errors?: string } => {
   if (isObject(error) && "keyPattern" in error) {
     const keyPatternValue = (error as Record<string, unknown>).keyPattern;
@@ -69,7 +69,7 @@ export const errorHandler = (
   err: unknown,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   // If the response is already sent or debug flag is on,
   // pass the error to the default Express handler
