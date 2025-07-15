@@ -28,7 +28,7 @@ interface UploadOptions {
 export class CloudinaryService {
   constructor(
     private readonly defaultOptions: UploadOptions = {},
-    private readonly defaultImageOptions: Record<string, unknown> = {}
+    private readonly defaultImageOptions: Record<string, unknown> = {},
   ) {}
 
   // Uploads a single image to Cloudinary
@@ -36,7 +36,7 @@ export class CloudinaryService {
     image: ImageBuffer,
     uploadPreset: string,
     imageName: string,
-    options: UploadOptions = {}
+    options: UploadOptions = {},
   ): Promise<ImageType> {
     const dataURI = this.bufferToDataURI(image);
     const { format, quality, ...safeUploadOptions } = {
@@ -48,7 +48,7 @@ export class CloudinaryService {
       dataURI,
       uploadPreset,
       imageName,
-      safeUploadOptions
+      safeUploadOptions,
     );
 
     const imageUrls = this.generateImageUrls(result.public_id, {
@@ -66,7 +66,7 @@ export class CloudinaryService {
     newImage: ImageBuffer,
     uploadPreset: string,
     imageName: string,
-    options: UploadOptions = {}
+    options: UploadOptions = {},
   ): Promise<ImageType> {
     await this.destroyImage(oldPublicId, { invalidate: true });
     return this.uploadImage(newImage, uploadPreset, imageName, options);
@@ -75,14 +75,14 @@ export class CloudinaryService {
   // Deletes an image from Cloudinary
   async destroyImage(
     publicId: string,
-    options: { invalidate?: boolean } = {}
+    options: { invalidate?: boolean } = {},
   ): Promise<void> {
     const result = await cloudinary.uploader.destroy(publicId, options);
 
     if (result.result !== "ok" && result.result !== "not_found") {
       logger.warn(
         `Cloudinary: Unexpected result while deleting ${publicId}`,
-        result
+        result,
       );
     }
   }
@@ -98,7 +98,7 @@ export class CloudinaryService {
     dataURI: string,
     uploadPreset: string,
     imageName: string,
-    options: UploadOptions = {}
+    options: UploadOptions = {},
   ): Promise<UploadApiResponse> {
     const defaultOptions = {
       upload_preset: uploadPreset,
@@ -116,7 +116,7 @@ export class CloudinaryService {
       format?: string;
       quality?: string;
       defaultTransformation?: Record<string, unknown>;
-    } = {}
+    } = {},
   ): ImageType {
     const {
       format = "auto",

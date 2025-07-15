@@ -12,7 +12,6 @@ export class WishlistService {
       path: "items.product",
       select: "_id name image variant",
     });
-    console.log("wishlist", wishlist);
     return wishlist;
   }
 
@@ -28,7 +27,7 @@ export class WishlistService {
   }
 
   private static formatWishlistItems(
-    wishlist: FlattenMaps<WishlistDoc> | WishlistDoc
+    wishlist: FlattenMaps<WishlistDoc> | WishlistDoc,
   ) {
     return wishlist.items.map((item) => {
       const product = item.product as unknown as ProductDoc;
@@ -39,24 +38,26 @@ export class WishlistService {
         productName: product.name,
         image: product.image?.medium,
         variant: {
-              variation: variant.variation,
-              sku: variant.sku,
-              color: variant.color,
-              inventory: variant.inventory,
-              globalPrice: variant.globalPrice,
-              globalPriceDecimal: (variant.globalPrice / 100).toFixed(2),
-              salePrice: variant.salePrice,
-              salePriceDecimal: variant.salePrice ? (variant.salePrice / 100).toFixed(2) : null,
-              discountPercent: variant.discountPercent,
-              saleStartDate: variant.saleStartDate,
-            }
+          variation: variant.variation,
+          sku: variant.sku,
+          color: variant.color,
+          inventory: variant.inventory,
+          globalPrice: variant.globalPrice,
+          globalPriceDecimal: (variant.globalPrice / 100).toFixed(2),
+          salePrice: variant.salePrice,
+          salePriceDecimal: variant.salePrice
+            ? (variant.salePrice / 100).toFixed(2)
+            : null,
+          discountPercent: variant.discountPercent,
+          saleStartDate: variant.saleStartDate,
+        },
       };
     });
   }
 
   private static async addItemToWishlistHelper(
     wishlist: WishlistDoc,
-    productId: string
+    productId: string,
   ) {
     if (wishlist.items.some((item) => item.product?.toString() === productId)) {
       throw createError(409, "Product already in wishlist");
@@ -68,10 +69,10 @@ export class WishlistService {
 
   private static async deleteItemFromWishlistHelper(
     wishlist: WishlistDoc,
-    productId: string
+    productId: string,
   ) {
     const itemIndex = wishlist.items.findIndex(
-      (item) => item.product?.toString() === productId
+      (item) => item.product?._id.toString() === productId,
     );
     if (itemIndex === -1) {
       throw createError(404, "Item not found in wishlist");
@@ -166,7 +167,7 @@ export class WishlistService {
 
   static async addWishlistToDatabase(
     items: AddItemWishlist[],
-    userId: unknown
+    userId: unknown,
   ) {
     const wishlist = await Wishlist.create({ userId });
 

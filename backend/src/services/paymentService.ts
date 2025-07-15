@@ -25,7 +25,7 @@ export class PaymentService {
       user.profile,
       cart._id as string,
       customer,
-      cart.cartItems
+      cart.cartItems,
     );
 
     return session.url;
@@ -35,7 +35,7 @@ export class PaymentService {
     switch (event.type) {
       case "checkout.session.completed":
         await this.handleCheckoutSessionCompleted(
-          event.data.object as Stripe.Checkout.Session
+          event.data.object as Stripe.Checkout.Session,
         );
         break;
       // ... handle other event types
@@ -43,41 +43,41 @@ export class PaymentService {
   }
 
   private static async handleCheckoutSessionCompleted(
-    session: Stripe.Checkout.Session
+    session: Stripe.Checkout.Session,
   ) {
-    const email = session.customer_details?.email;
-    const cartId = session.metadata?.cartId;
-    const profileRaw = session.metadata?.profile;
+    try {
+      const email = session.customer_details?.email;
+      const cartId = session.metadata?.cartId;
+      const profileRaw = session.metadata?.profile;
 
-    if (!email || !cartId || !profileRaw) {
-      throw new Error("Missing required session data");
-    }
+      if (!email || !cartId || !profileRaw) {
+        throw new Error("Missing required session data");
+      }
 
-    const profile = JSON.parse(profileRaw);
+      const profile = JSON.parse(profileRaw);
 
-    const paymentId = await this.createPayment(
-      session,
-      PAYMENT_STATUS.COMPLETED
-    );
-    const order = await OrderService.createOrder({ session, paymentId });
-    const delivery = await DeliveryService.createDelivery(profile, order._id);
+      const paymentId = await this.createPayment(
+        session,
+        PAYMENT_STATUS.COMPLETED,
+      );
+      const order = await OrderService.createOrder({ session, paymentId });
+      const delivery = await DeliveryService.createDelivery(profile, order._id);
 
-    await InventoryService.updateInventory(order._id);
-
-    await Promise.all([
-      CartService.clearCartById(cartId),
-      CartService.handleOutOfStockProduct(order, cartId),
-      EmailService.sendOrderConfirmationEmail({
+      await InventoryService.updateInventory(order._id);
+      await EmailService.sendOrderConfirmationEmail({
         order,
         delivery,
         email,
-      }),
-    ]);
+      });
+      await CartService.clearCartById(cartId);
+    } catch (error) {
+      throw new Error("Error creating payment");
+    }
   }
 
   private static async createPayment(
     session: Stripe.Checkout.Session,
-    status: string
+    status: string,
   ) {
     const payment = await Payment.create({
       amountTotal: session.amount_total,

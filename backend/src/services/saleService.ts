@@ -44,7 +44,7 @@ export class SaleService {
     if (refundedQuantity > orderItem.quantity) {
       throw createError(
         400,
-        "Refunded quantity cannot be greater than quantity"
+        "Refunded quantity cannot be greater than quantity",
       );
     }
 

@@ -58,7 +58,7 @@ export class ProductService {
           fetch_format: "auto",
           quality: "auto",
         },
-      }
+      },
     );
   }
 
@@ -69,6 +69,7 @@ export class ProductService {
     const queryObject = this.buildProductQuery(filters);
     const sortCriteria = this.buildSortCriteria(sort, hasSearch);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pipeline: any = [];
     if (filters?.query) {
       const searchStage = {
@@ -106,7 +107,7 @@ export class ProductService {
           },
         },
       };
-      
+
       pipeline.push(searchStage);
     }
     pipeline.push({ $match: { ...queryObject, visibility: true } });
@@ -132,7 +133,7 @@ export class ProductService {
   async createProduct(productData: CreateProductType, image?: ImageBuffer) {
     await this.validateCategory(
       productData.subCategoryId,
-      productData.categoryId
+      productData.categoryId,
     );
 
     const product = await Product.create(productData);
@@ -144,7 +145,7 @@ export class ProductService {
   async updateProduct(
     productId: string,
     updateData: UpdateProductType,
-    image?: ImageBuffer
+    image?: ImageBuffer,
   ) {
     const product = await this.getProductById(productId);
     // Handle image removal
@@ -157,7 +158,7 @@ export class ProductService {
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
       { ...updateData, image: product.image },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     return updatedProduct;
@@ -219,7 +220,7 @@ export class ProductService {
             type: FIELD_TYPES.IN,
             searchField: key,
           },
-        ])
+        ]),
       ),
     };
 
@@ -250,6 +251,7 @@ export class ProductService {
   }
 
   buildProductProjection(includeSearchMeta = false) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const projection: any = {
       name: 1,
       isFeatured: 1,
@@ -313,7 +315,7 @@ export class ProductService {
 
   private async handleProductImageUpload(
     product: ProductDoc,
-    image: ImageBuffer
+    image: ImageBuffer,
   ) {
     const imageUrls = await this.cloudinaryService.uploadImage(
       image,
@@ -324,7 +326,7 @@ export class ProductService {
           { width: IMAGE_SIZES.LARGE, crop: "scale" },
           { quality: "auto" },
         ],
-      }
+      },
     );
 
     product.image = imageUrls;
@@ -338,7 +340,7 @@ export class ProductService {
         product.image.publicId,
         newImage,
         this.CLOUDINARY_FOLDER,
-        `product_${product._id}`
+        `product_${product._id}`,
       );
       product.image = imageUrls;
     } else {

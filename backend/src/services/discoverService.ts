@@ -33,7 +33,7 @@ export class DiscoverService {
           },
           products,
         };
-      })
+      }),
     );
   }
 
@@ -75,7 +75,7 @@ export class DiscoverService {
           },
           products,
         };
-      })
+      }),
     );
   }
 
@@ -121,7 +121,7 @@ export class DiscoverService {
   async getRecommendedProducts(
     categoryId: string,
     excludeProductId: string,
-    limit: number = 10
+    limit: number = 10,
   ) {
     const baseQuery: Record<string, unknown> = {
       "variant.inventory": { $gt: 0 },

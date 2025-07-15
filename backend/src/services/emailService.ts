@@ -3,7 +3,7 @@ import path from "path";
 import ejs from "ejs";
 import sendEmail from "../utils/sendEmail";
 import config from "../config/config";
-import { DeliveryDoc, OrderDoc } from "../models";
+import { DeliveryDoc, OrderDoc, OrderItemDoc } from "../models";
 
 // =============== Type Definitions ===============
 
@@ -86,10 +86,16 @@ export class EmailService {
     const orderTrackingLink = `${origin}/order-tracking/${orderId}`;
     const accountLink = `${origin}/account`;
 
+    const items = (orderItems as unknown as OrderItemDoc[]).map((item) => ({
+      ...item,
+      totalPrice: (Math.round(item.totalPrice) / 100).toFixed(2),
+      unitAmount: (Math.round(item.unitAmount) / 100).toFixed(2),
+    }));
+
     const html = this.renderTemplate("orderConfirmation", {
       orderId,
-      totalAmount,
-      orderItems,
+      totalAmount: (Math.round(totalAmount || 0) / 100).toFixed(2),
+      orderItems: items,
       shippingAddress,
       orderTrackingLink,
       accountLink,

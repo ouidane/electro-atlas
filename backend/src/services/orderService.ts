@@ -17,7 +17,7 @@ export class OrderService {
   // Get orders for a specific buyer with pagination
   static async getBuyerOrders(
     userId: string,
-    queryParams: GetMyOrdersQueryType
+    queryParams: GetMyOrdersQueryType,
   ) {
     const { page, limit } = queryParams;
     const options = {
@@ -85,8 +85,8 @@ export class OrderService {
     paymentId: unknown;
     session: Stripe.Checkout.Session;
   }) {
-    const cartId = session.metadata!.cartId;
-    const userId = session.metadata!.userId;
+    const cartId = new Types.ObjectId(session.metadata?.cartId);
+    const userId = session.metadata?.userId;
     const totalAmount = session.amount_total;
     const cartItems = await CartService.getCartItems(cartId);
 

@@ -32,7 +32,7 @@ export class StripeService {
     profile: ProfileDoc,
     cartId: string | Types.ObjectId,
     customer: Stripe.Customer,
-    items: FormattedCartItemType[]
+    items: FormattedCartItemType[],
   ): Promise<Stripe.Checkout.Session> {
     const lineItems = this.createLineItems(items);
     const metadata = {
@@ -43,7 +43,7 @@ export class StripeService {
     const sessionOptions = this.createSessionOptions(
       customer.id,
       lineItems,
-      metadata
+      metadata,
     );
 
     const session = await stripeClient.checkout.sessions.create(sessionOptions);
@@ -53,7 +53,7 @@ export class StripeService {
 
   // Creates line items for a checkout session
   private static createLineItems(
-    items: FormattedCartItemType[]
+    items: FormattedCartItemType[],
   ): Stripe.Checkout.SessionCreateParams.LineItem[] {
     return items.map((item) => ({
       price_data: {
@@ -66,7 +66,7 @@ export class StripeService {
         unit_amount: Math.round(
           item.product.variant.salePrice
             ? item.product.variant.salePrice
-            : item.product.variant.globalPrice
+            : item.product.variant.globalPrice,
         ),
       },
       quantity: Math.round(item.quantity),
@@ -77,7 +77,7 @@ export class StripeService {
   private static createSessionOptions(
     customerId: string,
     lineItems: Stripe.Checkout.SessionCreateParams.LineItem[],
-    metadata: { [key: string]: string }
+    metadata: { [key: string]: string },
   ): Stripe.Checkout.SessionCreateParams {
     const origin = config.clientUrl || config.baseUrl;
     return {
@@ -94,7 +94,7 @@ export class StripeService {
   // Verifies and constructs a Stripe webhook event
   static verifyWebhookEvent(
     payload: string | Buffer,
-    sig: string
+    sig: string,
   ): Stripe.Event {
     try {
       return stripeClient.webhooks.constructEvent(payload, sig, endpointSecret);
@@ -107,7 +107,7 @@ export class StripeService {
   static async getLineItemsFromSession(session: Stripe.Checkout.Session) {
     try {
       const lineItems = await stripeClient.checkout.sessions.listLineItems(
-        session.id
+        session.id,
       );
       return lineItems.data;
     } catch (error) {
