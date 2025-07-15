@@ -16,10 +16,7 @@ import helmet from "helmet";
 
 const configureServer = async (app: Express) => {
   //Security-related settings
-    app
-      .disable("x-powered-by")
-      .set("trust proxy", 1)
-      .use(helmet())
+  app.use(helmet());
 
   // logging & rate limiting
   app.use(assignRequestId);
