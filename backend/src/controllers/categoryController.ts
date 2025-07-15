@@ -36,7 +36,7 @@ class CategoryController {
     if (!name && !description && !req.file) {
       throw createError(
         400,
-        "At least one field (name, description, or image) must be provided for update"
+        "At least one field (name, description, or image) must be provided for update",
       );
     }
 
@@ -61,7 +61,7 @@ class CategoryController {
   async getSingleSubCategory(req: Request, res: Response) {
     const data = await categoryService.getSingleSubCategory(
       req.params.subCategoryId,
-      req.params.categoryId
+      req.params.categoryId,
     );
     res.status(200).json({ data });
   }
@@ -87,7 +87,7 @@ class CategoryController {
         name,
         description,
         image: req.file,
-      }
+      },
     );
     res.sendStatus(204);
   }
@@ -95,7 +95,7 @@ class CategoryController {
   async deleteSubCategory(req: Request, res: Response, next: NextFunction) {
     await categoryService.deleteSubCategory(
       req.params.subCategoryId,
-      req.params.categoryId
+      req.params.categoryId,
     );
     res.sendStatus(204);
   }
