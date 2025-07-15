@@ -100,15 +100,15 @@
             <tr>
               <td><%= item.productName %></td>
               <td><%= item.quantity %></td>
-              <td>$<%= item.salePrice.toFixed(2) %></td>
-              <td>$<%= (item.quantity * item.salePrice).toFixed(2) %></td>
+              <td>$<%= item.unitAmount %></td>
+              <td>$<%= item.totalPrice %></td>
             </tr>
             <% }) %>
           </tbody>
           <tfoot>
             <tr>
               <td colspan="3" class="total">Total:</td>
-              <td>$<%= totalAmount.toFixed(2) %></td>
+              <td>$<%= totalAmount %></td>
             </tr>
           </tfoot>
         </table>
