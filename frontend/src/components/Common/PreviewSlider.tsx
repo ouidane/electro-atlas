@@ -1,10 +1,5 @@
 "use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef } from "react";
-import "swiper/css/navigation";
-import "swiper/css";
 import Image from "next/image";
-
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useAppSelector } from "@/redux/store";
 
@@ -12,18 +7,6 @@ const PreviewSliderModal = () => {
   const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider();
 
   const data = useAppSelector((state) => state.productDetailsReducer.value);
-
-  const sliderRef = useRef(null);
-
-  const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
-  }, []);
-
-  const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
-  }, []);
 
   return (
     <div
@@ -53,60 +36,21 @@ const PreviewSliderModal = () => {
         </svg>
       </button>
 
-      <div>
-        <button
-          className="rotate-180 absolute left-100 p-5 cursor-pointer z-10 "
-          onClick={handlePrev}
-        >
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 26 26"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M14.5918 5.92548C14.9091 5.60817 15.4236 5.60817 15.7409 5.92548L22.2409 12.4255C22.5582 12.7428 22.5582 13.2572 22.2409 13.5745L15.7409 20.0745C15.4236 20.3918 14.9091 20.3918 14.5918 20.0745C14.2745 19.7572 14.2745 19.2428 14.5918 18.9255L19.7048 13.8125H4.33301C3.88428 13.8125 3.52051 13.4487 3.52051 13C3.52051 12.5513 3.88428 12.1875 4.33301 12.1875H19.7048L14.5918 7.07452C14.2745 6.75722 14.2745 6.24278 14.5918 5.92548Z"
-              fill="#FDFDFD"
-            />
-          </svg>
-        </button>
-
-        <button
-          className="absolute right-100 p-5 cursor-pointer z-10"
-          onClick={handleNext}
-        >
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 26 26"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M14.5918 5.92548C14.9091 5.60817 15.4236 5.60817 15.7409 5.92548L22.2409 12.4255C22.5582 12.7428 22.5582 13.2572 22.2409 13.5745L15.7409 20.0745C15.4236 20.3918 14.9091 20.3918 14.5918 20.0745C14.2745 19.7572 14.2745 19.2428 14.5918 18.9255L19.7048 13.8125H4.33301C3.88428 13.8125 3.52051 13.4487 3.52051 13C3.52051 12.5513 3.88428 12.1875 4.33301 12.1875H19.7048L14.5918 7.07452C14.2745 6.75722 14.2745 6.24278 14.5918 5.92548Z"
-              fill="#FDFDFD"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <Swiper ref={sliderRef} slidesPerView={1} spaceBetween={20}>
-        <SwiperSlide>
-          <div className="flex justify-center items-center">
-            <Image
-              src={"/images/products/product-2-bg-1.png"}
-              alt={"product image"}
-              width={450}
-              height={450}
-            />
+      <div className="flex justify-center items-center w-full h-full">
+        {data && data.image && data.image.large ? (
+          <Image
+            src={data.image.large}
+            alt={data.name}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-contain p-6"
+          />
+        ) : (
+          <div className="flex justify-center items-center w-[450px] h-[450px] bg-gray-200">
+            <span className="text-gray-500">No Image</span>
           </div>
-        </SwiperSlide>
-      </Swiper>
+        )}
+      </div>
     </div>
   );
 };
