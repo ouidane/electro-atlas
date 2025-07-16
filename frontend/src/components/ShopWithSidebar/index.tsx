@@ -7,10 +7,11 @@ import ColorsDropdwon from "./ColorsDropdwon";
 import PriceDropdown from "./PriceDropdown";
 import SingleGridItem from "../Shop/SingleGridItem";
 import SingleListItem from "../Shop/SingleListItem";
-import { Product } from "@/types/product";
+import { Product, ProductListResponse, FilterResponse } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from "@/components/ui/pagination";
 
-const ShopWithSidebar = ({ productsData }) => {
+const ShopWithSidebar = ({ productsData, filtersData }: { productsData: ProductListResponse, filtersData: FilterResponse }) => {
   const [productStyle, setProductStyle] = useState("grid");
   const [productSidebar, setProductSidebar] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
@@ -76,8 +77,8 @@ const ShopWithSidebar = ({ productsData }) => {
     window.addEventListener("scroll", handleStickyMenu);
 
     // closing sidebar while clicking outside
-    function handleClickOutside(event) {
-      if (!event.target.closest(".sidebar-content")) {
+    function handleClickOutside(event: MouseEvent) {
+      if (!(event.target as HTMLElement).closest(".sidebar-content")) {
         setProductSidebar(false);
       }
     }
@@ -184,7 +185,7 @@ const ShopWithSidebar = ({ productsData }) => {
                   </div>
 
                   {/* <!-- category box --> */}
-                  <CategoryDropdown categories={categories} />
+                  {/* <CategoryDropdown categories={filtersData.data.categories} /> */}
 
                   {/* // <!-- color box --> */}
                   <ColorsDropdwon />
@@ -303,11 +304,11 @@ const ShopWithSidebar = ({ productsData }) => {
                     : "flex flex-col gap-7.5"
                 }`}
               >
-                {productsData.data.map((item: Product) =>
+                {productsData.data.map((item: Product, idx: number) =>
                   productStyle === "grid" ? (
-                    <SingleGridItem item={item} key={item._id} />
+                    <SingleGridItem item={item} key={item._id} index={idx} />
                   ) : (
-                    <SingleListItem item={item} key={item._id} />
+                    <SingleListItem item={item} key={item._id} index={idx} />
                   )
                 )}
               </div>
@@ -322,80 +323,45 @@ const ShopWithSidebar = ({ productsData }) => {
                       <span className="loader border-2 border-blue border-t-transparent rounded-full w-6 h-6 animate-spin" aria-label="Loading" />
                     </div>
                   )}
-                  <ul className="flex items-center">
-                    <li>
-                      <button
-                        aria-label="button for pagination left"
-                        type="button"
-                        disabled={!productsData.metadata.hasPrevPage || isLoading}
-                        onClick={() => handlePageChange(productsData.metadata.prevPage)}
-                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] disabled:text-gray-4"
-                      >
-                        {/* Left Arrow SVG */}
-                        <svg
-                          className="fill-current"
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12.1782 16.1156C12.0095 16.1156 11.8407 16.0594 11.7282 15.9187L5.37197 9.45C5.11885 9.19687 5.11885 8.80312 5.37197 8.55L11.7282 2.08125C11.9813 1.82812 12.3751 1.82812 12.6282 2.08125C12.8813 2.33437 12.8813 2.72812 12.6282 2.98125L6.72197 9L12.6563 15.0187C12.9095 15.2719 12.9095 15.6656 12.6563 15.9187C12.4876 16.0312 12.347 16.1156 12.1782 16.1156Z"
-                            fill=""
-                          />
-                        </svg>
-                      </button>
-                    </li>
-
-                    {getPageNumbers().map((pageNum, idx) =>
-                      pageNum === "..." ? (
-                        <li key={idx}>
-                          <span className="flex py-1.5 px-3.5 duration-200 rounded-[3px]">...</span>
-                        </li>
-                      ) : (
-                        <li key={idx}>
-                          <button
-                            onClick={() => handlePageChange(pageNum)}
-                            className={`flex py-1.5 px-3.5 duration-200 rounded-[3px] ${
-                              productsData.metadata.page === pageNum
-                                ? "bg-blue text-white"
-                                : "hover:text-white hover:bg-blue"
-                            }`}
-                            disabled={productsData.metadata.page === pageNum || isLoading}
-                            aria-current={productsData.metadata.page === pageNum ? "page" : undefined}
-                          >
-                            {pageNum}
-                          </button>
-                        </li>
-                      )
-                    )}
-
-                    <li>
-                      <button
-                        aria-label="button for pagination right"
-                        type="button"
-                        disabled={!productsData.metadata.hasNextPage || isLoading}
-                        onClick={() => handlePageChange(productsData.metadata.nextPage)}
-                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] hover:text-white hover:bg-blue disabled:text-gray-4"
-                      >
-                        {/* Right Arrow SVG */}
-                        <svg
-                          className="fill-current"
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M5.82197 16.1156C5.65322 16.1156 5.5126 16.0594 5.37197 15.9469C5.11885 15.6937 5.11885 15.3 5.37197 15.0469L11.2782 9L5.37197 2.98125C5.11885 2.72812 5.11885 2.33437 5.37197 2.08125C5.6251 1.82812 6.01885 1.82812 6.27197 2.08125L12.6282 8.55C12.8813 8.80312 12.8813 9.19687 12.6282 9.45L6.27197 15.9187C6.15947 16.0312 5.99072 16.1156 5.82197 16.1156Z"
-                            fill=""
-                          />
-                        </svg>
-                      </button>
-                    </li>
-                  </ul>
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          aria-disabled={!productsData.metadata.hasPrevPage || isLoading}
+                          tabIndex={(!productsData.metadata.hasPrevPage || isLoading) ? -1 : 0}
+                          onClick={productsData.metadata.hasPrevPage && !isLoading ? () => handlePageChange(productsData.metadata.prevPage) : undefined}
+                          style={{ pointerEvents: (!productsData.metadata.hasPrevPage || isLoading) ? "none" : undefined, opacity: (!productsData.metadata.hasPrevPage || isLoading) ? 0.5 : 1, cursor: (!productsData.metadata.hasPrevPage || isLoading) ? "default" : "pointer" }}
+                        />
+                      </PaginationItem>
+                      {getPageNumbers().map((pageNum, idx) =>
+                        pageNum === "..." ? (
+                          <PaginationItem key={idx}>
+                            <PaginationEllipsis />
+                          </PaginationItem>
+                        ) : (
+                          <PaginationItem key={idx}>
+                            <PaginationLink
+                              isActive={productsData.metadata.page === pageNum}
+                              aria-current={productsData.metadata.page === pageNum ? "page" : undefined}
+                              tabIndex={productsData.metadata.page === pageNum || isLoading ? -1 : 0}
+                              onClick={productsData.metadata.page !== pageNum && !isLoading ? () => handlePageChange(pageNum) : undefined}
+                              style={{ pointerEvents: (productsData.metadata.page === pageNum || isLoading) ? "none" : undefined, opacity: (productsData.metadata.page === pageNum || isLoading) ? 0.7 : 1, cursor: (productsData.metadata.page === pageNum || isLoading) ? "default" : "pointer" }}
+                            >
+                              {pageNum}
+                            </PaginationLink>
+                          </PaginationItem>
+                        )
+                      )}
+                      <PaginationItem>
+                        <PaginationNext
+                          aria-disabled={!productsData.metadata.hasNextPage || isLoading}
+                          tabIndex={(!productsData.metadata.hasNextPage || isLoading) ? -1 : 0}
+                          onClick={productsData.metadata.hasNextPage && !isLoading ? () => handlePageChange(productsData.metadata.nextPage) : undefined}
+                          style={{ pointerEvents: (!productsData.metadata.hasNextPage || isLoading) ? "none" : undefined, opacity: (!productsData.metadata.hasNextPage || isLoading) ? 0.5 : 1, cursor: (!productsData.metadata.hasNextPage || isLoading) ? "default" : "pointer" }}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
                 </div>
               </div>
               {/* <!-- Products Pagination End --> */}
