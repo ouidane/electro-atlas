@@ -15,12 +15,6 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
-      {
-        protocol: "https",
-        hostname: "klbtheme.com",
-        port: "",
-        pathname: "/**",
-      },
       // Add other domains as needed
     ],
   },
