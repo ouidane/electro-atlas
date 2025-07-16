@@ -1,7 +1,7 @@
 import React from "react";
 import ShopWithSidebar from "@/components/ShopWithSidebar";
 import { Metadata } from "next";
-import { getProducts } from "@/actions/product/queries";
+import { getFilters, getProducts } from "@/actions/product/queries";
 
 export const metadata: Metadata = {
   title: "Shop Electronics | Electro Atlas",
@@ -15,11 +15,11 @@ const ShopWithSidebarPage = async ({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const params = await searchParams;
-  const productsData = await getProducts(params);
+  const [productsData, filtersData] = await Promise.all([getProducts(params), getFilters(params)]);
 
   return (
     <main>
-      <ShopWithSidebar productsData={productsData} />
+      <ShopWithSidebar productsData={productsData} filtersData={filtersData} />
     </main>
   );
 };
