@@ -18,7 +18,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import Link from "next/link";
 import { ImageOff } from "lucide-react";
 
-const ProductItem = ({ item }: { item: Product }) => {
+const ProductItem = ({ item, index }: { item: Product; index: number }) => {
   const { openModal } = useModalContext();
   const [addItemToCart, { isLoading: isAdding }] = useAddItemToCartMutation();
   const dispatch = useDispatch<AppDispatch>();
@@ -95,14 +95,16 @@ const ProductItem = ({ item }: { item: Product }) => {
   return (
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg min-h-[270px] mb-4">
-        {item.image?.large ? (
-          <Link href={`/products/${item._id}`} title={item.name}>
+        {item.image?.medium ? (
+          <Link href={`/products/${item._id}`} className="w-full h-full block" tabIndex={0} aria-label={`View details for ${item.name}`}>
             <Image
-              src={item.image.large}
+              src={item.image.medium}
               alt={item.name}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="object-contain p-2"
+              className="object-contain p-6"
+              priority={index < 6}
+              loading={index < 6 ? undefined : "lazy"}
             />
           </Link>
         ) : (
