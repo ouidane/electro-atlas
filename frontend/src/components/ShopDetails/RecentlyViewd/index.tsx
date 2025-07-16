@@ -90,7 +90,7 @@ const RecentlyViewdItems = () => {
           >
             {product.data.map((item, key) => (
               <SwiperSlide key={key}>
-                <ProductItem item={item} />
+                <ProductItem item={item} index={key} />
               </SwiperSlide>
             ))}
           </Swiper>
