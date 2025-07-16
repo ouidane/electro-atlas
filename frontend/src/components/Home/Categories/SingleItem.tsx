@@ -6,7 +6,7 @@ import Link from "next/link";
 const SingleItem = ({ item }: { item: Category }) => {
   return (
     <Link
-      href={`/products?filters[subCategory]=${item.id}`}
+      href={`/products?filters[subCategoryId]=${item.id}`}
       className="group flex flex-col items-center"
       title={item.title}
     >
