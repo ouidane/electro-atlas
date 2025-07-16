@@ -1,8 +1,7 @@
 import "server-only";
 
 import { unstable_noStore as noStore } from "next/cache";
-import { GetProductsQuerySchema } from "./validations";
-import { ProductsResponse } from "../../../types";
+import { ProductListResponse, ProductResponse, FilterResponse } from "@/types";
 
 export async function getProducts(input: { [key: string]: string | string[] | undefined }) {
   noStore();
@@ -43,7 +42,7 @@ export async function getProducts(input: { [key: string]: string | string[] | un
       throw new Error(`Search failed: ${response.status}`);
     }
 
-    const result: ProductsResponse = await response.json();
+    const result: ProductListResponse = await response.json();
 
     return result;
   } catch (err) {
@@ -51,6 +50,36 @@ export async function getProducts(input: { [key: string]: string | string[] | un
   }
 }
 
+export async function getFilters(input: { [key: string]: string | string[] | undefined }) {
+  try {
+    const queryBaseObj: Record<string, string> = {};
+
+    for (const key in input) {
+      const value = input[key];
+      if (key === "filters[categoryId]" && typeof value === "string") {
+        queryBaseObj["categoryId"] = value;
+      } else if (key === "filters[subCategoryId]" && typeof value === "string") {
+        queryBaseObj["subCategoryId"] = value;
+      }
+    }
+
+    const queryBase = new URLSearchParams(queryBaseObj);
+
+    // Execute the query
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/products-filter?${queryBase.toString()}`);
+
+    if (!response.ok) {
+      throw new Error(`Search failed: ${response.status}`);
+    }
+
+    const result: FilterResponse = await response.json();
+
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
 
 export async function getProductById(input: string) {
   try {
@@ -62,7 +91,7 @@ export async function getProductById(input: string) {
       throw new Error(`Search failed: ${response.status}`);
     }
 
-    const result = await response.json();
+    const result: ProductResponse = await response.json();    
 
     return result;
   } catch (err) {
