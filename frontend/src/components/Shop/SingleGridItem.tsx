@@ -19,7 +19,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ImageOff, Heart } from "lucide-react";
 
-const SingleGridItem = ({ item }: { item: Product }) => {
+const SingleGridItem = ({ item, index }: { item: Product; index: number }) => {
   const { openModal } = useModalContext();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -115,15 +115,18 @@ const SingleGridItem = ({ item }: { item: Product }) => {
             Only {item.variant.inventory} left
           </span>
         )}
-        {item.image?.large ? (
-          <Image
-            src={item.image.large}
-            alt={item.name}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-contain p-6"
-            priority={true}
-          />
+        {item.image?.medium ? (
+          <Link href={`/products/${item._id}`} className="w-full h-full block" tabIndex={0} aria-label={`View details for ${item.name}`}>
+            <Image
+              src={item.image.medium}
+              alt={item.name}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-contain p-6"
+              priority={index < 6}
+              loading={index < 6 ? undefined : "lazy"}
+            />
+          </Link>
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <ImageOff className="w-6 h-6 text-meta-4" />
