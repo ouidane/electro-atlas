@@ -75,6 +75,11 @@ const Signin = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/oauth/google`;
   };
 
+  // Demo account handler
+  const handleDemoLogin = () => {
+    reset({ email: "demo@example.com", password: "alx-1234" });
+  };
+
   return (
     <>
       <Breadcrumb title={"Signin"} pages={["Signin"]} />
@@ -99,6 +104,14 @@ const Signin = () => {
                   {serverError}
                 </div>
               )}
+              {/* Demo Account Button */}
+              <button
+                type="button"
+                onClick={handleDemoLogin}
+                className="w-full mb-4 flex justify-center font-medium text-white bg-blue-500 py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Use Demo Account
+              </button>
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="mb-5">
                   <label htmlFor="email" className="block mb-2.5">
