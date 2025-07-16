@@ -18,6 +18,7 @@ import {
   addItemToWishlist as addItemToWishlistRedux,
   removeItemFromWishlist as removeItemFromWishlistRedux,
 } from "@/redux/features/wishlist-slice";
+import { updateproductDetails } from "@/redux/features/product-details";
 import ProductInformation from "./ProductInformation";
 
 interface ShopDetailsProps {
@@ -26,14 +27,15 @@ interface ShopDetailsProps {
 
 const ShopDetails: React.FC<ShopDetailsProps> = ({ product }) => {
   const { openPreviewModal } = usePreviewSlider();
+  const dispatch = useDispatch<AppDispatch>();
   const [quantity, setQuantity] = useState(1);
   
   // pass the product here when you get the real data.
   const handlePreviewSlider = () => {
+    dispatch(updateproductDetails(product));
     openPreviewModal();
   };
 
-  const dispatch = useDispatch<AppDispatch>();
   const [addItemToCart, { isLoading: isAdding }] = useAddItemToCartMutation();
   const reduxCartItems = useSelector(selectCartItems);
   const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
