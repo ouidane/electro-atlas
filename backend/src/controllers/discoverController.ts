@@ -7,13 +7,31 @@ export const discoverService = new DiscoverService();
 class DiscoverController {
   // Get best offers
   async bestOffers(req: Request, res: Response, next: NextFunction) {
-    const data = await discoverService.getBestOffersByCategory();
+    const {
+      categoryId,
+      subCategoryId,
+    }: { categoryId?: string; subCategoryId?: string } = req.query;
+
+    const data = await discoverService.getBestOffers({
+      categoryId,
+      subCategoryId,
+    });
+
     res.status(200).json({ data });
   }
 
   // Get best sellers
   async bestSeller(req: Request, res: Response, next: NextFunction) {
-    const data = await discoverService.getBestSellersByCategory();
+    const {
+      categoryId,
+      subCategoryId,
+    }: { categoryId?: string; subCategoryId?: string } = req.query;
+
+    const data = await discoverService.getBestSellers({
+      categoryId,
+      subCategoryId,
+    });
+
     res.status(200).json({ data });
   }
 
@@ -27,12 +45,21 @@ class DiscoverController {
 
   // Get recommended products
   async recommendedProducts(req: Request, res: Response, next: NextFunction) {
-    const { categoryId, excludeProductId } = req.query;
+    const {
+      categoryId,
+      subCategoryId,
+      excludeProductId,
+    }: {
+      categoryId?: string;
+      subCategoryId?: string;
+      excludeProductId?: string;
+    } = req.query;
 
-    const data = await discoverService.getRecommendedProducts(
-      categoryId as string,
-      excludeProductId as string,
-    );
+    const data = await discoverService.getRecommendedProducts({
+      categoryId,
+      subCategoryId,
+      excludeProductId,
+    });
 
     res.status(200).json({ data });
   }
