@@ -11,7 +11,7 @@ export const menuData: Menu[] = [
     id: 2,
     title: "Shop",
     newTab: false,
-    path: "/products?sort=rating",
+    path: "/products?sort=-score",
   },
   {
     id: 3,
