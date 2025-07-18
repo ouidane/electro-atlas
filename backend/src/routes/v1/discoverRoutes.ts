@@ -13,6 +13,7 @@ export const router: Router = express.Router();
  *       - discover
  *     parameters:
  *       - $ref: '#/components/parameters/CategoryIdQuery'
+ *       - $ref: '#/components/parameters/SubCategoryIdQuery'
  *       - $ref: '#/components/parameters/ExcludeProductIdQuery'
  *     responses:
  *       '200':
@@ -34,6 +35,9 @@ router.get("/recommendations", discoverController.recommendedProducts);
  *     operationId: bestOffers
  *     tags:
  *       - discover
+ *     parameters:
+ *       - $ref: '#/components/parameters/CategoryIdQuery'
+ *       - $ref: '#/components/parameters/SubCategoryIdQuery'
  *     responses:
  *       '200':
  *         description: OK
@@ -54,6 +58,9 @@ router.get("/best-offers", discoverController.bestOffers);
  *     operationId: bestSeller
  *     tags:
  *       - discover
+ *     parameters:
+ *       - $ref: '#/components/parameters/CategoryIdQuery'
+ *       - $ref: '#/components/parameters/SubCategoryIdQuery'
  *     responses:
  *       '200':
  *         description: OK
