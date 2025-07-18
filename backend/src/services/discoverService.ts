@@ -1,82 +1,92 @@
 import { Types } from "mongoose";
-import { Category, OrderItem, Product } from "../models";
+import { Category, Product } from "../models";
 import { MongooseFilterValue } from "../utils/queryHelpers";
 import { QueryFiltersType } from "../middlewares/validateProduct";
-import { ProductService, SECONDARY_FILTER_KEYS } from "./productService";
+import { ProductService } from "./productService";
 
 const productService = new ProductService();
 
+// ===== Constants =====
+export const IMPORTANT_FILTER_KEYS = [
+  "screenSize",
+  "resolution",
+  "memoryStorageCapacity",
+  "operatingSystem",
+  "weight",
+  "material",
+  "connectivity",
+  "compatibleDevices",
+] as const;
+
+export const SECONDARY_FILTER_KEYS = [
+  "_id",
+  "batteries",
+  "dimensions",
+  "itemModelNumber",
+  "weight",
+] as const;
+
 export class DiscoverService {
-  // Category-based Product Queries
-  async getBestOffersByCategory() {
-    const categories = await Category.find().sort("name").lean();
+  // Product Queries for Best Offers
+  async getBestOffers({
+    categoryId,
+    subCategoryId,
+  }: {
+    categoryId?: string;
+    subCategoryId?: string;
+  }) {
+    const baseQuery: Record<string, unknown> = {
+      "variant.discountPercent": { $gt: 0 },
+      "variant.inventory": { $gt: 0 },
+      visibility: true,
+    };
 
-    return Promise.all(
-      categories.map(async (category) => {
-        const products = await Product.aggregate([
-          {
-            $match: {
-              categoryId: category._id,
-              visibility: true,
-              "variant.discountPercent": { $gt: 0 },
-            },
-          },
-          { $project: productService.buildProductProjection() },
-          { $sort: { "variant.discountPercent": -1 } },
-          { $limit: 10 },
-        ]);
+    if (categoryId) {
+      baseQuery.categoryId = new Types.ObjectId(categoryId);
+    }
 
-        return {
-          category: {
-            _id: category._id,
-            name: category.name,
-          },
-          products,
-        };
-      }),
-    );
+    if (subCategoryId) {
+      baseQuery.subCategoryId = new Types.ObjectId(subCategoryId);
+    }
+
+    const products = await Product.aggregate([
+      { $match: baseQuery },
+      { $project: productService.buildProductProjection() },
+      { $sort: { "variant.discountPercent": -1 } },
+      { $limit: 10 },
+    ]);
+
+    return products;
   }
 
-  // Category-based Product Queries for Best Sellers
-  async getBestSellersByCategory() {
-    const categories = await Category.find().lean();
+  // Product Queries for Best Sellers
+  async getBestSellers({
+    categoryId,
+    subCategoryId,
+  }: {
+    categoryId?: string;
+    subCategoryId?: string;
+  }) {
+    const baseQuery: Record<string, unknown> = {
+      visibility: true,
+    };
 
-    return Promise.all(
-      categories.map(async (category) => {
-        const products = await OrderItem.aggregate([
-          { $group: { _id: "$productId", numOfOrders: { $sum: 1 } } },
-          {
-            $lookup: {
-              from: "products",
-              localField: "_id",
-              foreignField: "_id",
-              as: "product",
-            },
-          },
-          { $unwind: "$product" },
-          {
-            $match: {
-              "product.categoryId": category._id,
-              "product.visibility": true,
-              "product.variant.inventory": { $gt: 0 },
-            },
-          },
-          {
-            $project: this.buildBestSellersProjection(),
-          },
-          { $sort: { numOfOrders: -1 } },
-          { $limit: 10 },
-        ]);
+    if (categoryId) {
+      baseQuery.categoryId = new Types.ObjectId(categoryId);
+    }
 
-        return {
-          category: {
-            _id: category._id,
-            name: category.name,
-          },
-          products,
-        };
-      }),
-    );
+    if (subCategoryId) {
+      baseQuery.subCategoryId = new Types.ObjectId(subCategoryId);
+    }
+
+    const products = await Product.aggregate([
+      { $match: baseQuery },
+      { $project: productService.buildProductProjection("salesCount") },
+      { $sort: { salesCount: -1 } },
+      { $limit: 10 },
+    ]);
+
+    return { products };
   }
 
   // This method builds a query object based on the provided filters and returns products filter.
@@ -95,7 +105,7 @@ export class DiscoverService {
         .sort({ name: 1 })
         .lean();
 
-      return { categories };
+      return { categories: categories.map((category) => ({ category })) };
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -118,11 +128,15 @@ export class DiscoverService {
   }
 
   // Recommended Products
-  async getRecommendedProducts(
-    categoryId: string,
-    excludeProductId: string,
-    limit: number = 10,
-  ) {
+  async getRecommendedProducts({
+    categoryId,
+    subCategoryId,
+    excludeProductId,
+  }: {
+    categoryId?: string;
+    subCategoryId?: string;
+    excludeProductId?: string;
+  }) {
     const baseQuery: Record<string, unknown> = {
       "variant.inventory": { $gt: 0 },
       visibility: true,
@@ -132,72 +146,32 @@ export class DiscoverService {
       baseQuery.categoryId = new Types.ObjectId(categoryId);
     }
 
+    if (subCategoryId) {
+      baseQuery.subCategoryId = new Types.ObjectId(subCategoryId);
+    }
+
     if (excludeProductId) {
-      baseQuery._id = { $ne: excludeProductId };
+      baseQuery._id = { $ne: new Types.ObjectId(excludeProductId) };
     }
 
     return Product.aggregate([
       { $match: baseQuery },
       {
         $addFields: {
-          score: {
+          priorityScore: {
             $add: [
-              { $multiply: ["$popularity", 0.3] },
-              { $multiply: ["$salesCount", 0.2] },
+              { $multiply: ["$popularity", 0.01] },
+              { $multiply: ["$salesCount", 2] },
               { $cond: [{ $eq: ["$isFeatured", true] }, 10, 0] },
-              { $multiply: ["$reviews.averageRating", 1.5] },
+              { $multiply: ["$reviews.avgRate", 1.5] },
             ],
           },
         },
       },
-      { $sort: { score: -1 } },
-      { $limit: limit },
-      { $project: productService.buildProductProjection() },
+      { $project: productService.buildProductProjection("priorityScore") },
+      { $sort: { priorityScore: -1 } },
+      { $limit: 10 },
     ]);
-  }
-
-  private buildBestSellersProjection() {
-    return {
-      name: "$product.name",
-      isFeatured: "$product.isFeatured",
-      variant: {
-        $mergeObjects: [
-          "$product.variant",
-          {
-            salePriceDecimal: {
-              $cond: {
-                if: { $ne: ["$product.variant.salePrice", null] },
-                then: {
-                  $toString: {
-                    $round: [
-                      { $divide: ["$product.variant.salePrice", 100] },
-                      2,
-                    ],
-                  },
-                },
-                else: null,
-              },
-            },
-            globalPriceDecimal: {
-              $toString: {
-                $round: [{ $divide: ["$product.variant.globalPrice", 100] }, 2],
-              },
-            },
-            isInStock: {
-              $cond: {
-                if: { $gt: ["$product.variant.inventory", 0] },
-                then: true,
-                else: false,
-              },
-            },
-          },
-        ],
-      },
-      reviews: "$product.reviews",
-      image: "$product.image",
-      createdAt: "$product.createdAt",
-      updatedAt: "$product.updatedAt",
-    };
   }
 
   private buildCategoriesPipeline() {
