@@ -51,6 +51,28 @@ components:
         saleEndDate:
           type: string
           format: date-time
+    
+    ProductImage:
+      type: object
+      properties:
+        publicId:
+          type: string
+        tiny:
+          type: string
+        medium:
+          type: string
+        large:
+          type: string
+    
+    ProductReview:
+      type: object
+      properties:
+        count:
+          type: number
+        avgRate:
+          type: number
+        roundAvgRate:
+          type: number
 
     Product:
       type: object
@@ -64,22 +86,20 @@ components:
         variant:
           $ref: "#/components/schemas/ProductVariant"
         reviews:
-          type: object
-          properties:
-            count:
-              type: number
-            avgRate:
-              type: number
-            roundAvgRate:
-              type: number
+          $ref: "#/components/schemas/ProductReview"
         image:
-          type: string
+          $ref: "#/components/schemas/ProductImage"
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
+        salesCount:
+          type: number
+        priorityScore:
+          type: number
+          format: float
         score:
           type: number
           format: float
@@ -832,11 +852,11 @@ components:
       in: query
       schema:
         type: string
-        pattern: "^[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability)(,[+-]?(createdAt|updatedAt|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability))*$"
-        default: createdAt
+        pattern: "^[+-]?(createdAt|updatedAt|score|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability)(,[+-]?(createdAt|updatedAt|score|name|rating|numOfReviews|price|discount|popularity|bestSelling|stockAvailability))*$"
+        default: -score
       description: |
         Sort order. Use commas to separate multiple fields.
-        Allowed fields: `createdAt`, `updatedAt`, `name`, `rating`, `numOfReviews`, `price`, `discount`, `popularity`, `bestSelling`, `stockAvailability`.
+        Allowed fields: `createdAt`, `updatedAt`, `score`, `name`, `rating`, `numOfReviews`, `price`, `discount`, `popularity`, `bestSelling`, `stockAvailability`.
         Prefix with `-` for descending order (e.g., `sort=createdAt,-popularity`).
 
     ProductFilterParams:
