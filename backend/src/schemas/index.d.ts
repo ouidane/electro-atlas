@@ -4,3812 +4,3805 @@
  */
 
 export interface paths {
-  "/auth/register": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/auth/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Register a new user */
+        post: operations["registerUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Register a new user */
-    post: operations["registerUser"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/login": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Login a user */
+        post: operations["loginUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Login a user */
-    post: operations["loginUser"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/refresh-token": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/auth/refresh-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Refresh access token */
+        post: operations["refreshToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Refresh access token */
-    post: operations["refreshToken"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/verify-email/confirm": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/auth/verify-email/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm email verification */
+        post: operations["verifyEmail"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Confirm email verification */
-    post: operations["verifyEmail"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/verify-email/request": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/auth/verify-email/request": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request email verification code */
+        post: operations["resendVerificationCode"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Request email verification code */
-    post: operations["resendVerificationCode"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/password-reset/request": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/auth/password-reset/request": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request password reset */
+        post: operations["forgotPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Request password reset */
-    post: operations["forgotPassword"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/password-reset/confirm": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/auth/password-reset/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm reset password */
+        post: operations["resetPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Confirm reset password */
-    post: operations["resetPassword"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/oauth/google": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/auth/oauth/google": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Initiate Google Authentication */
+        get: operations["initiateGoogleAuth"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Initiate Google Authentication */
-    get: operations["initiateGoogleAuth"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/logout": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Logout user */
+        post: operations["logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Logout user */
-    post: operations["logout"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/carts": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/carts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all carts (admin only) */
+        get: operations["getAllCarts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get all carts (admin only) */
-    get: operations["getAllCarts"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/carts/{cartId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/carts/{cartId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a cart by ID */
+        get: operations["getCartById"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get a cart by ID */
-    get: operations["getCartById"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/carts/{cartId}/items": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/carts/{cartId}/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Clear a cart */
+        put: operations["clearCart"];
+        /** Add an item to a cart */
+        post: operations["addItemToCart"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    /** Clear a cart */
-    put: operations["clearCart"];
-    /** Add an item to a cart */
-    post: operations["addItemToCart"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/carts/{cartId}/items/{itemId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/carts/{cartId}/items/{itemId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get an item by ID */
+        get: operations["getItemById"];
+        put?: never;
+        post?: never;
+        /** Remove an item from a cart */
+        delete: operations["RemoveItemFromCart"];
+        options?: never;
+        head?: never;
+        /** Update an item in a cart */
+        patch: operations["updateItemInCart"];
+        trace?: never;
     };
-    /** Get an item by ID */
-    get: operations["getItemById"];
-    put?: never;
-    post?: never;
-    /** Remove an item from a cart */
-    delete: operations["RemoveItemFromCart"];
-    options?: never;
-    head?: never;
-    /** Update an item in a cart */
-    patch: operations["updateItemInCart"];
-    trace?: never;
-  };
-  "/categories": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all categories */
+        get: operations["getParentCategories"];
+        put?: never;
+        /** Create a new category (admin only) */
+        post: operations["createCategory"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get all categories */
-    get: operations["getParentCategories"];
-    put?: never;
-    /** Create a new category (admin only) */
-    post: operations["createCategory"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/categories/{categoryId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/categories/{categoryId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a category by ID */
+        get: operations["getSingleCategory"];
+        /** Update a category by ID (admin only) */
+        put: operations["updateCategory"];
+        post?: never;
+        /** Delete a category by ID (admin only) */
+        delete: operations["deleteCategory"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get a category by ID */
-    get: operations["getSingleCategory"];
-    /** Update a category by ID (admin only) */
-    put: operations["updateCategory"];
-    post?: never;
-    /** Delete a category by ID (admin only) */
-    delete: operations["deleteCategory"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/categories/{categoryId}/subCategories": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/categories/{categoryId}/subCategories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get sub categories */
+        get: operations["getChildCategories"];
+        put?: never;
+        /** Create a sub category (admin only) */
+        post: operations["createSubCategory"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get sub categories */
-    get: operations["getChildCategories"];
-    put?: never;
-    /** Create a sub category (admin only) */
-    post: operations["createSubCategory"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/categories/{categoryId}/subCategories/{subCategoryId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/categories/{categoryId}/subCategories/{subCategoryId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a sub category by ID */
+        get: operations["getSingleSubCategory"];
+        /** Update a sub category by ID (admin only) */
+        put: operations["updateSubCategory"];
+        post?: never;
+        /** Delete a sub category by ID (admin only) */
+        delete: operations["deleteSubCategory"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get a sub category by ID */
-    get: operations["getSingleSubCategory"];
-    /** Update a sub category by ID (admin only) */
-    put: operations["updateSubCategory"];
-    post?: never;
-    /** Delete a sub category by ID (admin only) */
-    delete: operations["deleteSubCategory"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/departments": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/departments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all departments */
+        get: operations["getDepartments"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get all departments */
-    get: operations["getDepartments"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/discover/recommendations": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/discover/recommendations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get recommended products */
+        get: operations["recommendedProducts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get recommended products */
-    get: operations["recommendedProducts"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/discover/best-offers": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/discover/best-offers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get best offers */
+        get: operations["bestOffers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get best offers */
-    get: operations["bestOffers"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/discover/best-seller": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/discover/best-seller": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get best sellers */
+        get: operations["bestSeller"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get best sellers */
-    get: operations["bestSeller"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/products-filter": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/products-filter": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get products filter */
+        get: operations["productsFilter"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get products filter */
-    get: operations["productsFilter"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/orders": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all orders (admin only) */
+        get: operations["getAllOrders"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get all orders (admin only) */
-    get: operations["getAllOrders"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/orders/{orderId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/orders/{orderId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get order by id (admin only) */
+        get: operations["getOrderById"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update order status by id (admin only) */
+        patch: operations["updateOrderStatus"];
+        trace?: never;
     };
-    /** Get order by id (admin only) */
-    get: operations["getOrderById"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    /** Update order status by id (admin only) */
-    patch: operations["updateOrderStatus"];
-    trace?: never;
-  };
-  "/payments/checkout": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/payments/checkout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a checkout session */
+        post: operations["createCheckoutSession"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Create a checkout session */
-    post: operations["createCheckoutSession"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/products": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all products */
+        get: operations["getAllProducts"];
+        put?: never;
+        /** Create a new product (admin only) */
+        post: operations["createProduct"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get all products */
-    get: operations["getAllProducts"];
-    put?: never;
-    /** Create a new product (admin only) */
-    post: operations["createProduct"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/products/{productId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/products/{productId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a product by ID */
+        get: operations["getProductById"];
+        /** Update a product by ID (admin only) */
+        put: operations["updateProduct"];
+        post?: never;
+        /** Delete a product by ID (admin only) */
+        delete: operations["deleteProduct"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get a product by ID */
-    get: operations["getProductById"];
-    /** Update a product by ID (admin only) */
-    put: operations["updateProduct"];
-    post?: never;
-    /** Delete a product by ID (admin only) */
-    delete: operations["deleteProduct"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/products/{productId}/visibility": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/products/{productId}/visibility": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update a product visibility by ID (admin only) */
+        patch: operations["updateProductVisibility"];
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    /** Update a product visibility by ID (admin only) */
-    patch: operations["updateProductVisibility"];
-    trace?: never;
-  };
-  "/products/{productId}/reviews": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/products/{productId}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all reviews for a product */
+        get: operations["getReviews"];
+        put?: never;
+        /** Create a new review */
+        post: operations["createReview"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get all reviews for a product */
-    get: operations["getReviews"];
-    put?: never;
-    /** Create a new review */
-    post: operations["createReview"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/products/{productId}/reviews/{reviewId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/products/{productId}/reviews/{reviewId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a review by ID */
+        get: operations["getReviewById"];
+        put?: never;
+        post?: never;
+        /** Delete a review by ID */
+        delete: operations["deleteReview"];
+        options?: never;
+        head?: never;
+        /** Update a review by ID */
+        patch: operations["updateReview"];
+        trace?: never;
     };
-    /** Get a review by ID */
-    get: operations["getReviewById"];
-    put?: never;
-    post?: never;
-    /** Delete a review by ID */
-    delete: operations["deleteReview"];
-    options?: never;
-    head?: never;
-    /** Update a review by ID */
-    patch: operations["updateReview"];
-    trace?: never;
-  };
-  "/sales": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sales": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all sales (admin only) */
+        get: operations["getAllSales"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get all sales (admin only) */
-    get: operations["getAllSales"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/sales/{saleId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/sales/{saleId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get sale by id (admin only) */
+        get: operations["getSaleById"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update refund status by id (admin only) */
+        patch: operations["updateRefundStatus"];
+        trace?: never;
     };
-    /** Get sale by id (admin only) */
-    get: operations["getSaleById"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    /** Update refund status by id (admin only) */
-    patch: operations["updateRefundStatus"];
-    trace?: never;
-  };
-  "/users/me/cart": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users/me/cart": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get my cart */
+        get: operations["getMyCart"];
+        /** Clear my cart */
+        put: operations["clearMyCart"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get my cart */
-    get: operations["getMyCart"];
-    /** Clear my cart */
-    put: operations["clearMyCart"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/users/me/cart/items": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users/me/cart/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add an item to my cart */
+        post: operations["addItemToMyCart"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Add an item to my cart */
-    post: operations["addItemToMyCart"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/users/me/cart/items/:productId": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users/me/cart/items/:productId": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove an item from my cart */
+        delete: operations["RemoveItemFromMyCart"];
+        options?: never;
+        head?: never;
+        /** Update an item in my cart */
+        patch: operations["updateItemInMyCart"];
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post?: never;
-    /** Remove an item from my cart */
-    delete: operations["RemoveItemFromMyCart"];
-    options?: never;
-    head?: never;
-    /** Update an item in my cart */
-    patch: operations["updateItemInMyCart"];
-    trace?: never;
-  };
-  "/users/me/wishlist": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users/me/wishlist": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get my wishlist */
+        get: operations["getMyWishlist"];
+        /** Clear my wishlist */
+        put: operations["clearMyWishlist"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get my wishlist */
-    get: operations["getMyWishlist"];
-    /** Clear my wishlist */
-    put: operations["clearMyWishlist"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/users/me/wishlist/items": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users/me/wishlist/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add an item to my wishlist */
+        post: operations["addItemToMyWishlist"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** Add an item to my wishlist */
-    post: operations["addItemToMyWishlist"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/users/me/wishlist/items/{productId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users/me/wishlist/items/{productId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove an item from my wishlist */
+        delete: operations["deleteItemFromMyWishlist"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    post?: never;
-    /** Remove an item from my wishlist */
-    delete: operations["deleteItemFromMyWishlist"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/users/me/orders": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users/me/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get my orders */
+        get: operations["getMyOrders"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get my orders */
-    get: operations["getMyOrders"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/users/me": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The current authenticated user */
+        get: operations["getCurrentUser"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update the current authenticated user */
+        patch: operations["updateCurrentUser"];
+        trace?: never;
     };
-    /** The current authenticated user */
-    get: operations["getCurrentUser"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    /** Update the current authenticated user */
-    patch: operations["updateCurrentUser"];
-    trace?: never;
-  };
-  "/users": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all users (admin only) */
+        get: operations["getAllUsers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get all users (admin only) */
-    get: operations["getAllUsers"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/users/{userId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/users/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get user by id (admin only) */
+        get: operations["getUserById"];
+        put?: never;
+        post?: never;
+        /** Delete user by id (admin only) */
+        delete: operations["deleteUserById"];
+        options?: never;
+        head?: never;
+        /** Update user by id (admin only) */
+        patch: operations["updateUserById"];
+        trace?: never;
     };
-    /** Get user by id (admin only) */
-    get: operations["getUserById"];
-    put?: never;
-    post?: never;
-    /** Delete user by id (admin only) */
-    delete: operations["deleteUserById"];
-    options?: never;
-    head?: never;
-    /** Update user by id (admin only) */
-    patch: operations["updateUserById"];
-    trace?: never;
-  };
-  "/wishlists": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/wishlists": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get All Wishlist (admin only) */
+        get: operations["getAllWishlists"];
+        /** Clear wishlist */
+        put: operations["clearWishlist"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get All Wishlist (admin only) */
-    get: operations["getAllWishlists"];
-    /** Clear wishlist */
-    put: operations["clearWishlist"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/wishlists/{wishlistId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/wishlists/{wishlistId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a wishlist by ID */
+        get: operations["getWishlistById"];
+        put?: never;
+        /** Add an item to a wishlist */
+        post: operations["addItemToWishlist"];
+        /** Remove an item from a wishlist */
+        delete: operations["deleteItemFromWishlist"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** Get a wishlist by ID */
-    get: operations["getWishlistById"];
-    put?: never;
-    /** Add an item to a wishlist */
-    post: operations["addItemToWishlist"];
-    /** Remove an item from a wishlist */
-    delete: operations["deleteItemFromWishlist"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    UserLoginResponse: {
-      accessToken: string;
-    };
-    RefreshTokenResponse: {
-      accessToken: string;
-    };
-    ForgotPasswordResponse: {
-      message: string;
-    };
-    CartFilter: {
-      /** @description Filter carts with an amount greater than or equal to this value */
-      minAmount?: number;
-      /** @description Filter carts with an amount less than or equal to this value */
-      maxAmount?: number;
-      /** @description Filter carts with a total number of products greater than or equal to this value */
-      minTotalProducts?: number;
-      /** @description Filter carts with a total number of products less than or equal to this value */
-      maxTotalProducts?: number;
-      /** @description Filter carts with a total number of items greater than or equal to this value */
-      minTotalItems?: number;
-      /** @description Filter carts with a total number of items less than or equal to this value */
-      maxTotalItems?: number;
-      /**
-       * Format: date-time
-       * @description Filter carts created after this date
-       */
-      createdAfter?: string;
-      /**
-       * Format: date-time
-       * @description Filter carts created before this date
-       */
-      createdBefore?: string;
-      /**
-       * Format: date-time
-       * @description Filter carts updated after this date
-       */
-      updatedAfter?: string;
-      /**
-       * Format: date-time
-       * @description Filter carts updated before this date
-       */
-      updatedBefore?: string;
-    };
-    GetCart: {
-      _id?: string;
-      amount?: number;
-      totalProducts?: number;
-      totalItems?: number;
-      items?: components["schemas"]["GetCartItem"][];
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    GetCartItem: {
-      itemId?: string;
-      quantity?: number;
-      totalPrice?: number;
-      totalPriceDecimal?: string;
-      product?: {
-        _id?: string;
-        name?: string;
-        image?: string;
-        variant?: components["schemas"]["ProductVariant"];
-      };
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    GetCartsResponse: {
-      data?: components["schemas"]["GetCart"][];
-      metadata?: components["schemas"]["Metadata"];
-      Links?: components["schemas"]["Links"];
-    };
-    GetCartResponse: {
-      data?: components["schemas"]["GetCart"][];
-    };
-    GetCartItemResponse: {
-      data?: components["schemas"]["GetCartItem"][];
-    };
-    AddCartItemResponse: {
-      message: string;
-    };
-    Category: {
-      _id: string;
-      name: string;
-      image?: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    SubCategory: {
-      _id: string;
-      name: string;
-      categoryId: string;
-      image?: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    GetCategoriesResponse: {
-      data?: components["schemas"]["Category"][];
-    };
-    GetCategoryResponse: {
-      data?: components["schemas"]["Category"];
-    };
-    GetSubCategoriesResponse: {
-      data?: components["schemas"]["SubCategory"][];
-    };
-    GetSubCategoryResponse: {
-      data?: components["schemas"]["SubCategory"];
-    };
-    CreateCategoryResponse: {
-      message: string;
-    };
-    CreateSubCategoryResponse: {
-      message: string;
-    };
-    ProductVariant: {
-      variation?: string;
-      sku?: string;
-      color?: string;
-      inventory?: number;
-      isInStock?: boolean;
-      globalPrice?: number;
-      globalPriceDecimal?: string;
-      salePrice?: number;
-      salePriceDecimal?: string;
-      discountPercent?: number;
-      /** Format: date-time */
-      saleStartDate?: string;
-      /** Format: date-time */
-      saleEndDate?: string;
-    };
-    Product: {
-      _id?: string;
-      name?: string;
-      isFeatured?: boolean;
-      variant?: components["schemas"]["ProductVariant"];
-      reviews?: {
-        count?: number;
-        avgRate?: number;
-        roundAvgRate?: number;
-      };
-      image?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-      /** Format: float */
-      score?: number;
-      highlights?: components["schemas"]["SearchHighlight"][];
-    };
-    CategoryWithProducts: {
-      category?: {
-        _id?: string;
-        name?: string;
-      };
-      products?: components["schemas"]["Product"][];
-    };
-    GetRecommendedProductsResponse: {
-      data?: components["schemas"]["Product"][];
-    };
-    GetBestOffersResponse: {
-      data?: components["schemas"]["CategoryWithProducts"][];
-    };
-    GetBestSellersResponse: {
-      data?: components["schemas"]["CategoryWithProducts"][];
-    };
-    ErrorModel: {
-      message: string;
-      errors?: string;
-    };
-    OrderFilter: {
-      /**
-       * @description Filter orders by order status
-       * @enum {string}
-       */
-      orderStatus?:
-        | "CREATED"
-        | "PROCESSING"
-        | "CONFIRMED"
-        | "SHIPPED"
-        | "DELIVERED"
-        | "CANCELLED"
-        | "REFUNDED"
-        | "ON_HOLD";
-      /** @description Filter orders by user ID */
-      userId?: string;
-      /** @description Filter orders with an amount greater than or equal to this value */
-      minAmount?: number;
-      /** @description Filter orders with an amount less than or equal to this value */
-      maxAmount?: number;
-      /** @description Filter orders with a tax amount greater than or equal to this value */
-      minTaxAmount?: number;
-      /** @description Filter orders with a tax amount less than or equal to this value */
-      maxTaxAmount?: number;
-      /** @description Filter orders with a shipping amount greater than or equal to this value */
-      minShippingAmount?: number;
-      /** @description Filter orders with a shipping amount less than or equal to this value */
-      maxShippingAmount?: number;
-      /** @description Filter orders with a discount amount greater than or equal to this value */
-      minDiscountAmount?: number;
-      /** @description Filter orders with a discount amount less than or equal to this value */
-      maxDiscountAmount?: number;
-      /**
-       * Format: date-time
-       * @description Filter orders created after this date
-       */
-      createdAfter?: string;
-      /**
-       * Format: date-time
-       * @description Filter orders created before this date
-       */
-      createdBefore?: string;
-      /**
-       * Format: date-time
-       * @description Filter orders updated after this date
-       */
-      updatedAfter?: string;
-      /**
-       * Format: date-time
-       * @description Filter orders updated before this date
-       */
-      updatedBefore?: string;
-    };
-    GetOrder: {
-      _id?: string;
-      userId?: string;
-      deliveryId?: string;
-      paymentId?: string;
-      orderItems?: components["schemas"]["GetSale"][];
-      totalAmount?: number;
-      taxAmount?: number;
-      shippingAmount?: number;
-      discountAmount?: number;
-      /** @enum {string} */
-      orderStatus?:
-        | "CREATED"
-        | "PROCESSING"
-        | "CONFIRMED"
-        | "SHIPPED"
-        | "DELIVERED"
-        | "CANCELLED"
-        | "REFUNDED"
-        | "ON_HOLD";
-      notes?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    GetOrderResponse: {
-      data?: components["schemas"]["GetOrder"][];
-    };
-    GetOrdersResponse: {
-      data?: components["schemas"]["GetOrder"][];
-      metadata?: components["schemas"]["Metadata"];
-      Links?: components["schemas"]["Links"];
-    };
-    Pagination: {
-      currentPage?: number;
-      totalPages?: number;
-      totalCount?: number;
-      limit?: number;
-    };
-    Metadata: {
-      page?: number;
-      limit?: number;
-      totalDocs?: number;
-      totalPages?: number;
-      hasPrevPage?: boolean;
-      hasNextPage?: boolean;
-      prevPage?: number;
-      nextPage?: number;
-      sort?: string;
-      filters?: Record<string, never>;
-    };
-    Links: {
-      self?: string;
-      next?: string;
-      prev?: string;
-    };
-    CreateCheckoutSessionResponse: {
-      /** @description The URL to redirect the user to for payment */
-      url: string;
-    };
-    HighlightText: {
-      value?: string;
-      /** @enum {string} */
-      type?: "text" | "hit";
-    };
-    SearchHighlight: {
-      /** Format: float */
-      score?: number;
-      path?: string;
-      texts?: components["schemas"]["HighlightText"][];
-    };
-    GetProductResponse: {
-      data?: components["schemas"]["Product"];
-    };
-    GetProductsResponse: {
-      data?: components["schemas"]["Product"][];
-      metadata?: components["schemas"]["Metadata"];
-      Links?: components["schemas"]["Links"];
-    };
-    CreateProductResponse: {
-      message: string;
-    };
-    ProductFilter: {
-      /** @description Comma-separated list of colors (e.g., `color=red,green`) */
-      color?: string;
-      /** @description Comma-separated list of brands */
-      brand?: string;
-      /** @description Search by product name (case-insensitive) */
-      query?: string;
-      /** @description Filter by seller ID */
-      sellerId?: string;
-      /** @description Filter by category ID */
-      subCategoryId?: string;
-      /** @description Filter by parent category ID */
-      categoryId?: string;
-      /** @description Whether the product is featured */
-      isFeatured?: boolean;
-      /**
-       * Format: float
-       * @description Minimum average rating
-       */
-      minRating?: number;
-      /**
-       * Format: float
-       * @description Maximum average rating
-       */
-      maxRating?: number;
-      /**
-       * Format: float
-       * @description Minimum sale price
-       */
-      minPrice?: number;
-      /**
-       * Format: float
-       * @description Maximum sale price
-       */
-      maxPrice?: number;
-      /** @description Minimum stock quantity */
-      minStock?: number;
-      /** @description Maximum stock quantity */
-      maxStock?: number;
-      /**
-       * Format: float
-       * @description Minimum discount percentage
-       */
-      minDiscount?: number;
-      /**
-       * Format: float
-       * @description Maximum discount percentage
-       */
-      maxDiscount?: number;
-      /**
-       * Format: date-time
-       * @description Filter products created after this date
-       */
-      createdAfter?: string;
-      /**
-       * Format: date-time
-       * @description Filter products created before this date
-       */
-      createdBefore?: string;
-      /**
-       * Format: date-time
-       * @description Filter products updated after this date
-       */
-      updatedAfter?: string;
-      /**
-       * Format: date-time
-       * @description Filter products updated before this date
-       */
-      updatedBefore?: string;
-      /** @description Comma-separated list of connectivity options */
-      connectivity?: string;
-      /** @description Comma-separated list of aspect ratios */
-      aspectRatio?: string;
-      /** @description Comma-separated list of display technologies */
-      displayTechnology?: string;
-      /** @description Comma-separated list of refresh rates */
-      refreshRate?: string;
-      /** @description Comma-separated list of resolutions */
-      resolution?: string;
-      /** @description Comma-separated list of screen sizes */
-      screenSize?: string;
-      /** @description Comma-separated list of camera frame rates */
-      cameraFrameRate?: string;
-      /** @description Comma-separated list of optical zoom values */
-      opticalZoom?: string;
-      /** @description Comma-separated list of metering descriptions */
-      meteringDescription?: string;
-      /** @description Comma-separated list of supported file formats */
-      supportedFileFormat?: string;
-      /** @description Comma-separated list of maximum aperture values */
-      maximumAperture?: string;
-      /** @description Comma-separated list of image stabilization types */
-      imageStabilization?: string;
-      /** @description Comma-separated list of maximum focal lengths */
-      maximumFocalLength?: string;
-      /** @description Comma-separated list of expanded ISO minimum values */
-      expandedIsoMinimum?: string;
-      /** @description Comma-separated list of photo sensor technologies */
-      photoSensorTechnology?: string;
-      /** @description Comma-separated list of maximum webcam image resolutions */
-      maximumWebcamImageResolution?: string;
-      /** @description Comma-separated list of video capture resolutions */
-      videoCaptureResolution?: string;
-      /** @description Comma-separated list of flash memory types */
-      flashMemoryType?: string;
-      /** @description Comma-separated list of printing technologies */
-      printingTechnology?: string;
-      /** @description Comma-separated list of printer output types */
-      printerOutput?: string;
-      /** @description Comma-separated list of maximum print speeds */
-      maximumPrintSpeed?: string;
-      /** @description Comma-separated list of maximum printer media sizes */
-      printerMediaSizeMaximum?: string;
-      /** @description Comma-separated list of print media types */
-      printMedia?: string;
-      /** @description Comma-separated list of scanner types */
-      scannerType?: string;
-      /** @description Comma-separated list of compatible devices */
-      compatibleDevices?: string;
-      /** @description Comma-separated list of display types */
-      displayType?: string;
-      /** @description Comma-separated list of sheet sizes */
-      sheetSize?: string;
-      /** @description Comma-separated list of zoom values */
-      zoom?: string;
-      /** @description Comma-separated list of digital zoom values */
-      digitalZoom?: string;
-      /** @description Comma-separated list of lens constructions */
-      lensConstruction?: string;
-      /** @description Comma-separated list of lens types */
-      lensType?: string;
-      /** @description Comma-separated list of video output types */
-      videoOutput?: string;
-      /** @description Comma-separated list of photo sensor resolutions */
-      photoSensorResolution?: string;
-      /** @description Comma-separated list of audio input types */
-      audioInput?: string;
-      /** @description Comma-separated list of audio output types */
-      audioOutputType?: string;
-      /** @description Comma-separated list of battery average life values */
-      batteryAverageLife?: string;
-      /** @description Comma-separated list of sensor types */
-      sensorType?: string;
-      /** @description Comma-separated list of total still resolutions */
-      totalStillResolution?: string;
-      /** @description Comma-separated list of maximum image sizes */
-      maximumImageSize?: string;
-      /** @description Comma-separated list of compatible mountings */
-      compatibleMountings?: string;
-      /** @description Comma-separated list of maximum monochrome print speeds */
-      maxPrintspeedMonochrome?: string;
-      /** @description Comma-separated list of controller types */
-      controllerType?: string;
-      /** @description Comma-separated list of shapes */
-      shape?: string;
-      /** @description Comma-separated list of GPS features */
-      gps?: string;
-      /** @description Comma-separated list of chipset brands */
-      chipsetBrand?: string;
-      /** @description Comma-separated list of video output interfaces */
-      videoOutputInterface?: string;
-      /** @description Comma-separated list of cache sizes */
-      cacheSize?: string;
-      /** @description Comma-separated list of graphics card descriptions */
-      graphicsCardDescription?: string;
-      /** @description Comma-separated list of number of processors */
-      numberOfProcessors?: string;
-      /** @description Comma-separated list of hard disk form factors */
-      hardDiskFormFactor?: string;
-      /** @description Comma-separated list of hard disk descriptions */
-      hardDiskDescription?: string;
-      /** @description Comma-separated list of installation types */
-      installationType?: string;
-      /** @description Comma-separated list of movement detection technologies */
-      movementDetectionTechnology?: string;
-      /** @description Comma-separated list of media types */
-      mediaType?: string;
-      /** @description Comma-separated list of color depths */
-      colorDepth?: string;
-      /** @description Comma-separated list of standard sheet capacities */
-      standardSheetCapacity?: string;
-      /** @description Comma-separated list of optical sensor technologies */
-      opticalSensorTechnology?: string;
-      /** @description Comma-separated list of audio encoding types */
-      audioEncoding?: string;
-      /** @description Comma-separated list of audio output modes */
-      audioOutputMode?: string;
-      /** @description Comma-separated list of total HDMI ports */
-      totalHdmiPorts?: string;
-      /** @description Comma-separated list of surround sound channel configurations */
-      surroundSoundChannelConfiguration?: string;
-      /** @description Comma-separated list of care instructions */
-      careInstructions?: string;
-      /** @description Comma-separated list of speaker maximum output powers */
-      speakerMaximumOutputPower?: string;
-      /** @description Comma-separated list of speaker maximum volumes */
-      speakerMaximumVolume?: string;
-      /** @description Comma-separated list of fabric types */
-      fabricType?: string;
-      /** @description Comma-separated list of origins */
-      origin?: string;
-      /** @description Comma-separated list of operating systems */
-      operatingSystem?: string;
-      /** @description Comma-separated list of cellular technologies */
-      cellularTechnology?: string;
-      /** @description Comma-separated list of battery power ratings */
-      batteryPowerRating?: string;
-      /** @description Comma-separated list of battery capacities */
-      batteryCapacity?: string;
-      /** @description Comma-separated list of wireless network technologies */
-      wirelessNetworkTechnology?: string;
-      /** @description Comma-separated list of materials */
-      material?: string;
-      /** @description Comma-separated list of connector types */
-      connectorType?: string;
-      /** @description Comma-separated list of input voltages */
-      inputVoltage?: string;
-      /** @description Comma-separated list of mounting types */
-      mountingType?: string;
-      /** @description Comma-separated list of human interface inputs */
-      humanInterfaceInput?: string;
-      /** @description Comma-separated list of wireless communication standards */
-      wirelessCommunicationStandard?: string;
-      /** @description Comma-separated list of departments */
-      department?: string;
-      /** @description Comma-separated list of specific uses for products */
-      specificUsesForProduct?: string;
-      /** @description Comma-separated list of RAM sizes */
-      ramSize?: string;
-      /** @description Comma-separated list of RAM memory technologies */
-      ramMemoryTechnology?: string;
-      /** @description Comma-separated list of memory speeds */
-      memorySpeed?: string;
-      /** @description Comma-separated list of CPU models */
-      cpuModel?: string;
-      /** @description Comma-separated list of CPU brands */
-      cpuBrand?: string;
-      /** @description Comma-separated list of hard drive interfaces */
-      hardDriveInterface?: string;
-      /** @description Comma-separated list of hard drive sizes */
-      hardDriveSize?: string;
-      /** @description Comma-separated list of hard drive types */
-      hardDrive?: string;
-      /** @description Comma-separated list of graphics coprocessors */
-      graphicsCoprocessor?: string;
-      /** @description Comma-separated list of graphics RAM sizes */
-      graphicsRamSize?: string;
-      /** @description Comma-separated list of compatible platforms */
-      compatiblePlatform?: string;
-      /** @description Comma-separated list of lock types */
-      lockType?: string;
-      /** @description Comma-separated list of finish types */
-      finishType?: string;
-      /** @description Comma-separated list of lamp types */
-      lampType?: string;
-      /** @description Comma-separated list of shade colors */
-      shadeColor?: string;
-      /** @description Comma-separated list of shade materials */
-      shadeMaterial?: string;
-      /** @description Comma-separated list of switch types */
-      switchType?: string;
-      /** @description Comma-separated list of brightness values */
-      brightness?: string;
-      /** @description Comma-separated list of lighting methods */
-      lightingMethod?: string;
-      /** @description Comma-separated list of control types */
-      controlType?: string;
-      /** @description Comma-separated list of control methods */
-      controlMethod?: string;
-      /** @description Comma-separated list of bulb shape sizes */
-      bulbShapeSize?: string;
-      /** @description Comma-separated list of bulb bases */
-      bulbBase?: string;
-      /** @description Comma-separated list of light colors */
-      lightColor?: string;
-      /** @description Comma-separated list of capacities */
-      capacity?: string;
-      /** @description Comma-separated list of cut types */
-      cutType?: string;
-      /** @description Comma-separated list of telephone types */
-      telephoneType?: string;
-      /** @description Comma-separated list of power sources */
-      powerSource?: string;
-      /** @description Comma-separated list of answering system types */
-      answeringSystemType?: string;
-      /** @description Comma-separated list of supported internet services */
-      supportedInternetServices?: string;
-      /** @description Comma-separated list of memory storage capacities */
-      memoryStorageCapacity?: string;
-      /** @description Comma-separated list of wireless carriers */
-      wirelessCarrier?: string;
-      /** @description Comma-separated list of form factors */
-      formFactor?: string;
-    };
-    GetProductsFilterResponse: {
-      filters?: {
-        categories?: {
-          category?: {
+    schemas: {
+        UserLoginResponse: {
+            accessToken: string;
+        };
+        RefreshTokenResponse: {
+            accessToken: string;
+        };
+        ForgotPasswordResponse: {
+            message: string;
+        };
+        CartFilter: {
+            /** @description Filter carts with an amount greater than or equal to this value */
+            minAmount?: number;
+            /** @description Filter carts with an amount less than or equal to this value */
+            maxAmount?: number;
+            /** @description Filter carts with a total number of products greater than or equal to this value */
+            minTotalProducts?: number;
+            /** @description Filter carts with a total number of products less than or equal to this value */
+            maxTotalProducts?: number;
+            /** @description Filter carts with a total number of items greater than or equal to this value */
+            minTotalItems?: number;
+            /** @description Filter carts with a total number of items less than or equal to this value */
+            maxTotalItems?: number;
+            /**
+             * Format: date-time
+             * @description Filter carts created after this date
+             */
+            createdAfter?: string;
+            /**
+             * Format: date-time
+             * @description Filter carts created before this date
+             */
+            createdBefore?: string;
+            /**
+             * Format: date-time
+             * @description Filter carts updated after this date
+             */
+            updatedAfter?: string;
+            /**
+             * Format: date-time
+             * @description Filter carts updated before this date
+             */
+            updatedBefore?: string;
+        };
+        GetCart: {
             _id?: string;
-            name?: string;
-          };
-          subcategories?: {
+            amount?: number;
+            totalProducts?: number;
+            totalItems?: number;
+            items?: components["schemas"]["GetCartItem"][];
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        GetCartItem: {
+            itemId?: string;
+            quantity?: number;
+            totalPrice?: number;
+            totalPriceDecimal?: string;
+            product?: {
+                _id?: string;
+                name?: string;
+                image?: string;
+                variant?: components["schemas"]["ProductVariant"];
+            };
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        GetCartsResponse: {
+            data?: components["schemas"]["GetCart"][];
+            metadata?: components["schemas"]["Metadata"];
+            Links?: components["schemas"]["Links"];
+        };
+        GetCartResponse: {
+            data?: components["schemas"]["GetCart"][];
+        };
+        GetCartItemResponse: {
+            data?: components["schemas"]["GetCartItem"][];
+        };
+        AddCartItemResponse: {
+            message: string;
+        };
+        Category: {
+            _id: string;
+            name: string;
+            image?: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        SubCategory: {
+            _id: string;
+            name: string;
+            categoryId: string;
+            image?: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        GetCategoriesResponse: {
+            data?: components["schemas"]["Category"][];
+        };
+        GetCategoryResponse: {
+            data?: components["schemas"]["Category"];
+        };
+        GetSubCategoriesResponse: {
+            data?: components["schemas"]["SubCategory"][];
+        };
+        GetSubCategoryResponse: {
+            data?: components["schemas"]["SubCategory"];
+        };
+        CreateCategoryResponse: {
+            message: string;
+        };
+        CreateSubCategoryResponse: {
+            message: string;
+        };
+        GetRecommendedProductsResponse: {
+            data?: components["schemas"]["Product"][];
+        };
+        GetBestOffersResponse: {
+            data?: components["schemas"]["Product"][];
+        };
+        GetBestSellersResponse: {
+            data?: components["schemas"]["Product"][];
+        };
+        ErrorModel: {
+            message: string;
+            errors?: string;
+        };
+        OrderFilter: {
+            /**
+             * @description Filter orders by order status
+             * @enum {string}
+             */
+            orderStatus?: "CREATED" | "PROCESSING" | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED" | "REFUNDED" | "ON_HOLD";
+            /** @description Filter orders by user ID */
+            userId?: string;
+            /** @description Filter orders with an amount greater than or equal to this value */
+            minAmount?: number;
+            /** @description Filter orders with an amount less than or equal to this value */
+            maxAmount?: number;
+            /** @description Filter orders with a tax amount greater than or equal to this value */
+            minTaxAmount?: number;
+            /** @description Filter orders with a tax amount less than or equal to this value */
+            maxTaxAmount?: number;
+            /** @description Filter orders with a shipping amount greater than or equal to this value */
+            minShippingAmount?: number;
+            /** @description Filter orders with a shipping amount less than or equal to this value */
+            maxShippingAmount?: number;
+            /** @description Filter orders with a discount amount greater than or equal to this value */
+            minDiscountAmount?: number;
+            /** @description Filter orders with a discount amount less than or equal to this value */
+            maxDiscountAmount?: number;
+            /**
+             * Format: date-time
+             * @description Filter orders created after this date
+             */
+            createdAfter?: string;
+            /**
+             * Format: date-time
+             * @description Filter orders created before this date
+             */
+            createdBefore?: string;
+            /**
+             * Format: date-time
+             * @description Filter orders updated after this date
+             */
+            updatedAfter?: string;
+            /**
+             * Format: date-time
+             * @description Filter orders updated before this date
+             */
+            updatedBefore?: string;
+        };
+        GetOrder: {
             _id?: string;
-            name?: string;
-          }[];
-        }[];
-        priceRange?: {
-          highestPrice?: number;
-          lowestPrice?: number;
-        }[];
-        specifications?: {
-          key?: string;
-          values?: string[];
-        }[];
-      };
-    };
-    Review: {
-      /** @description The unique identifier of the review */
-      _id?: string;
-      /** @description The rating given in the review (1-5) */
-      rating: number;
-      /** @description The review comment */
-      comment: string;
-      /** @description The ID of the user who created the review */
-      userId: string;
-      /** @description The ID of the product being reviewed */
-      productId: string;
-      /**
-       * Format: date-time
-       * @description The date and time when the review was created
-       */
-      createdAt?: string;
-      /**
-       * Format: date-time
-       * @description The date and time when the review was last updated
-       */
-      updatedAt?: string;
-    };
-    CreateReview: {
-      /** @description The rating given in the review (1-5) */
-      rating: number;
-      /** @description The review comment */
-      comment: string;
-    };
-    UpdateReview: {
-      /** @description The rating given in the review (1-5) */
-      rating?: number;
-      /** @description The review comment */
-      comment?: string;
-    };
-    GetReviewsResponse: {
-      data?: components["schemas"]["Review"][];
-    };
-    GetReviewResponse: {
-      data?: components["schemas"]["Review"];
-    };
-    CreateReviewResponse: {
-      message: string;
-    };
-    SaleFilter: {
-      /** @description Filter sales by product name */
-      productName?: string;
-      /** @description Filter sales by seller ID */
-      sellerId?: string;
-      /** @description Filter sales with a quantity greater than or equal to this value */
-      minQuantity?: number;
-      /** @description Filter sales with a quantity less than or equal to this value */
-      maxQuantity?: number;
-      /** @description Filter sales with a refunded quantity greater than or equal to this value */
-      minRefundedQuantity?: number;
-      /** @description Filter sales with a refunded quantity less than or equal to this value */
-      maxRefundedQuantity?: number;
-      /** @description Filter sales with a sale price greater than or equal to this value */
-      minSalePrice?: number;
-      /** @description Filter sales with a sale price less than or equal to this value */
-      maxSalePrice?: number;
-      /** @description Filter sales with a total price greater than or equal to this value */
-      minTotalPrice?: number;
-      /** @description Filter sales with a total price less than or equal to this value */
-      maxTotalPrice?: number;
-      /**
-       * Format: date-time
-       * @description Filter sales created after this date
-       */
-      createdAfter?: string;
-      /**
-       * Format: date-time
-       * @description Filter sales created before this date
-       */
-      createdBefore?: string;
-      /**
-       * Format: date-time
-       * @description Filter sales updated after this date
-       */
-      updatedAfter?: string;
-      /**
-       * Format: date-time
-       * @description Filter sales updated before this date
-       */
-      updatedBefore?: string;
-    };
-    GetSale: {
-      _id?: string;
-      orderId?: string;
-      productId?: string;
-      sellerId?: string;
-      quantity?: number;
-      salePrice?: number;
-      totalPrice?: number;
-      productName?: string;
-      sku?: string;
-      image?: string;
-      isRefunded?: boolean;
-      refundedQuantity?: number;
-      notes?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    GetSaleResponse: {
-      data?: components["schemas"]["GetSale"];
-    };
-    GetSalesResponse: {
-      data?: components["schemas"]["GetSaleResponse"][];
-      metadata?: components["schemas"]["Metadata"];
-      Links?: components["schemas"]["Links"];
-    };
-    Contact: {
-      email?: string;
-      phone?: string;
-      website?: string;
-    };
-    Address: {
-      line1?: string;
-      line2?: string;
-      city?: string;
-      country?: string;
-      postalCode?: string;
-    };
-    Profile: {
-      userId?: string;
-      familyName?: string;
-      givenName?: string;
-      phone?: string;
-      address?: components["schemas"]["Address"];
-    };
-    User: {
-      _id?: string;
-      email?: string;
-      role?: string;
-      isVerified?: boolean;
-      profile?: components["schemas"]["Profile"];
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    UserFilter: {
-      city?: string;
-      country?: string;
-      role?: string;
-      query?: string;
-      isVerified?: boolean;
-      /** Format: date-time */
-      createdAfter?: string;
-      /** Format: date-time */
-      createdBefore?: string;
-      /** Format: date-time */
-      updatedAfter?: string;
-      /** Format: date-time */
-      updatedBefore?: string;
-    };
-    GetUserResponse: {
-      data?: components["schemas"]["User"];
-    };
-    GetUsersResponse: {
-      data?: components["schemas"]["User"][];
-      metadata?: components["schemas"]["Metadata"];
-      Links?: components["schemas"]["Links"];
-    };
-    UpdateUser: {
-      familyName?: string;
-      givenName?: string;
-      phone?: string;
-      role?: string;
-      address?: components["schemas"]["Address"];
-    };
-    CreateUser: {
-      role: string;
-      familyName: string;
-      givenName: string;
-      email: string;
-      password: string;
-      confirmPassword: string;
-    };
-    CreateUserResponse: {
-      message?: string;
-    };
-    GetWishlist: {
-      _id?: string;
-      productId?: string;
-      productName?: string;
-      image?: string;
-      variant?: components["schemas"]["ProductVariant"];
-    };
-    GetWishlistResponse: {
-      data?: components["schemas"]["GetWishlist"];
-    };
-    GetWishlistsResponse: {
-      data?: components["schemas"]["GetWishlist"][];
-    };
-    AddWishlistItemResponse: {
-      message: string;
-    };
-  };
-  responses: {
-    /** @description Internal server error */
-    InternalServerError: {
-      headers: {
-        [name: string]: unknown;
-      };
-      content: {
-        "application/json": components["schemas"]["ErrorModel"];
-      };
-    };
-    /** @description Not found error */
-    NotFoundError: {
-      headers: {
-        [name: string]: unknown;
-      };
-      content: {
-        "application/json": components["schemas"]["ErrorModel"];
-      };
-    };
-    /** @description Bad request error */
-    BadRequestError: {
-      headers: {
-        [name: string]: unknown;
-      };
-      content: {
-        "application/json": components["schemas"]["ErrorModel"];
-      };
-    };
-    /** @description Unauthorized error */
-    UnauthorizedError: {
-      headers: {
-        [name: string]: unknown;
-      };
-      content: {
-        "application/json": components["schemas"]["ErrorModel"];
-      };
-    };
-    /** @description Forbidden error */
-    ForbiddenError: {
-      headers: {
-        [name: string]: unknown;
-      };
-      content: {
-        "application/json": components["schemas"]["ErrorModel"];
-      };
-    };
-    /** @description Conflict error */
-    ConflictError: {
-      headers: {
-        [name: string]: unknown;
-      };
-      content: {
-        "application/json": components["schemas"]["ErrorModel"];
-      };
-    };
-  };
-  parameters: {
-    /** @description Specifies the platform. Must be either "marketplace" or "vendor". */
-    PlatformParam: "marketplace" | "vendor";
-    /** @description Cart ID */
-    CartId: string;
-    /** @description Item ID */
-    CartItemId: string;
-    /** @description Sort order. Use commas to separate multiple fields.
-     *     Allowed fields: `createdAt`, `updatedAt`, `amount`, `totalProducts`, `totalItems`.
-     *     Prefix with `-` for descending order (e.g., `sort=createdAt,-amount,-totalProducts`).
-     *      */
-    CartSort: string;
-    /** @description Filter criteria for carts */
-    CartFilterParams: components["schemas"]["CartFilter"];
-    /** @description Category Id */
-    CategoryId: string;
-    /** @description Sub Category ID */
-    SubCategoryId: string;
-    /** @description Category ID for filtering products */
-    CategoryIdQuery: string;
-    /** @description Exclude a specific product by ID */
-    ExcludeProductIdQuery: string;
-    /** @description Order ID */
-    OrderId: string;
-    /** @description Sort order. Use commas to separate multiple fields.
-     *     Allowed fields: `createdAt`, `updatedAt`, `amount`, `taxAmount`, `shippingAmount`, `discountAmount`.
-     *     Prefix with `-` for descending order (e.g., `sort=createdAt,-amount`).
-     *      */
-    OrderSort: string;
-    /** @description Filter criteria for Orders */
-    OrderFilterParams: components["schemas"]["OrderFilter"];
-    /** @description Page number for pagination */
-    Page: number;
-    /** @description Number of items per page */
-    Limit: number;
-    /** @description Sort order. Use commas to separate multiple fields.
-     *     Allowed fields: `createdAt`, `updatedAt`, `name`, `rating`, `numOfReviews`, `price`, `discount`, `popularity`, `bestSelling`, `stockAvailability`.
-     *     Prefix with `-` for descending order (e.g., `sort=createdAt,-popularity`).
-     *      */
-    ProductSort: string;
-    /** @description Filter criteria for products */
-    ProductFilterParams: components["schemas"]["ProductFilter"];
-    /** @description ID of the product */
-    ProductId: string;
-    /** @description ID of the review */
-    ReviewId: string;
-    /** @description Sale ID */
-    SaleId: string;
-    /** @description Sort sale. Use commas to separate multiple fields.
-     *     Allowed fields: `createdAt`, `updatedAt`, `productName`, `quantity`, `salePrice`, `totalPrice`, `refundedQuantity`.
-     *     Prefix with `-` for descending sale (e.g., `sort=createdAt,-quantity`).
-     *      */
-    SaleSort: string;
-    /** @description Filter criteria for sales */
-    SaleFilterParams: components["schemas"]["SaleFilter"];
-    UserId: string;
-    /** @description Sort order. Use commas to separate multiple fields.
-     *     Allowed fields: `createdAt`, `updatedAt`, `familyName`, `givenName`.
-     *     Prefix with `-` for descending order (e.g., `sort=createdAt,-familyName).
-     *      */
-    UserSort: string;
-    /** @description Filter criteria for Users */
-    UserFilterParams: components["schemas"]["UserFilter"];
-    WishlistId: string;
-  };
-  requestBodies: {
-    RegisterUser: {
-      content: {
-        "application/json": {
-          /** Format: email */
-          email: string;
-          password: string;
-          confirmPassword: string;
-          wishlist?: {
-            productId: string;
-          }[];
-          cartItems?: {
-            quantity: number;
-            productId: string;
-          }[];
+            userId?: string;
+            deliveryId?: string;
+            paymentId?: string;
+            orderItems?: components["schemas"]["GetSale"][];
+            totalAmount?: number;
+            taxAmount?: number;
+            shippingAmount?: number;
+            discountAmount?: number;
+            /** @enum {string} */
+            orderStatus?: "CREATED" | "PROCESSING" | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED" | "REFUNDED" | "ON_HOLD";
+            notes?: string;
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
         };
-      };
-    };
-    UserLogin: {
-      content: {
-        "application/json": {
-          /** Format: email */
-          email: string;
-          password: string;
+        GetOrderResponse: {
+            data?: components["schemas"]["GetOrder"][];
         };
-      };
-    };
-    VerifyEmail: {
-      content: {
-        "application/json": {
-          /** Format: email */
-          email: string;
-          verificationCode: string;
+        GetOrdersResponse: {
+            data?: components["schemas"]["GetOrder"][];
+            metadata?: components["schemas"]["Metadata"];
+            Links?: components["schemas"]["Links"];
         };
-      };
-    };
-    ResendVerificationCode: {
-      content: {
-        "application/json": {
-          /** Format: email */
-          email: string;
+        Pagination: {
+            currentPage?: number;
+            totalPages?: number;
+            totalCount?: number;
+            limit?: number;
         };
-      };
-    };
-    ForgotPassword: {
-      content: {
-        "application/json": {
-          /** Format: email */
-          email: string;
+        Metadata: {
+            page?: number;
+            limit?: number;
+            totalDocs?: number;
+            totalPages?: number;
+            hasPrevPage?: boolean;
+            hasNextPage?: boolean;
+            prevPage?: number;
+            nextPage?: number;
+            sort?: string;
+            filters?: Record<string, never>;
         };
-      };
-    };
-    ResetPassword: {
-      content: {
-        "application/json": {
-          resetToken: string;
-          password: string;
-          confirmPassword: string;
+        Links: {
+            self?: string;
+            next?: string;
+            prev?: string;
         };
-      };
-    };
-    AddCartItem: {
-      content: {
-        "application/json": {
-          productId: string;
-          quantity: number;
+        CreateCheckoutSessionResponse: {
+            /** @description The URL to redirect the user to for payment */
+            url: string;
         };
-      };
-    };
-    UpdateItemInMyCart: {
-      content: {
-        "application/json": {
-          quantity: number;
+        HighlightText: {
+            value?: string;
+            /** @enum {string} */
+            type?: "text" | "hit";
         };
-      };
-    };
-    UpdateCartItem: {
-      content: {
-        "application/json": {
-          quantity: number;
+        SearchHighlight: {
+            /** Format: float */
+            score?: number;
+            path?: string;
+            texts?: components["schemas"]["HighlightText"][];
         };
-      };
-    };
-    CreateCategory: {
-      content: {
-        "multipart/form-data": {
-          name: string;
-          description?: string;
-          /** Format: binary */
-          image?: string;
-        };
-      };
-    };
-    UpdateCategory: {
-      content: {
-        "multipart/form-data": {
-          name: string;
-          description?: string;
-          /** Format: binary */
-          image?: string;
-        };
-      };
-    };
-    CreateSubCategory: {
-      content: {
-        "multipart/form-data": {
-          name: string;
-          description?: string;
-          /** Format: binary */
-          image?: string;
-        };
-      };
-    };
-    UpdateSubCategory: {
-      content: {
-        "multipart/form-data": {
-          name: string;
-          description?: string;
-          /** Format: binary */
-          image?: string;
-        };
-      };
-    };
-    UpdateOrderStatus: {
-      content: {
-        "application/json": {
-          /** @enum {string} */
-          orderStatus:
-            | "CREATED"
-            | "PROCESSING"
-            | "CONFIRMED"
-            | "SHIPPED"
-            | "DELIVERED"
-            | "CANCELLED"
-            | "REFUNDED"
-            | "ON_HOLD";
-        };
-      };
-    };
-    CreateProduct: {
-      content: {
-        "multipart/form-data": {
-          name: string;
-          description: string;
-          brand: string;
-          color?: string;
-          /** @description MongoDB ObjectId */
-          subCategoryId: string;
-          /** @description MongoDB ObjectId */
-          categoryId?: string;
-          variants: {
-            variation: string;
-            sku: string;
-            inventory: number;
-            globalPrice: number;
+        ProductVariant: {
+            variation?: string;
+            sku?: string;
+            color?: string;
+            inventory?: number;
+            isInStock?: boolean;
+            globalPrice?: number;
+            globalPriceDecimal?: string;
             salePrice?: number;
+            salePriceDecimal?: string;
             discountPercent?: number;
             /** Format: date-time */
             saleStartDate?: string;
             /** Format: date-time */
             saleEndDate?: string;
-          }[];
-          specifications: {
-            certifications: string;
-            ramSize?: number;
-            graphics?: string;
-            processor?: string;
-            cpuSpeed?: number;
-            cpuManufacturer?: string;
-            graphicsProcessorManufacturer?: string;
-            screenSize?: number;
-            resolution?: string;
-            storage?: number;
-            memory?: number;
-            cameraResolution?: number;
-            operatingSystem?: string;
-            audioOutput?: string;
-            connectivity?: string;
-            compatiblePlatform?: string;
-            sensor?: string;
-            energyEfficiency?: string;
-            batteryLife?: number;
-            weight?: number;
-            waterResistance?: boolean;
-            fitnessTracking?: boolean;
-            sleepTracking?: boolean;
-            voiceControl?: boolean;
-            remoteControl?: boolean;
-          };
-          images?: string[];
         };
-      };
-    };
-    /** @description Product update with file uploads. */
-    UpdateProduct: {
-      content: {
-        "multipart/form-data": {
-          name?: string;
-          description?: string;
-          brand?: string;
-          color?: string;
-          /** @description MongoDB ObjectId */
-          subCategoryId?: string;
-          /** @description MongoDB ObjectId */
-          categoryId?: string;
-          variants?: {
-            variation: string;
-            sku: string;
-            inventory: number;
-            globalPrice: number;
+        ProductImage: {
+            publicId?: string;
+            tiny?: string;
+            medium?: string;
+            large?: string;
+        };
+        ProductReview: {
+            count?: number;
+            avgRate?: number;
+            roundAvgRate?: number;
+        };
+        Product: {
+            _id?: string;
+            name?: string;
+            isFeatured?: boolean;
+            variant?: components["schemas"]["ProductVariant"];
+            reviews?: components["schemas"]["ProductReview"];
+            image?: components["schemas"]["ProductImage"];
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            salesCount?: number;
+            /** Format: float */
+            priorityScore?: number;
+            /** Format: float */
+            score?: number;
+            highlights?: components["schemas"]["SearchHighlight"][];
+        };
+        GetProductResponse: {
+            data?: components["schemas"]["Product"];
+        };
+        GetProductsResponse: {
+            data?: components["schemas"]["Product"][];
+            metadata?: components["schemas"]["Metadata"];
+            Links?: components["schemas"]["Links"];
+        };
+        CreateProductResponse: {
+            message: string;
+        };
+        ProductFilter: {
+            /** @description Comma-separated list of colors (e.g., `color=red,green`) */
+            color?: string;
+            /** @description Comma-separated list of brands */
+            brand?: string;
+            /** @description Search by product name (case-insensitive) */
+            query?: string;
+            /** @description Filter by seller ID */
+            sellerId?: string;
+            /** @description Filter by category ID */
+            subCategoryId?: string;
+            /** @description Filter by parent category ID */
+            categoryId?: string;
+            /** @description Whether the product is featured */
+            isFeatured?: boolean;
+            /**
+             * Format: float
+             * @description Minimum average rating
+             */
+            minRating?: number;
+            /**
+             * Format: float
+             * @description Maximum average rating
+             */
+            maxRating?: number;
+            /**
+             * Format: float
+             * @description Minimum sale price
+             */
+            minPrice?: number;
+            /**
+             * Format: float
+             * @description Maximum sale price
+             */
+            maxPrice?: number;
+            /** @description Minimum stock quantity */
+            minStock?: number;
+            /** @description Maximum stock quantity */
+            maxStock?: number;
+            /**
+             * Format: float
+             * @description Minimum discount percentage
+             */
+            minDiscount?: number;
+            /**
+             * Format: float
+             * @description Maximum discount percentage
+             */
+            maxDiscount?: number;
+            /**
+             * Format: date-time
+             * @description Filter products created after this date
+             */
+            createdAfter?: string;
+            /**
+             * Format: date-time
+             * @description Filter products created before this date
+             */
+            createdBefore?: string;
+            /**
+             * Format: date-time
+             * @description Filter products updated after this date
+             */
+            updatedAfter?: string;
+            /**
+             * Format: date-time
+             * @description Filter products updated before this date
+             */
+            updatedBefore?: string;
+            /** @description Comma-separated list of connectivity options */
+            connectivity?: string;
+            /** @description Comma-separated list of aspect ratios */
+            aspectRatio?: string;
+            /** @description Comma-separated list of display technologies */
+            displayTechnology?: string;
+            /** @description Comma-separated list of refresh rates */
+            refreshRate?: string;
+            /** @description Comma-separated list of resolutions */
+            resolution?: string;
+            /** @description Comma-separated list of screen sizes */
+            screenSize?: string;
+            /** @description Comma-separated list of camera frame rates */
+            cameraFrameRate?: string;
+            /** @description Comma-separated list of optical zoom values */
+            opticalZoom?: string;
+            /** @description Comma-separated list of metering descriptions */
+            meteringDescription?: string;
+            /** @description Comma-separated list of supported file formats */
+            supportedFileFormat?: string;
+            /** @description Comma-separated list of maximum aperture values */
+            maximumAperture?: string;
+            /** @description Comma-separated list of image stabilization types */
+            imageStabilization?: string;
+            /** @description Comma-separated list of maximum focal lengths */
+            maximumFocalLength?: string;
+            /** @description Comma-separated list of expanded ISO minimum values */
+            expandedIsoMinimum?: string;
+            /** @description Comma-separated list of photo sensor technologies */
+            photoSensorTechnology?: string;
+            /** @description Comma-separated list of maximum webcam image resolutions */
+            maximumWebcamImageResolution?: string;
+            /** @description Comma-separated list of video capture resolutions */
+            videoCaptureResolution?: string;
+            /** @description Comma-separated list of flash memory types */
+            flashMemoryType?: string;
+            /** @description Comma-separated list of printing technologies */
+            printingTechnology?: string;
+            /** @description Comma-separated list of printer output types */
+            printerOutput?: string;
+            /** @description Comma-separated list of maximum print speeds */
+            maximumPrintSpeed?: string;
+            /** @description Comma-separated list of maximum printer media sizes */
+            printerMediaSizeMaximum?: string;
+            /** @description Comma-separated list of print media types */
+            printMedia?: string;
+            /** @description Comma-separated list of scanner types */
+            scannerType?: string;
+            /** @description Comma-separated list of compatible devices */
+            compatibleDevices?: string;
+            /** @description Comma-separated list of display types */
+            displayType?: string;
+            /** @description Comma-separated list of sheet sizes */
+            sheetSize?: string;
+            /** @description Comma-separated list of zoom values */
+            zoom?: string;
+            /** @description Comma-separated list of digital zoom values */
+            digitalZoom?: string;
+            /** @description Comma-separated list of lens constructions */
+            lensConstruction?: string;
+            /** @description Comma-separated list of lens types */
+            lensType?: string;
+            /** @description Comma-separated list of video output types */
+            videoOutput?: string;
+            /** @description Comma-separated list of photo sensor resolutions */
+            photoSensorResolution?: string;
+            /** @description Comma-separated list of audio input types */
+            audioInput?: string;
+            /** @description Comma-separated list of audio output types */
+            audioOutputType?: string;
+            /** @description Comma-separated list of battery average life values */
+            batteryAverageLife?: string;
+            /** @description Comma-separated list of sensor types */
+            sensorType?: string;
+            /** @description Comma-separated list of total still resolutions */
+            totalStillResolution?: string;
+            /** @description Comma-separated list of maximum image sizes */
+            maximumImageSize?: string;
+            /** @description Comma-separated list of compatible mountings */
+            compatibleMountings?: string;
+            /** @description Comma-separated list of maximum monochrome print speeds */
+            maxPrintspeedMonochrome?: string;
+            /** @description Comma-separated list of controller types */
+            controllerType?: string;
+            /** @description Comma-separated list of shapes */
+            shape?: string;
+            /** @description Comma-separated list of GPS features */
+            gps?: string;
+            /** @description Comma-separated list of chipset brands */
+            chipsetBrand?: string;
+            /** @description Comma-separated list of video output interfaces */
+            videoOutputInterface?: string;
+            /** @description Comma-separated list of cache sizes */
+            cacheSize?: string;
+            /** @description Comma-separated list of graphics card descriptions */
+            graphicsCardDescription?: string;
+            /** @description Comma-separated list of number of processors */
+            numberOfProcessors?: string;
+            /** @description Comma-separated list of hard disk form factors */
+            hardDiskFormFactor?: string;
+            /** @description Comma-separated list of hard disk descriptions */
+            hardDiskDescription?: string;
+            /** @description Comma-separated list of installation types */
+            installationType?: string;
+            /** @description Comma-separated list of movement detection technologies */
+            movementDetectionTechnology?: string;
+            /** @description Comma-separated list of media types */
+            mediaType?: string;
+            /** @description Comma-separated list of color depths */
+            colorDepth?: string;
+            /** @description Comma-separated list of standard sheet capacities */
+            standardSheetCapacity?: string;
+            /** @description Comma-separated list of optical sensor technologies */
+            opticalSensorTechnology?: string;
+            /** @description Comma-separated list of audio encoding types */
+            audioEncoding?: string;
+            /** @description Comma-separated list of audio output modes */
+            audioOutputMode?: string;
+            /** @description Comma-separated list of total HDMI ports */
+            totalHdmiPorts?: string;
+            /** @description Comma-separated list of surround sound channel configurations */
+            surroundSoundChannelConfiguration?: string;
+            /** @description Comma-separated list of care instructions */
+            careInstructions?: string;
+            /** @description Comma-separated list of speaker maximum output powers */
+            speakerMaximumOutputPower?: string;
+            /** @description Comma-separated list of speaker maximum volumes */
+            speakerMaximumVolume?: string;
+            /** @description Comma-separated list of fabric types */
+            fabricType?: string;
+            /** @description Comma-separated list of origins */
+            origin?: string;
+            /** @description Comma-separated list of operating systems */
+            operatingSystem?: string;
+            /** @description Comma-separated list of cellular technologies */
+            cellularTechnology?: string;
+            /** @description Comma-separated list of battery power ratings */
+            batteryPowerRating?: string;
+            /** @description Comma-separated list of battery capacities */
+            batteryCapacity?: string;
+            /** @description Comma-separated list of wireless network technologies */
+            wirelessNetworkTechnology?: string;
+            /** @description Comma-separated list of materials */
+            material?: string;
+            /** @description Comma-separated list of connector types */
+            connectorType?: string;
+            /** @description Comma-separated list of input voltages */
+            inputVoltage?: string;
+            /** @description Comma-separated list of mounting types */
+            mountingType?: string;
+            /** @description Comma-separated list of human interface inputs */
+            humanInterfaceInput?: string;
+            /** @description Comma-separated list of wireless communication standards */
+            wirelessCommunicationStandard?: string;
+            /** @description Comma-separated list of departments */
+            department?: string;
+            /** @description Comma-separated list of specific uses for products */
+            specificUsesForProduct?: string;
+            /** @description Comma-separated list of RAM sizes */
+            ramSize?: string;
+            /** @description Comma-separated list of RAM memory technologies */
+            ramMemoryTechnology?: string;
+            /** @description Comma-separated list of memory speeds */
+            memorySpeed?: string;
+            /** @description Comma-separated list of CPU models */
+            cpuModel?: string;
+            /** @description Comma-separated list of CPU brands */
+            cpuBrand?: string;
+            /** @description Comma-separated list of hard drive interfaces */
+            hardDriveInterface?: string;
+            /** @description Comma-separated list of hard drive sizes */
+            hardDriveSize?: string;
+            /** @description Comma-separated list of hard drive types */
+            hardDrive?: string;
+            /** @description Comma-separated list of graphics coprocessors */
+            graphicsCoprocessor?: string;
+            /** @description Comma-separated list of graphics RAM sizes */
+            graphicsRamSize?: string;
+            /** @description Comma-separated list of compatible platforms */
+            compatiblePlatform?: string;
+            /** @description Comma-separated list of lock types */
+            lockType?: string;
+            /** @description Comma-separated list of finish types */
+            finishType?: string;
+            /** @description Comma-separated list of lamp types */
+            lampType?: string;
+            /** @description Comma-separated list of shade colors */
+            shadeColor?: string;
+            /** @description Comma-separated list of shade materials */
+            shadeMaterial?: string;
+            /** @description Comma-separated list of switch types */
+            switchType?: string;
+            /** @description Comma-separated list of brightness values */
+            brightness?: string;
+            /** @description Comma-separated list of lighting methods */
+            lightingMethod?: string;
+            /** @description Comma-separated list of control types */
+            controlType?: string;
+            /** @description Comma-separated list of control methods */
+            controlMethod?: string;
+            /** @description Comma-separated list of bulb shape sizes */
+            bulbShapeSize?: string;
+            /** @description Comma-separated list of bulb bases */
+            bulbBase?: string;
+            /** @description Comma-separated list of light colors */
+            lightColor?: string;
+            /** @description Comma-separated list of capacities */
+            capacity?: string;
+            /** @description Comma-separated list of cut types */
+            cutType?: string;
+            /** @description Comma-separated list of telephone types */
+            telephoneType?: string;
+            /** @description Comma-separated list of power sources */
+            powerSource?: string;
+            /** @description Comma-separated list of answering system types */
+            answeringSystemType?: string;
+            /** @description Comma-separated list of supported internet services */
+            supportedInternetServices?: string;
+            /** @description Comma-separated list of memory storage capacities */
+            memoryStorageCapacity?: string;
+            /** @description Comma-separated list of wireless carriers */
+            wirelessCarrier?: string;
+            /** @description Comma-separated list of form factors */
+            formFactor?: string;
+        };
+        GetProductsFilterResponse: {
+            filters?: {
+                categories?: {
+                    category?: {
+                        _id?: string;
+                        name?: string;
+                    };
+                    subcategories?: {
+                        _id?: string;
+                        name?: string;
+                    }[];
+                }[];
+                priceRange?: {
+                    highestPrice?: number;
+                    lowestPrice?: number;
+                }[];
+                specifications?: {
+                    key?: string;
+                    values?: string[];
+                }[];
+            };
+        };
+        Review: {
+            /** @description The unique identifier of the review */
+            _id?: string;
+            /** @description The rating given in the review (1-5) */
+            rating: number;
+            /** @description The review comment */
+            comment: string;
+            /** @description The ID of the user who created the review */
+            userId: string;
+            /** @description The ID of the product being reviewed */
+            productId: string;
+            /**
+             * Format: date-time
+             * @description The date and time when the review was created
+             */
+            createdAt?: string;
+            /**
+             * Format: date-time
+             * @description The date and time when the review was last updated
+             */
+            updatedAt?: string;
+        };
+        CreateReview: {
+            /** @description The rating given in the review (1-5) */
+            rating: number;
+            /** @description The review comment */
+            comment: string;
+        };
+        UpdateReview: {
+            /** @description The rating given in the review (1-5) */
+            rating?: number;
+            /** @description The review comment */
+            comment?: string;
+        };
+        GetReviewsResponse: {
+            data?: components["schemas"]["Review"][];
+        };
+        GetReviewResponse: {
+            data?: components["schemas"]["Review"];
+        };
+        CreateReviewResponse: {
+            message: string;
+        };
+        SaleFilter: {
+            /** @description Filter sales by product name */
+            productName?: string;
+            /** @description Filter sales by seller ID */
+            sellerId?: string;
+            /** @description Filter sales with a quantity greater than or equal to this value */
+            minQuantity?: number;
+            /** @description Filter sales with a quantity less than or equal to this value */
+            maxQuantity?: number;
+            /** @description Filter sales with a refunded quantity greater than or equal to this value */
+            minRefundedQuantity?: number;
+            /** @description Filter sales with a refunded quantity less than or equal to this value */
+            maxRefundedQuantity?: number;
+            /** @description Filter sales with a sale price greater than or equal to this value */
+            minSalePrice?: number;
+            /** @description Filter sales with a sale price less than or equal to this value */
+            maxSalePrice?: number;
+            /** @description Filter sales with a total price greater than or equal to this value */
+            minTotalPrice?: number;
+            /** @description Filter sales with a total price less than or equal to this value */
+            maxTotalPrice?: number;
+            /**
+             * Format: date-time
+             * @description Filter sales created after this date
+             */
+            createdAfter?: string;
+            /**
+             * Format: date-time
+             * @description Filter sales created before this date
+             */
+            createdBefore?: string;
+            /**
+             * Format: date-time
+             * @description Filter sales updated after this date
+             */
+            updatedAfter?: string;
+            /**
+             * Format: date-time
+             * @description Filter sales updated before this date
+             */
+            updatedBefore?: string;
+        };
+        GetSale: {
+            _id?: string;
+            orderId?: string;
+            productId?: string;
+            sellerId?: string;
+            quantity?: number;
             salePrice?: number;
-            discountPercent?: number;
+            totalPrice?: number;
+            productName?: string;
+            sku?: string;
+            image?: string;
+            isRefunded?: boolean;
+            refundedQuantity?: number;
+            notes?: string;
             /** Format: date-time */
-            saleStartDate?: string;
+            createdAt?: string;
             /** Format: date-time */
-            saleEndDate?: string;
-          }[];
-          specifications?: {
-            certifications: string;
-            ramSize?: number;
-            graphics?: string;
-            processor?: string;
-            cpuSpeed?: number;
-            cpuManufacturer?: string;
-            graphicsProcessorManufacturer?: string;
-            screenSize?: number;
-            resolution?: string;
-            storage?: number;
-            memory?: number;
-            cameraResolution?: number;
-            operatingSystem?: string;
-            audioOutput?: string;
-            connectivity?: string;
-            compatiblePlatform?: string;
-            sensor?: string;
-            energyEfficiency?: string;
-            batteryLife?: number;
-            weight?: number;
-            waterResistance?: boolean;
-            fitnessTracking?: boolean;
-            sleepTracking?: boolean;
-            voiceControl?: boolean;
-            remoteControl?: boolean;
-          };
-          /** @description Set to null to remove the image, or omit to leave unchanged. */
-          image?: string | null;
+            updatedAt?: string;
         };
-      };
-    };
-    /** @description Update Product visibility. */
-    UpdateProductVisibility: {
-      content: {
-        "application/json": {
-          visibility?: boolean;
+        GetSaleResponse: {
+            data?: components["schemas"]["GetSale"];
         };
-      };
-    };
-    CreateReview: {
-      content: {
-        "application/json": components["schemas"]["CreateReview"];
-      };
-    };
-    UpdateReview: {
-      content: {
-        "application/json": components["schemas"]["UpdateReview"];
-      };
-    };
-    UpdateRefundStatus: {
-      content: {
-        "application/json": {
-          refundedQuantity: number;
+        GetSalesResponse: {
+            data?: components["schemas"]["GetSaleResponse"][];
+            metadata?: components["schemas"]["Metadata"];
+            Links?: components["schemas"]["Links"];
         };
-      };
-    };
-    CreateUserRequest: {
-      content: {
-        "application/json": components["schemas"]["CreateUser"];
-      };
-    };
-    UpdateUserRequest: {
-      content: {
-        "application/json": components["schemas"]["UpdateUser"];
-      };
-    };
-    AddWishlistItem: {
-      content: {
-        "application/json": {
-          productId: string;
+        Contact: {
+            email?: string;
+            phone?: string;
+            website?: string;
         };
-      };
+        Address: {
+            line1?: string;
+            line2?: string;
+            city?: string;
+            country?: string;
+            postalCode?: string;
+        };
+        Profile: {
+            userId?: string;
+            familyName?: string;
+            givenName?: string;
+            phone?: string;
+            address?: components["schemas"]["Address"];
+        };
+        User: {
+            _id?: string;
+            email?: string;
+            role?: string;
+            isVerified?: boolean;
+            profile?: components["schemas"]["Profile"];
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        UserFilter: {
+            city?: string;
+            country?: string;
+            role?: string;
+            query?: string;
+            isVerified?: boolean;
+            /** Format: date-time */
+            createdAfter?: string;
+            /** Format: date-time */
+            createdBefore?: string;
+            /** Format: date-time */
+            updatedAfter?: string;
+            /** Format: date-time */
+            updatedBefore?: string;
+        };
+        GetUserResponse: {
+            data?: components["schemas"]["User"];
+        };
+        GetUsersResponse: {
+            data?: components["schemas"]["User"][];
+            metadata?: components["schemas"]["Metadata"];
+            Links?: components["schemas"]["Links"];
+        };
+        UpdateUser: {
+            familyName?: string;
+            givenName?: string;
+            phone?: string;
+            role?: string;
+            address?: components["schemas"]["Address"];
+        };
+        CreateUser: {
+            role: string;
+            familyName: string;
+            givenName: string;
+            email: string;
+            password: string;
+            confirmPassword: string;
+        };
+        CreateUserResponse: {
+            message?: string;
+        };
+        GetWishlist: {
+            _id?: string;
+            productId?: string;
+            productName?: string;
+            image?: string;
+            variant?: components["schemas"]["ProductVariant"];
+        };
+        GetWishlistResponse: {
+            data?: components["schemas"]["GetWishlist"];
+        };
+        GetWishlistsResponse: {
+            data?: components["schemas"]["GetWishlist"][];
+        };
+        AddWishlistItemResponse: {
+            message: string;
+        };
     };
-  };
-  headers: never;
-  pathItems: never;
-}
-export type $defs = Record<string, never>;
-export interface operations {
-  registerUser: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["RegisterUser"];
     responses: {
-      /** @description User registered successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
+        /** @description Internal server error */
+        InternalServerError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ErrorModel"];
+            };
         };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      409: components["responses"]["ConflictError"];
-      500: components["responses"]["InternalServerError"];
+        /** @description Not found error */
+        NotFoundError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ErrorModel"];
+            };
+        };
+        /** @description Bad request error */
+        BadRequestError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ErrorModel"];
+            };
+        };
+        /** @description Unauthorized error */
+        UnauthorizedError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ErrorModel"];
+            };
+        };
+        /** @description Forbidden error */
+        ForbiddenError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ErrorModel"];
+            };
+        };
+        /** @description Conflict error */
+        ConflictError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["ErrorModel"];
+            };
+        };
     };
-  };
-  loginUser: {
     parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UserLogin"];
-    responses: {
-      /** @description User logged in successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["UserLoginResponse"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  refreshToken: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Token refreshed successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["RefreshTokenResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  verifyEmail: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["VerifyEmail"];
-    responses: {
-      /** @description Email verified successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  resendVerificationCode: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["ResendVerificationCode"];
-    responses: {
-      /** @description Verification code resent successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  forgotPassword: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["ForgotPassword"];
-    responses: {
-      /** @description Password reset link sent successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["ForgotPasswordResponse"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  resetPassword: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["ResetPassword"];
-    responses: {
-      /** @description Password reset successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  initiateGoogleAuth: {
-    parameters: {
-      query?: {
-        /** @description URL to redirect after successful authentication */
-        callbackUrl?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description URL of Google's authorization endpoint */
-      302: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  logout: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Logout successful */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
-  getAllCarts: {
-    parameters: {
-      query?: {
-        /** @description Page number for pagination */
-        page?: components["parameters"]["Page"];
-        /** @description Number of items per page */
-        limit?: components["parameters"]["Limit"];
+        /** @description Specifies the platform. Must be either "marketplace" or "vendor". */
+        PlatformParam: "marketplace" | "vendor";
+        /** @description Cart ID */
+        CartId: string;
+        /** @description Item ID */
+        CartItemId: string;
         /** @description Sort order. Use commas to separate multiple fields.
          *     Allowed fields: `createdAt`, `updatedAt`, `amount`, `totalProducts`, `totalItems`.
          *     Prefix with `-` for descending order (e.g., `sort=createdAt,-amount,-totalProducts`).
          *      */
-        sort?: components["parameters"]["CartSort"];
+        CartSort: string;
         /** @description Filter criteria for carts */
-        filters?: components["parameters"]["CartFilterParams"];
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetCartsResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getCartById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Cart ID */
-        cartId: components["parameters"]["CartId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetCartResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  clearCart: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Cart ID */
-        cartId: components["parameters"]["CartId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Cart cleared successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  addItemToCart: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Cart ID */
-        cartId: components["parameters"]["CartId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["AddCartItem"];
-    responses: {
-      /** @description Cart item added successfully */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AddCartItemResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getItemById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Cart ID */
-        cartId: components["parameters"]["CartId"];
-        /** @description Item ID */
-        itemId: components["parameters"]["CartItemId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetCartItemResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  RemoveItemFromCart: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Cart ID */
-        cartId: components["parameters"]["CartId"];
-        /** @description Item ID */
-        itemId: components["parameters"]["CartItemId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Cart item deleted successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateItemInCart: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Cart ID */
-        cartId: components["parameters"]["CartId"];
-        /** @description Item ID */
-        itemId: components["parameters"]["CartItemId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateCartItem"];
-    responses: {
-      /** @description Cart item updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getParentCategories: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetCategoriesResponse"];
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  createCategory: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["CreateCategory"];
-    responses: {
-      /** @description Category created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["CreateCategoryResponse"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getSingleCategory: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
+        CartFilterParams: components["schemas"]["CartFilter"];
         /** @description Category Id */
-        categoryId: components["parameters"]["CategoryId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetCategoryResponse"];
-        };
-      };
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateCategory: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Category Id */
-        categoryId: components["parameters"]["CategoryId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateCategory"];
-    responses: {
-      /** @description Category updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  deleteCategory: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Category Id */
-        categoryId: components["parameters"]["CategoryId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Category deleted successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getChildCategories: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Category Id */
-        categoryId: components["parameters"]["CategoryId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetSubCategoriesResponse"];
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  createSubCategory: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Category Id */
-        categoryId: components["parameters"]["CategoryId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["CreateSubCategory"];
-    responses: {
-      /** @description Sub category created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["CreateSubCategoryResponse"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getSingleSubCategory: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Category Id */
-        categoryId: components["parameters"]["CategoryId"];
+        CategoryId: string;
         /** @description Sub Category ID */
-        subCategoryId: components["parameters"]["SubCategoryId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetSubCategoryResponse"];
-        };
-      };
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateSubCategory: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Category Id */
-        categoryId: components["parameters"]["CategoryId"];
-        /** @description Sub Category ID */
-        subCategoryId: components["parameters"]["SubCategoryId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateSubCategory"];
-    responses: {
-      /** @description Sub category updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  deleteSubCategory: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Category Id */
-        categoryId: components["parameters"]["CategoryId"];
-        /** @description Sub Category ID */
-        subCategoryId: components["parameters"]["SubCategoryId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Sub category deleted successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getDepartments: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            allDepartments?: {
-              _id?: string;
-              name?: string;
-              subCategories?: {
-                _id?: string;
-                name?: string;
-              }[];
-            }[];
-          };
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  recommendedProducts: {
-    parameters: {
-      query?: {
+        SubCategoryId: string;
         /** @description Category ID for filtering products */
-        categoryId?: components["parameters"]["CategoryIdQuery"];
+        CategoryIdQuery: string;
+        /** @description Sub Category ID for filtering products */
+        SubCategoryIdQuery: string;
         /** @description Exclude a specific product by ID */
-        excludeProductId?: components["parameters"]["ExcludeProductIdQuery"];
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetRecommendedProductsResponse"];
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  bestOffers: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetBestOffersResponse"];
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  bestSeller: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetBestSellersResponse"];
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  productsFilter: {
-    parameters: {
-      query?: {
-        categoryId?: string;
-        subCategoryId?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            filters?: {
-              categories?: {
-                category?: {
-                  _id?: string;
-                  name?: string;
-                };
-                subcategories?: {
-                  _id?: string;
-                  name?: string;
-                }[];
-              }[];
-              priceRange?: {
-                highestPrice?: number;
-                lowestPrice?: number;
-              }[];
-              specifications?: {
-                key?: string;
-                values?: string[];
-              }[];
-            };
-          };
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getAllOrders: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetOrdersResponse"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getOrderById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
+        ExcludeProductIdQuery: string;
         /** @description Order ID */
-        orderId: components["parameters"]["OrderId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetOrderResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateOrderStatus: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Order ID */
-        orderId: components["parameters"]["OrderId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateOrderStatus"];
-    responses: {
-      /** @description Order status updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  createCheckoutSession: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["CreateCheckoutSessionResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      409: components["responses"]["ConflictError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getAllProducts: {
-    parameters: {
-      query?: {
-        /** @description Page number for pagination */
-        page?: components["parameters"]["Page"];
-        /** @description Number of items per page */
-        limit?: components["parameters"]["Limit"];
+        OrderId: string;
         /** @description Sort order. Use commas to separate multiple fields.
-         *     Allowed fields: `createdAt`, `updatedAt`, `name`, `rating`, `numOfReviews`, `price`, `discount`, `popularity`, `bestSelling`, `stockAvailability`.
+         *     Allowed fields: `createdAt`, `updatedAt`, `amount`, `taxAmount`, `shippingAmount`, `discountAmount`.
+         *     Prefix with `-` for descending order (e.g., `sort=createdAt,-amount`).
+         *      */
+        OrderSort: string;
+        /** @description Filter criteria for Orders */
+        OrderFilterParams: components["schemas"]["OrderFilter"];
+        /** @description Page number for pagination */
+        Page: number;
+        /** @description Number of items per page */
+        Limit: number;
+        /** @description Sort order. Use commas to separate multiple fields.
+         *     Allowed fields: `createdAt`, `updatedAt`, `score`, `name`, `rating`, `numOfReviews`, `price`, `discount`, `popularity`, `bestSelling`, `stockAvailability`.
          *     Prefix with `-` for descending order (e.g., `sort=createdAt,-popularity`).
          *      */
-        sort?: components["parameters"]["ProductSort"];
+        ProductSort: string;
         /** @description Filter criteria for products */
-        filters?: components["parameters"]["ProductFilterParams"];
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetProductsResponse"];
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  createProduct: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["CreateProduct"];
-    responses: {
-      /** @description Product created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["CreateProductResponse"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getProductById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
+        ProductFilterParams: components["schemas"]["ProductFilter"];
         /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetProductResponse"];
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateProduct: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateProduct"];
-    responses: {
-      /** @description Product updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  deleteProduct: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Product deleted successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateProductVisibility: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateProductVisibility"];
-    responses: {
-      /** @description Product updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getReviews: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetReviewsResponse"];
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  createReview: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["CreateReview"];
-    responses: {
-      /** @description Review created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["CreateReviewResponse"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getReviewById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
+        ProductId: string;
         /** @description ID of the review */
-        reviewId: components["parameters"]["ReviewId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetReviewResponse"];
-        };
-      };
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  deleteReview: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-        /** @description ID of the review */
-        reviewId: components["parameters"]["ReviewId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Review deleted successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateReview: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-        /** @description ID of the review */
-        reviewId: components["parameters"]["ReviewId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateReview"];
-    responses: {
-      /** @description Review updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getAllSales: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetSalesResponse"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getSaleById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
+        ReviewId: string;
         /** @description Sale ID */
-        saleId: components["parameters"]["SaleId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetSaleResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateRefundStatus: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Sale ID */
-        saleId: components["parameters"]["SaleId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateRefundStatus"];
-    responses: {
-      /** @description Refund status updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getMyCart: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetCartResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  clearMyCart: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Cart cleared successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  addItemToMyCart: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["AddCartItem"];
-    responses: {
-      /** @description Cart item added successfully */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AddCartItemResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  RemoveItemFromMyCart: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Cart item deleted successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateItemInMyCart: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateItemInMyCart"];
-    responses: {
-      /** @description Cart item updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getMyWishlist: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetWishlistResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  clearMyWishlist: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Wishlist cleared successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  addItemToMyWishlist: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["AddWishlistItem"];
-    responses: {
-      /** @description Wishlist item added successfully */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AddWishlistItemResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  deleteItemFromMyWishlist: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the product */
-        productId: components["parameters"]["ProductId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Cart item deleted successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getMyOrders: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetOrdersResponse"];
-        };
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getCurrentUser: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetUserResponse"];
-        };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateCurrentUser: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateUserRequest"];
-    responses: {
-      /** @description User updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getAllUsers: {
-    parameters: {
-      query?: {
-        /** @description Page number for pagination */
-        page?: components["parameters"]["Page"];
-        /** @description Number of items per page */
-        limit?: components["parameters"]["Limit"];
+        SaleId: string;
+        /** @description Sort sale. Use commas to separate multiple fields.
+         *     Allowed fields: `createdAt`, `updatedAt`, `productName`, `quantity`, `salePrice`, `totalPrice`, `refundedQuantity`.
+         *     Prefix with `-` for descending sale (e.g., `sort=createdAt,-quantity`).
+         *      */
+        SaleSort: string;
+        /** @description Filter criteria for sales */
+        SaleFilterParams: components["schemas"]["SaleFilter"];
+        UserId: string;
         /** @description Sort order. Use commas to separate multiple fields.
          *     Allowed fields: `createdAt`, `updatedAt`, `familyName`, `givenName`.
          *     Prefix with `-` for descending order (e.g., `sort=createdAt,-familyName).
          *      */
-        sort?: components["parameters"]["UserSort"];
+        UserSort: string;
         /** @description Filter criteria for Users */
-        filters?: components["parameters"]["UserFilterParams"];
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
+        UserFilterParams: components["schemas"]["UserFilter"];
+        WishlistId: string;
     };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
+    requestBodies: {
+        RegisterUser: {
+            content: {
+                "application/json": {
+                    /** Format: email */
+                    email: string;
+                    password: string;
+                    confirmPassword: string;
+                    wishlist?: {
+                        productId: string;
+                    }[];
+                    cartItems?: {
+                        quantity: number;
+                        productId: string;
+                    }[];
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["GetUsersResponse"];
+        UserLogin: {
+            content: {
+                "application/json": {
+                    /** Format: email */
+                    email: string;
+                    password: string;
+                };
+            };
         };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getUserById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        usertId: components["parameters"]["UserId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
+        VerifyEmail: {
+            content: {
+                "application/json": {
+                    /** Format: email */
+                    email: string;
+                    verificationCode: string;
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["GetUserResponse"];
+        ResendVerificationCode: {
+            content: {
+                "application/json": {
+                    /** Format: email */
+                    email: string;
+                };
+            };
         };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  deleteUserById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        usertId: components["parameters"]["UserId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description User deleted successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
+        ForgotPassword: {
+            content: {
+                "application/json": {
+                    /** Format: email */
+                    email: string;
+                };
+            };
         };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  updateUserById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        usertId: components["parameters"]["UserId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["UpdateUserRequest"];
-    responses: {
-      /** @description User updated successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
+        ResetPassword: {
+            content: {
+                "application/json": {
+                    resetToken: string;
+                    password: string;
+                    confirmPassword: string;
+                };
+            };
         };
-        content?: never;
-      };
-      400: components["responses"]["BadRequestError"];
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getAllWishlists: {
-    parameters: {
-      query?: {
-        /** @description Page number for pagination */
-        page?: components["parameters"]["Page"];
-        /** @description Number of items per page */
-        limit?: components["parameters"]["Limit"];
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
+        AddCartItem: {
+            content: {
+                "application/json": {
+                    productId: string;
+                    quantity: number;
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["GetWishlistsResponse"];
+        UpdateItemInMyCart: {
+            content: {
+                "application/json": {
+                    quantity: number;
+                };
+            };
         };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  clearWishlist: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Wishlist cleared successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
+        UpdateCartItem: {
+            content: {
+                "application/json": {
+                    quantity: number;
+                };
+            };
         };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  getWishlistById: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        wishlistId: components["parameters"]["WishlistId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
+        CreateCategory: {
+            content: {
+                "multipart/form-data": {
+                    name: string;
+                    description?: string;
+                    /** Format: binary */
+                    image?: string;
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["GetWishlistResponse"];
+        UpdateCategory: {
+            content: {
+                "multipart/form-data": {
+                    name: string;
+                    description?: string;
+                    /** Format: binary */
+                    image?: string;
+                };
+            };
         };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  addItemToWishlist: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        wishlistId: components["parameters"]["WishlistId"];
-      };
-      cookie?: never;
-    };
-    requestBody: components["requestBodies"]["AddWishlistItem"];
-    responses: {
-      /** @description Cart item added successfully */
-      201: {
-        headers: {
-          [name: string]: unknown;
+        CreateSubCategory: {
+            content: {
+                "multipart/form-data": {
+                    name: string;
+                    description?: string;
+                    /** Format: binary */
+                    image?: string;
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["AddWishlistItemResponse"];
+        UpdateSubCategory: {
+            content: {
+                "multipart/form-data": {
+                    name: string;
+                    description?: string;
+                    /** Format: binary */
+                    image?: string;
+                };
+            };
         };
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
-    };
-  };
-  deleteItemFromWishlist: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        wishlistId: components["parameters"]["WishlistId"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Cart item deleted successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
+        UpdateOrderStatus: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    orderStatus: "CREATED" | "PROCESSING" | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED" | "REFUNDED" | "ON_HOLD";
+                };
+            };
         };
-        content?: never;
-      };
-      401: components["responses"]["UnauthorizedError"];
-      403: components["responses"]["ForbiddenError"];
-      404: components["responses"]["NotFoundError"];
-      500: components["responses"]["InternalServerError"];
+        CreateProduct: {
+            content: {
+                "multipart/form-data": {
+                    name: string;
+                    description: string;
+                    brand: string;
+                    color?: string;
+                    /** @description MongoDB ObjectId */
+                    subCategoryId: string;
+                    /** @description MongoDB ObjectId */
+                    categoryId?: string;
+                    variants: {
+                        variation: string;
+                        sku: string;
+                        inventory: number;
+                        globalPrice: number;
+                        salePrice?: number;
+                        discountPercent?: number;
+                        /** Format: date-time */
+                        saleStartDate?: string;
+                        /** Format: date-time */
+                        saleEndDate?: string;
+                    }[];
+                    specifications: {
+                        certifications: string;
+                        ramSize?: number;
+                        graphics?: string;
+                        processor?: string;
+                        cpuSpeed?: number;
+                        cpuManufacturer?: string;
+                        graphicsProcessorManufacturer?: string;
+                        screenSize?: number;
+                        resolution?: string;
+                        storage?: number;
+                        memory?: number;
+                        cameraResolution?: number;
+                        operatingSystem?: string;
+                        audioOutput?: string;
+                        connectivity?: string;
+                        compatiblePlatform?: string;
+                        sensor?: string;
+                        energyEfficiency?: string;
+                        batteryLife?: number;
+                        weight?: number;
+                        waterResistance?: boolean;
+                        fitnessTracking?: boolean;
+                        sleepTracking?: boolean;
+                        voiceControl?: boolean;
+                        remoteControl?: boolean;
+                    };
+                    images?: string[];
+                };
+            };
+        };
+        /** @description Product update with file uploads. */
+        UpdateProduct: {
+            content: {
+                "multipart/form-data": {
+                    name?: string;
+                    description?: string;
+                    brand?: string;
+                    color?: string;
+                    /** @description MongoDB ObjectId */
+                    subCategoryId?: string;
+                    /** @description MongoDB ObjectId */
+                    categoryId?: string;
+                    variants?: {
+                        variation: string;
+                        sku: string;
+                        inventory: number;
+                        globalPrice: number;
+                        salePrice?: number;
+                        discountPercent?: number;
+                        /** Format: date-time */
+                        saleStartDate?: string;
+                        /** Format: date-time */
+                        saleEndDate?: string;
+                    }[];
+                    specifications?: {
+                        certifications: string;
+                        ramSize?: number;
+                        graphics?: string;
+                        processor?: string;
+                        cpuSpeed?: number;
+                        cpuManufacturer?: string;
+                        graphicsProcessorManufacturer?: string;
+                        screenSize?: number;
+                        resolution?: string;
+                        storage?: number;
+                        memory?: number;
+                        cameraResolution?: number;
+                        operatingSystem?: string;
+                        audioOutput?: string;
+                        connectivity?: string;
+                        compatiblePlatform?: string;
+                        sensor?: string;
+                        energyEfficiency?: string;
+                        batteryLife?: number;
+                        weight?: number;
+                        waterResistance?: boolean;
+                        fitnessTracking?: boolean;
+                        sleepTracking?: boolean;
+                        voiceControl?: boolean;
+                        remoteControl?: boolean;
+                    };
+                    /** @description Set to null to remove the image, or omit to leave unchanged. */
+                    image?: string | null;
+                };
+            };
+        };
+        /** @description Update Product visibility. */
+        UpdateProductVisibility: {
+            content: {
+                "application/json": {
+                    visibility?: boolean;
+                };
+            };
+        };
+        CreateReview: {
+            content: {
+                "application/json": components["schemas"]["CreateReview"];
+            };
+        };
+        UpdateReview: {
+            content: {
+                "application/json": components["schemas"]["UpdateReview"];
+            };
+        };
+        UpdateRefundStatus: {
+            content: {
+                "application/json": {
+                    refundedQuantity: number;
+                };
+            };
+        };
+        CreateUserRequest: {
+            content: {
+                "application/json": components["schemas"]["CreateUser"];
+            };
+        };
+        UpdateUserRequest: {
+            content: {
+                "application/json": components["schemas"]["UpdateUser"];
+            };
+        };
+        AddWishlistItem: {
+            content: {
+                "application/json": {
+                    productId: string;
+                };
+            };
+        };
     };
-  };
+    headers: never;
+    pathItems: never;
+}
+export type $defs = Record<string, never>;
+export interface operations {
+    registerUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["RegisterUser"];
+        responses: {
+            /** @description User registered successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            409: components["responses"]["ConflictError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    loginUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UserLogin"];
+        responses: {
+            /** @description User logged in successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserLoginResponse"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    refreshToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Token refreshed successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RefreshTokenResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    verifyEmail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["VerifyEmail"];
+        responses: {
+            /** @description Email verified successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    resendVerificationCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["ResendVerificationCode"];
+        responses: {
+            /** @description Verification code resent successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    forgotPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["ForgotPassword"];
+        responses: {
+            /** @description Password reset link sent successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ForgotPasswordResponse"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    resetPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["ResetPassword"];
+        responses: {
+            /** @description Password reset successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    initiateGoogleAuth: {
+        parameters: {
+            query?: {
+                /** @description URL to redirect after successful authentication */
+                callbackUrl?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description URL of Google's authorization endpoint */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Logout successful */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getAllCarts: {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination */
+                page?: components["parameters"]["Page"];
+                /** @description Number of items per page */
+                limit?: components["parameters"]["Limit"];
+                /** @description Sort order. Use commas to separate multiple fields.
+                 *     Allowed fields: `createdAt`, `updatedAt`, `amount`, `totalProducts`, `totalItems`.
+                 *     Prefix with `-` for descending order (e.g., `sort=createdAt,-amount,-totalProducts`).
+                 *      */
+                sort?: components["parameters"]["CartSort"];
+                /** @description Filter criteria for carts */
+                filters?: components["parameters"]["CartFilterParams"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetCartsResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getCartById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Cart ID */
+                cartId: components["parameters"]["CartId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetCartResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    clearCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Cart ID */
+                cartId: components["parameters"]["CartId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cart cleared successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    addItemToCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Cart ID */
+                cartId: components["parameters"]["CartId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["AddCartItem"];
+        responses: {
+            /** @description Cart item added successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AddCartItemResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getItemById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Cart ID */
+                cartId: components["parameters"]["CartId"];
+                /** @description Item ID */
+                itemId: components["parameters"]["CartItemId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetCartItemResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    RemoveItemFromCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Cart ID */
+                cartId: components["parameters"]["CartId"];
+                /** @description Item ID */
+                itemId: components["parameters"]["CartItemId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cart item deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateItemInCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Cart ID */
+                cartId: components["parameters"]["CartId"];
+                /** @description Item ID */
+                itemId: components["parameters"]["CartItemId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateCartItem"];
+        responses: {
+            /** @description Cart item updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getParentCategories: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetCategoriesResponse"];
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    createCategory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["CreateCategory"];
+        responses: {
+            /** @description Category created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateCategoryResponse"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getSingleCategory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Category Id */
+                categoryId: components["parameters"]["CategoryId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetCategoryResponse"];
+                };
+            };
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateCategory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Category Id */
+                categoryId: components["parameters"]["CategoryId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateCategory"];
+        responses: {
+            /** @description Category updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    deleteCategory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Category Id */
+                categoryId: components["parameters"]["CategoryId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Category deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getChildCategories: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Category Id */
+                categoryId: components["parameters"]["CategoryId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetSubCategoriesResponse"];
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    createSubCategory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Category Id */
+                categoryId: components["parameters"]["CategoryId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["CreateSubCategory"];
+        responses: {
+            /** @description Sub category created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateSubCategoryResponse"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getSingleSubCategory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Category Id */
+                categoryId: components["parameters"]["CategoryId"];
+                /** @description Sub Category ID */
+                subCategoryId: components["parameters"]["SubCategoryId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetSubCategoryResponse"];
+                };
+            };
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateSubCategory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Category Id */
+                categoryId: components["parameters"]["CategoryId"];
+                /** @description Sub Category ID */
+                subCategoryId: components["parameters"]["SubCategoryId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateSubCategory"];
+        responses: {
+            /** @description Sub category updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    deleteSubCategory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Category Id */
+                categoryId: components["parameters"]["CategoryId"];
+                /** @description Sub Category ID */
+                subCategoryId: components["parameters"]["SubCategoryId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sub category deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getDepartments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        allDepartments?: {
+                            _id?: string;
+                            name?: string;
+                            subCategories?: {
+                                _id?: string;
+                                name?: string;
+                            }[];
+                        }[];
+                    };
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    recommendedProducts: {
+        parameters: {
+            query?: {
+                /** @description Category ID for filtering products */
+                categoryId?: components["parameters"]["CategoryIdQuery"];
+                /** @description Sub Category ID for filtering products */
+                subCategoryId?: components["parameters"]["SubCategoryIdQuery"];
+                /** @description Exclude a specific product by ID */
+                excludeProductId?: components["parameters"]["ExcludeProductIdQuery"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetRecommendedProductsResponse"];
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    bestOffers: {
+        parameters: {
+            query?: {
+                /** @description Category ID for filtering products */
+                categoryId?: components["parameters"]["CategoryIdQuery"];
+                /** @description Sub Category ID for filtering products */
+                subCategoryId?: components["parameters"]["SubCategoryIdQuery"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetBestOffersResponse"];
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    bestSeller: {
+        parameters: {
+            query?: {
+                /** @description Category ID for filtering products */
+                categoryId?: components["parameters"]["CategoryIdQuery"];
+                /** @description Sub Category ID for filtering products */
+                subCategoryId?: components["parameters"]["SubCategoryIdQuery"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetBestSellersResponse"];
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    productsFilter: {
+        parameters: {
+            query?: {
+                categoryId?: string;
+                subCategoryId?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        filters?: {
+                            categories?: {
+                                category?: {
+                                    _id?: string;
+                                    name?: string;
+                                };
+                                subcategories?: {
+                                    _id?: string;
+                                    name?: string;
+                                }[];
+                            }[];
+                            priceRange?: {
+                                highestPrice?: number;
+                                lowestPrice?: number;
+                            }[];
+                            specifications?: {
+                                key?: string;
+                                values?: string[];
+                            }[];
+                        };
+                    };
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getAllOrders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetOrdersResponse"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getOrderById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Order ID */
+                orderId: components["parameters"]["OrderId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetOrderResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateOrderStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Order ID */
+                orderId: components["parameters"]["OrderId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateOrderStatus"];
+        responses: {
+            /** @description Order status updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    createCheckoutSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateCheckoutSessionResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            409: components["responses"]["ConflictError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getAllProducts: {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination */
+                page?: components["parameters"]["Page"];
+                /** @description Number of items per page */
+                limit?: components["parameters"]["Limit"];
+                /** @description Sort order. Use commas to separate multiple fields.
+                 *     Allowed fields: `createdAt`, `updatedAt`, `score`, `name`, `rating`, `numOfReviews`, `price`, `discount`, `popularity`, `bestSelling`, `stockAvailability`.
+                 *     Prefix with `-` for descending order (e.g., `sort=createdAt,-popularity`).
+                 *      */
+                sort?: components["parameters"]["ProductSort"];
+                /** @description Filter criteria for products */
+                filters?: components["parameters"]["ProductFilterParams"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetProductsResponse"];
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    createProduct: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["CreateProduct"];
+        responses: {
+            /** @description Product created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateProductResponse"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getProductById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetProductResponse"];
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateProduct: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateProduct"];
+        responses: {
+            /** @description Product updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    deleteProduct: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Product deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateProductVisibility: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateProductVisibility"];
+        responses: {
+            /** @description Product updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getReviews: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetReviewsResponse"];
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    createReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["CreateReview"];
+        responses: {
+            /** @description Review created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateReviewResponse"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getReviewById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+                /** @description ID of the review */
+                reviewId: components["parameters"]["ReviewId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetReviewResponse"];
+                };
+            };
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    deleteReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+                /** @description ID of the review */
+                reviewId: components["parameters"]["ReviewId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Review deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+                /** @description ID of the review */
+                reviewId: components["parameters"]["ReviewId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateReview"];
+        responses: {
+            /** @description Review updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getAllSales: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetSalesResponse"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getSaleById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Sale ID */
+                saleId: components["parameters"]["SaleId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetSaleResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateRefundStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Sale ID */
+                saleId: components["parameters"]["SaleId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateRefundStatus"];
+        responses: {
+            /** @description Refund status updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getMyCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetCartResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    clearMyCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cart cleared successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    addItemToMyCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["AddCartItem"];
+        responses: {
+            /** @description Cart item added successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AddCartItemResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    RemoveItemFromMyCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cart item deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateItemInMyCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateItemInMyCart"];
+        responses: {
+            /** @description Cart item updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getMyWishlist: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetWishlistResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    clearMyWishlist: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wishlist cleared successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    addItemToMyWishlist: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["AddWishlistItem"];
+        responses: {
+            /** @description Wishlist item added successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AddWishlistItemResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    deleteItemFromMyWishlist: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID of the product */
+                productId: components["parameters"]["ProductId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Item deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getMyOrders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetOrdersResponse"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getCurrentUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetUserResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateCurrentUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateUserRequest"];
+        responses: {
+            /** @description User updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getAllUsers: {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination */
+                page?: components["parameters"]["Page"];
+                /** @description Number of items per page */
+                limit?: components["parameters"]["Limit"];
+                /** @description Sort order. Use commas to separate multiple fields.
+                 *     Allowed fields: `createdAt`, `updatedAt`, `familyName`, `givenName`.
+                 *     Prefix with `-` for descending order (e.g., `sort=createdAt,-familyName).
+                 *      */
+                sort?: components["parameters"]["UserSort"];
+                /** @description Filter criteria for Users */
+                filters?: components["parameters"]["UserFilterParams"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetUsersResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getUserById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usertId: components["parameters"]["UserId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetUserResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    deleteUserById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usertId: components["parameters"]["UserId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateUserById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usertId: components["parameters"]["UserId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["UpdateUserRequest"];
+        responses: {
+            /** @description User updated successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getAllWishlists: {
+        parameters: {
+            query?: {
+                /** @description Page number for pagination */
+                page?: components["parameters"]["Page"];
+                /** @description Number of items per page */
+                limit?: components["parameters"]["Limit"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetWishlistsResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    clearWishlist: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wishlist cleared successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getWishlistById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                wishlistId: components["parameters"]["WishlistId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetWishlistResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    addItemToWishlist: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                wishlistId: components["parameters"]["WishlistId"];
+            };
+            cookie?: never;
+        };
+        requestBody: components["requestBodies"]["AddWishlistItem"];
+        responses: {
+            /** @description Cart item added successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AddWishlistItemResponse"];
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    deleteItemFromWishlist: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                wishlistId: components["parameters"]["WishlistId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cart item deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["ForbiddenError"];
+            404: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
 }
