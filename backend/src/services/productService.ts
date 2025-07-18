@@ -22,26 +22,6 @@ import { logger } from "../utils/logger";
 
 const categoryService = new CategoryService();
 
-// ===== Constants =====
-export const IMPORTANT_FILTER_KEYS = [
-  "screenSize",
-  "resolution",
-  "memoryStorageCapacity",
-  "operatingSystem",
-  "weight",
-  "material",
-  "connectivity",
-  "compatibleDevices",
-] as const;
-
-export const SECONDARY_FILTER_KEYS = [
-  "_id",
-  "batteries",
-  "dimensions",
-  "itemModelNumber",
-  "weight",
-] as const;
-
 export class ProductService {
   private readonly CLOUDINARY_FOLDER = "r7skmjh9";
   private readonly cloudinaryService: CloudinaryService;
@@ -111,7 +91,23 @@ export class ProductService {
       pipeline.push(searchStage);
     }
     pipeline.push({ $match: { ...queryObject, visibility: true } });
-    pipeline.push({ $project: this.buildProductProjection(hasSearch) });
+    pipeline.push({
+      $addFields: {
+        priorityScore: {
+          $add: [
+            { $multiply: ["$popularity", 0.01] },
+            { $multiply: ["$salesCount", 2] },
+            { $cond: [{ $eq: ["$isFeatured", true] }, 10, 0] },
+            { $multiply: ["$reviews.avgRate", 1.5] },
+          ],
+        },
+      },
+    });
+    pipeline.push({
+      $project: this.buildProductProjection(
+        hasSearch ? "searchScore" : "priorityScore",
+      ),
+    });
     pipeline.push({ $sort: sortCriteria });
 
     const aggregate = Product.aggregate(pipeline);
@@ -230,7 +226,9 @@ export class ProductService {
   private buildSortCriteria(sort?: string, hasSearch = false) {
     if (!sort) {
       // If $search was used, sort by score by default
-      return hasSearch ? { score: { $meta: "textScore" } } : { createdAt: -1 };
+      return hasSearch
+        ? { score: { $meta: "textScore" } }
+        : { priorityScore: -1 };
     }
 
     // Supported fields and their real MongoDB paths
@@ -244,13 +242,15 @@ export class ProductService {
       stockAvailability: { field: "variant.inventory" },
       featured: { field: "isFeatured" },
       name: { field: "name" },
-      score: { field: "score" }, // explicitly allow score
+      score: { field: "priorityScore" },
     };
 
     return buildSortQuery(sort, ALLOWED_SORT_FIELDS);
   }
 
-  buildProductProjection(includeSearchMeta = false) {
+  buildProductProjection(
+    includeField?: "searchScore" | "priorityScore" | "salesCount",
+  ) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const projection: any = {
       name: 1,
@@ -263,32 +263,61 @@ export class ProductService {
               $cond: {
                 if: { $ne: ["$variant.salePrice", null] },
                 then: {
-                  $toString: {
-                    $round: [
-                      {
-                        $divide: [{ $ifNull: ["$variant.salePrice", 0] }, 100],
+                  $let: {
+                    vars: {
+                      dollars: {
+                        $trunc: { $divide: ["$variant.salePrice", 100] },
                       },
-                      2,
-                    ],
+                      cents: { $mod: ["$variant.salePrice", 100] },
+                    },
+                    in: {
+                      $concat: [
+                        { $toString: "$$dollars" },
+                        ".",
+                        {
+                          $cond: {
+                            if: { $lt: ["$$cents", 10] },
+                            then: { $concat: ["0", { $toString: "$$cents" }] },
+                            else: { $toString: "$$cents" },
+                          },
+                        },
+                      ],
+                    },
                   },
                 },
                 else: null,
               },
             },
             globalPriceDecimal: {
-              $toString: {
-                $round: [
-                  { $divide: [{ $ifNull: ["$variant.globalPrice", 0] }, 100] },
-                  2,
-                ],
+              $let: {
+                vars: {
+                  price: { $ifNull: ["$variant.globalPrice", 0] },
+                  dollars: {
+                    $trunc: {
+                      $divide: [{ $ifNull: ["$variant.globalPrice", 0] }, 100],
+                    },
+                  },
+                  cents: {
+                    $mod: [{ $ifNull: ["$variant.globalPrice", 0] }, 100],
+                  },
+                },
+                in: {
+                  $concat: [
+                    { $toString: "$$dollars" },
+                    ".",
+                    {
+                      $cond: {
+                        if: { $lt: ["$$cents", 10] },
+                        then: { $concat: ["0", { $toString: "$$cents" }] },
+                        else: { $toString: "$$cents" },
+                      },
+                    },
+                  ],
+                },
               },
             },
             isInStock: {
-              $cond: {
-                if: { $gt: ["$variant.inventory", 0] },
-                then: true,
-                else: false,
-              },
+              $cond: [{ $gt: ["$variant.inventory", 0] }, true, false],
             },
           },
         ],
@@ -299,9 +328,15 @@ export class ProductService {
       updatedAt: 1,
     };
 
-    if (includeSearchMeta) {
+    if (includeField === "searchScore") {
       projection.score = { $meta: "searchScore" };
       projection.highlights = { $meta: "searchHighlights" };
+    }
+    if (includeField === "priorityScore") {
+      projection.priorityScore = 1;
+    }
+    if (includeField === "salesCount") {
+      projection.salesCount = 1;
     }
 
     return projection;
