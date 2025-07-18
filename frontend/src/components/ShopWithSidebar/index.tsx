@@ -28,7 +28,7 @@ const ShopWithSidebar = ({ productsData, filtersData }: { productsData: ProductL
   };
 
   const options = [
-    { label: "Recommended", value: "score" },
+    { label: "Recommended", value: "-score" },
     { label: "Newest", value: "createdAt" },
     { label: "Oldest", value: "-createdAt" },
     { label: "Name (A-Z)", value: "name" },
