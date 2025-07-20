@@ -1,14 +1,15 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "./baseQueryWithReauth";
+import { UserApiResponse } from "@/types";
 
 export const userApi = createApi({
-  reducerPath: 'userApi',
+  reducerPath: "userApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['User'],
+  tagTypes: ["User"],
   endpoints: (builder) => ({
-    getUser: builder.query({
-      query: () => '/users/me',
-      providesTags: ['User'],
+    getUser: builder.query<UserApiResponse, void>({
+      query: () => "/users/me",
+      providesTags: ["User"],
     }),
     updateUser: builder.mutation({
       query: ({
@@ -17,8 +18,8 @@ export const userApi = createApi({
         phone,
         address: { line1, line2, city, country, postalCode },
       }) => ({
-        url: '/users/me',
-        method: 'PATCH',
+        url: "/users/me",
+        method: "PATCH",
         body: {
           familyName,
           givenName,
@@ -26,19 +27,15 @@ export const userApi = createApi({
           address: {
             line1,
             line2,
-            // line2: line2 ? line2 : undefined,
             city,
             country,
             postalCode,
           },
         },
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ["User"],
     }),
   }),
 });
 
-export const {
-  useGetUserQuery,
-  useUpdateUserMutation,
-} = userApi;
+export const { useGetUserQuery, useUpdateUserMutation } = userApi;
