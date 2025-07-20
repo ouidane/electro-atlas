@@ -1,35 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "./baseQueryWithReauth";
-
-type ProductVariant = {
-  variation: string;
-  sku: string;
-  color: string;
-  inventory: number;
-  globalPrice: number;
-  salePrice: number;
-  discountPercent: number;
-  saleStartDate: string;
-  salePriceDecimal: string;
-  globalPriceDecimal: string;
-  isInStock: boolean;
-};
-
-type Product = {
-  _id: string;
-  name: string;
-  image: string;
-  variant: ProductVariant;
-};
-
-type CartItem = {
-  quantity: number;
-  totalPrice?: number;
-  totalPriceDecimal?: string;
-  product: Product;
-};
+import { CartItem } from "@/types";
 
 type InitialState = {
   items: CartItem[];
@@ -93,62 +66,59 @@ export const cart = createSlice({
   },
 });
 
+export const {
+  addItemToCart,
+  removeItemFromCart,
+  updateCartItemQuantity,
+  removeAllItemsFromCart,
+} = cart.actions;
 export const selectCartItems = (state: RootState) => state.cartReducer.items;
 export const selectTotalPrice = createSelector([selectCartItems], (items) => {
-  const totalPrice =  items.reduce((total, item) => {
-      return total + item.product.variant.salePrice * item.quantity;
-    }, 0);
-  return (totalPrice / 100).toFixed(2)
+  const totalPrice = items.reduce((total, item) => {
+    return total + item.product.variant.salePrice * item.quantity;
+  }, 0);
+  return (totalPrice / 100).toFixed(2);
 });
+export default cart.reducer;
 
 export const cartApi = createApi({
-  reducerPath: 'cartApi',
-  // baseQuery: fetchBaseQuery({
-  //   baseUrl: process.env.NEXT_PUBLIC_SERVER_URL,
-  //   prepareHeaders: (headers) => {
-  //     if (typeof window !== 'undefined') {
-  //       const token = localStorage.getItem('accessToken');
-  //       if (token) headers.set('Authorization', `Bearer ${token}`);
-  //     }
-  //     return headers;
-  //   },
-  // }),
+  reducerPath: "cartApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Cart'],
+  tagTypes: ["Cart"],
   endpoints: (builder) => ({
     getCart: builder.query({
-      query: () => '/users/me/cart',
-      providesTags: ['Cart'],
+      query: () => "/users/me/cart",
+      providesTags: ["Cart"],
     }),
     addItemToCart: builder.mutation({
       query: ({ productId, quantity }) => ({
-        url: '/users/me/cart/items',
-        method: 'POST',
+        url: "/users/me/cart/items",
+        method: "POST",
         body: { productId, quantity },
       }),
-      invalidatesTags: ['Cart'],
+      invalidatesTags: ["Cart"],
     }),
     updateCartItem: builder.mutation({
       query: ({ productId, quantity }) => ({
         url: `/users/me/cart/items/${productId}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: { quantity },
       }),
-      invalidatesTags: ['Cart'],
+      invalidatesTags: ["Cart"],
     }),
     removeCartItem: builder.mutation({
       query: ({ productId }) => ({
         url: `/users/me/cart/items/${productId}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
-      invalidatesTags: ['Cart'],
+      invalidatesTags: ["Cart"],
     }),
     clearCart: builder.mutation({
       query: () => ({
-        url: '/users/me/cart',
-        method: 'PUT',
+        url: "/users/me/cart",
+        method: "PUT",
       }),
-      invalidatesTags: ['Cart'],
+      invalidatesTags: ["Cart"],
     }),
   }),
 });
@@ -160,12 +130,3 @@ export const {
   useRemoveCartItemMutation,
   useClearCartMutation,
 } = cartApi;
-
-export const {
-  addItemToCart,
-  removeItemFromCart,
-  updateCartItemQuantity,
-  removeAllItemsFromCart,
-} = cart.actions;
-
-export default cart.reducer;
