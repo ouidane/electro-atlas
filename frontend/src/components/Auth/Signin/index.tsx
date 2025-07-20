@@ -7,7 +7,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useSigninMutation } from "@/redux/features/auth-slice";
+import { setCredentials } from "@/redux/features/auth-slice";
+import { useDispatch } from "react-redux";
 
 const signinSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -19,6 +21,7 @@ const Signin = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<SigninFormValues>({
@@ -26,47 +29,45 @@ const Signin = () => {
   });
   const [success, setSuccess] = React.useState<string | null>(null);
   const [serverError, setServerError] = React.useState<string | null>(null);
-  const router = useRouter();
   const [googleLoading, setGoogleLoading] = React.useState(false);
+  const [signin, { isLoading }] = useSigninMutation();
+  const dispatch = useDispatch();
 
   const onSubmit = async (data: SigninFormValues) => {
     setSuccess(null);
     setServerError(null);
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+      const result = await signin(data).unwrap();
+      if (result.accessToken) {
+        dispatch(setCredentials({ accessToken: result.accessToken }));
+        setSuccess("Signed in successfully!");
+        reset();
+        window.location.href = "/";
+      } else {
+        setServerError("No access token received.");
+      }
+    } catch (err: any) {
+      if (err && err.data && err.data.message) {
+        setServerError(err.data.message);
+      } else if (err && err.status === 400 && err.data?.errors) {
+        try {
+          const parsedErrors = JSON.parse(err.data.errors);
+          Object.entries(parsedErrors).forEach(([key, message]) => {
+            setError(key as keyof SigninFormValues, {
+              type: "manual",
+              message: message as string,
+            });
+          });
+        } catch (parseError) {
+          setServerError("Invalid input. Please check your details.");
         }
-      );
-      if (res.status === 200) {
-        const result = await res.json();
-        if (result.accessToken) {
-          localStorage.setItem("accessToken", result.accessToken);
-          setSuccess("Signed in successfully!");
-          reset();
-          window.location.href = "/";
-        } else {
-          setServerError("No access token received.");
-        }
-      } else if (res.status === 400) {
-        const err = await res.json();
-        setServerError(
-          err.message || "Invalid input. Please check your details."
-        );
-      } else if (res.status === 401) {
-        const err = await res.json();
-        setServerError(err.message || "Invalid email or password.");
-      } else if (res.status === 403) {
-        const err = await res.json();
-        setServerError(err.message || "Access forbidden.");
+      } else if (err && err.status === 401) {
+        setServerError("Invalid email or password.");
+      } else if (err && err.status === 403) {
+        setServerError("Access forbidden.");
       } else {
         setServerError("An unexpected error occurred. Please try again later.");
       }
-    } catch (error) {
-      setServerError("Network error. Please try again later.");
     }
   };
 
@@ -150,9 +151,11 @@ const Signin = () => {
                 <Button
                   type="submit"
                   className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isLoading}
                 >
-                  {isSubmitting ? "Signing in..." : "Sign in to account"}
+                  {isSubmitting || isLoading
+                    ? "Signing in..."
+                    : "Sign in to account"}
                 </Button>
                 <a
                   href="#"

@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { useSignupMutation } from "@/redux/features/auth-slice";
 
 const signupSchema = z
   .object({
@@ -19,7 +20,7 @@ const signupSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
-    path: ["retypePassword"],
+    path: ["confirmPassword"],
   });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -39,39 +40,44 @@ const Signup = () => {
   const [serverError, setServerError] = React.useState<string | null>(null);
   const router = useRouter();
   const [googleLoading, setGoogleLoading] = React.useState(false);
+  const [signup, { isLoading }] = useSignupMutation();
 
   const onSubmit = async (data: SignupFormValues) => {
     setSuccess(null);
     setServerError(null);
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/register`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: data.email,
-            password: data.password,
-          }),
-        }
+      await signup({
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      }).unwrap();
+
+      // If signup is successful, redirect to verify-email
+      setSuccess(
+        "Account created successfully! Please check your email to verify your account."
       );
-      if (res.status === 204) {
-        // Redirect to /verify-email
-        router.push("/verify-email");
-        return;
-      } else if (res.status === 400) {
-        const err = await res.json();
-        setServerError(
-          err.message || "Invalid input. Please check your details."
-        );
-      } else if (res.status === 409) {
-        const err = await res.json();
-        setServerError(err.message || "User already exists.");
+      reset();
+      router.push("/verify-email");
+    } catch (err: any) {
+      if (err && err.data && err.data.message) {
+        setServerError(err.data.message);
+      } else if (err && err.status === 400 && err.data?.errors) {
+        try {
+          const parsedErrors = JSON.parse(err.data.errors);
+          Object.entries(parsedErrors).forEach(([key, message]) => {
+            setError(key as keyof SignupFormValues, {
+              type: "manual",
+              message: message as string,
+            });
+          });
+        } catch (parseError) {
+          setServerError("Invalid input. Please check your details.");
+        }
+      } else if (err && err.status === 409) {
+        setServerError("User already exists.");
       } else {
         setServerError("An unexpected error occurred. Please try again later.");
       }
-    } catch (error) {
-      setServerError("Network error. Please try again later.");
     }
   };
 
@@ -202,7 +208,7 @@ const Signup = () => {
                 </div>
 
                 <div className="mb-5.5">
-                  <label htmlFor="retypePassword" className="block mb-2.5">
+                  <label htmlFor="confirmPassword" className="block mb-2.5">
                     Re-type Password <span className="text-red">*</span>
                   </label>
                   <Input
@@ -222,9 +228,11 @@ const Signup = () => {
                 <Button
                   type="submit"
                   className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isLoading}
                 >
-                  {isSubmitting ? "Creating Account..." : "Create Account"}
+                  {isSubmitting || isLoading
+                    ? "Creating Account..."
+                    : "Create Account"}
                 </Button>
 
                 <p className="text-center mt-6">
