@@ -55,49 +55,6 @@ export class LocalStorage {
       return false;
     }
   }
-
-  static isAvailable(): boolean {
-    try {
-      const test = "__localStorage_test__";
-      localStorage.setItem(test, test);
-      localStorage.removeItem(test);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  static getSize(): number {
-    try {
-      let size = 0;
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key) {
-          size += key.length + localStorage.getItem(key)!.length;
-        }
-      }
-      return size;
-    } catch (error) {
-      console.error("Error calculating localStorage size:", error);
-      return 0;
-    }
-  }
-
-  static getKeys(): string[] {
-    try {
-      const keys: string[] = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key) {
-          keys.push(key);
-        }
-      }
-      return keys;
-    } catch (error) {
-      console.error("Error getting localStorage keys:", error);
-      return [];
-    }
-  }
 }
 
 export function useLocalStorage<T>(
