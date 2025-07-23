@@ -157,6 +157,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get authentication status */
+        get: operations["getAuthStatus"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/carts": {
         parameters: {
             query?: never;
@@ -2204,6 +2221,35 @@ export interface operations {
                 };
                 content?: never;
             };
+        };
+    };
+    getAuthStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Authenticated user */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        authenticated?: boolean;
+                        user?: {
+                            id?: string;
+                            role?: string;
+                        };
+                    };
+                };
+            };
+            401: components["responses"]["UnauthorizedError"];
+            403: components["responses"]["NotFoundError"];
+            500: components["responses"]["InternalServerError"];
         };
     };
     getAllCarts: {

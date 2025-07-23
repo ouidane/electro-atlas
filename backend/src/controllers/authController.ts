@@ -147,6 +147,7 @@ class AuthController {
     )(req, res, next);
   }
 
+  // refresh token endpoint
   async refreshToken(req: Request, res: Response, next: NextFunction) {
     const jid = req.cookies.jid;
     const ip = req.ip ?? "unknown";
@@ -159,6 +160,14 @@ class AuthController {
     JwtService.sendRefreshToken(res, refreshToken);
 
     res.status(200).json({ accessToken });
+  }
+
+  // status endpoint
+  async status(req: Request, res: Response) {
+    res.status(200).json({
+      authenticated: true,
+      user: { id: req.user!.id, role: req.user!.role },
+    });
   }
 }
 

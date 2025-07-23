@@ -7,6 +7,7 @@ import {
   validateResetPassword,
   validateRegister,
 } from "../../middlewares";
+import { requireAuth } from "../../middlewares/premissions";
 
 export const router = express.Router();
 
@@ -235,3 +236,39 @@ router.get("/oauth/google/callback", authController.googleAuthCallback);
  *         description: Logout successful
  */
 router.post("/logout", authController.logout);
+
+/**
+ * @openapi
+ * /auth/status:
+ *   get:
+ *     summary: Get authentication status
+ *     operationId: getAuthStatus
+ *     tags:
+ *       - auth
+ *     security:
+ *       - AccessTokenAuth: []
+ *     responses:
+ *       '200':
+ *         description: Authenticated user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 authenticated:
+ *                   type: boolean
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *       '401':
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       '403':
+ *         $ref: '#/components/responses/NotFoundError'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+router.get("/status", requireAuth, authController.status);
