@@ -104,7 +104,13 @@ export class CartService {
     productId: string;
     quantity: number;
   }) {
-    await this.validateProductAndVariant({ productId, quantity });
+    const item = await this.findCartItemByProductId({ cartId, productId });
+    const currentQuantity = item?.quantity || 0;
+    await this.validateProductAndVariant({
+      productId,
+      quantity,
+      currentQuantity,
+    });
     await this.upsertCartItem({ cartId, productId, quantity });
     await this.updateCartTotals(cartId);
   }
@@ -123,7 +129,16 @@ export class CartService {
     if (!cart) {
       throw createError(404, "Cart not found");
     }
-    await this.validateProductAndVariant({ productId, quantity });
+    const item = await this.findCartItemByProductId({
+      cartId: cart._id,
+      productId,
+    });
+    const currentQuantity = item?.quantity || 0;
+    await this.validateProductAndVariant({
+      productId,
+      quantity,
+      currentQuantity,
+    });
     await this.upsertCartItem({ cartId: cart._id, productId, quantity });
     await this.updateCartTotals(cart._id);
   }
@@ -139,7 +154,10 @@ export class CartService {
     quantity: number;
   }) {
     const { productId } = await this.getItemById(cartId, itemId);
-    await this.validateProductAndVariant({ productId, quantity });
+    await this.validateProductAndVariant({
+      productId,
+      quantity,
+    });
     await this.updateCartItemQuantity({ cartId, itemId, quantity });
     await this.updateCartTotals(cartId);
   }
@@ -158,10 +176,16 @@ export class CartService {
     if (!cart) {
       throw createError(404, "Cart not found");
     }
-    await this.validateProductAndVariant({ productId, quantity });
     const item = await this.findCartItemByProductId({
       cartId: cart._id,
       productId,
+    });
+    if (!item) {
+      throw createError(404, "Item not found in cart");
+    }
+    await this.validateProductAndVariant({
+      productId,
+      quantity,
     });
     await this.updateCartItemQuantity({
       cartId: cart._id,
@@ -199,6 +223,9 @@ export class CartService {
       cartId: cart._id,
       productId,
     });
+    if (!item) {
+      throw createError(404, "Item not found in cart");
+    }
     await this.removeCartItem({ cartId: cart._id, itemId: item._id });
     await this.updateCartTotals(cart._id);
   }
@@ -254,6 +281,7 @@ export class CartService {
       {
         $project: this.getCartItemProjection(),
       },
+      { $sort: { createdAt: -1 } },
     ]);
 
     return cartItems;
@@ -459,17 +487,24 @@ export class CartService {
   private static async validateProductAndVariant({
     productId,
     quantity,
+    currentQuantity = 0,
   }: {
     productId: string | Types.ObjectId;
     quantity: number;
+    currentQuantity?: number;
   }) {
-    const product = await Product.findById(productId).lean();
+    const product = await Product.findById(productId).select("variant").lean();
     if (!product) {
       throw createError(404, "Product not found");
     }
 
-    if (product.variant.inventory < quantity) {
-      throw createError(400, "Product variant out of stock");
+    if (product.variant.inventory <= 0) {
+      throw createError(400, "Product out of stock");
+    }
+
+    const maxQuantity = product.variant.inventory - currentQuantity;
+    if (maxQuantity < quantity) {
+      throw createError(400, "Quantity exceeds available stock");
     }
   }
 
@@ -484,9 +519,7 @@ export class CartService {
       productId,
       cartId,
     }).lean();
-    if (!item) {
-      throw createError(404, "Item not found in cart");
-    }
+    if (!item) return null;
     return item;
   }
 
