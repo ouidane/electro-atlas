@@ -94,6 +94,7 @@ export class AuthService {
       token.refreshToken = refreshToken;
       token.tokenVersion += 1;
       token.ip = requestInfo.ip;
+      token.isValid = true;
       token.userAgent = requestInfo.userAgent;
       await token.save();
     }
