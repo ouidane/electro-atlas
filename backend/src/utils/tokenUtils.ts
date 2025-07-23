@@ -43,8 +43,7 @@ export class JwtService {
         tokenVersion: payload.tokenVersion,
       },
       accessTokenSecret,
-      // { expiresIn: "15m" },
-      { expiresIn: "1d" },
+      { expiresIn: "15m" },
     );
   }
 
@@ -92,7 +91,6 @@ export class JwtService {
       secure: config.isProd,
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      // domain: ".electro-atlas.com",
     });
 
     // return csrfToken;
@@ -103,8 +101,7 @@ export class JwtService {
       path: "/",
       httpOnly: config.isProd,
       secure: config.isProd,
-      sameSite: "none",
-      // domain: ".electro-atlas.com",
+      sameSite: config.isProd ? "none" : "lax",
     });
   }
 }
