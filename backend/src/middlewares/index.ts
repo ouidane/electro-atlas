@@ -12,6 +12,7 @@ export * from "./validateOrder";
 export * from "./validateSale";
 export * from "./validateUser";
 export * from "./validateProduct";
+export * from "./validateDiscover";
 export * from "./validateReview";
 export * from "./validateWishlist";
 export * from "./validateUser";
