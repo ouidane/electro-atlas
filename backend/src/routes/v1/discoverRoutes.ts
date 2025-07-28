@@ -1,5 +1,10 @@
 import express, { Router } from "express";
 import { discoverController } from "../../controllers/discoverController";
+import {
+  validateBestOffers,
+  validateBestSelling,
+  validateRecommendation,
+} from "../../middlewares";
 
 export const router: Router = express.Router();
 
@@ -25,7 +30,11 @@ export const router: Router = express.Router();
  *       '500':
  *         $ref: '#/components/responses/InternalServerError'
  */
-router.get("/recommendations", discoverController.recommendedProducts);
+router.get(
+  "/recommendations",
+  validateRecommendation,
+  discoverController.recommendedProducts,
+);
 
 /**
  * @openapi
@@ -48,7 +57,7 @@ router.get("/recommendations", discoverController.recommendedProducts);
  *       '500':
  *         $ref: '#/components/responses/InternalServerError'
  */
-router.get("/best-offers", discoverController.bestOffers);
+router.get("/best-offers", validateBestOffers, discoverController.bestOffers);
 
 /**
  * @openapi
@@ -71,4 +80,4 @@ router.get("/best-offers", discoverController.bestOffers);
  *       '500':
  *         $ref: '#/components/responses/InternalServerError'
  */
-router.get("/best-seller", discoverController.bestSeller);
+router.get("/best-seller", validateBestSelling, discoverController.bestSeller);
