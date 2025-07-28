@@ -3,6 +3,11 @@ import { Category, Product } from "../models";
 import { MongooseFilterValue } from "../utils/queryHelpers";
 import { QueryFiltersType } from "../middlewares/validateProduct";
 import { ProductService } from "./productService";
+import {
+  BestOffersType,
+  BestSellingType,
+  RecommendationType,
+} from "../middlewares";
 
 const productService = new ProductService();
 
@@ -28,23 +33,17 @@ export const SECONDARY_FILTER_KEYS = [
 
 export class DiscoverService {
   // Product Queries for Best Offers
-  async getBestOffers({
-    categoryId,
-    subCategoryId,
-  }: {
-    categoryId?: string;
-    subCategoryId?: string;
-  }) {
+  async getBestOffers(queryParams: BestOffersType) {
+    const { page = 1, limit = 10, categoryId, subCategoryId } = queryParams;
+
     const baseQuery: Record<string, unknown> = {
       "variant.discountPercent": { $gt: 0 },
       "variant.inventory": { $gt: 0 },
       visibility: true,
     };
-
     if (categoryId) {
       baseQuery.categoryId = new Types.ObjectId(categoryId);
     }
-
     if (subCategoryId) {
       baseQuery.subCategoryId = new Types.ObjectId(subCategoryId);
     }
@@ -53,28 +52,24 @@ export class DiscoverService {
       { $match: baseQuery },
       { $project: productService.buildProductProjection() },
       { $sort: { "variant.discountPercent": -1 } },
-      { $limit: 10 },
+      { $limit: limit },
+      { $skip: (page - 1) * limit },
     ]);
 
     return products;
   }
 
   // Product Queries for Best Sellers
-  async getBestSellers({
-    categoryId,
-    subCategoryId,
-  }: {
-    categoryId?: string;
-    subCategoryId?: string;
-  }) {
+  async getBestSellers(queryParams: BestSellingType) {
+    const { page = 1, limit = 10, categoryId, subCategoryId } = queryParams;
+
     const baseQuery: Record<string, unknown> = {
+      "variant.inventory": { $gt: 0 },
       visibility: true,
     };
-
     if (categoryId) {
       baseQuery.categoryId = new Types.ObjectId(categoryId);
     }
-
     if (subCategoryId) {
       baseQuery.subCategoryId = new Types.ObjectId(subCategoryId);
     }
@@ -83,10 +78,11 @@ export class DiscoverService {
       { $match: baseQuery },
       { $project: productService.buildProductProjection("salesCount") },
       { $sort: { salesCount: -1 } },
-      { $limit: 10 },
+      { $limit: limit },
+      { $skip: (page - 1) * limit },
     ]);
 
-    return { products };
+    return products;
   }
 
   // This method builds a query object based on the provided filters and returns products filter.
@@ -128,33 +124,30 @@ export class DiscoverService {
   }
 
   // Recommended Products
-  async getRecommendedProducts({
-    categoryId,
-    subCategoryId,
-    excludeProductId,
-  }: {
-    categoryId?: string;
-    subCategoryId?: string;
-    excludeProductId?: string;
-  }) {
+  async getRecommendedProducts(queryParams: RecommendationType) {
+    const {
+      page = 1,
+      limit = 10,
+      categoryId,
+      subCategoryId,
+      excludeProductId,
+    } = queryParams;
+
     const baseQuery: Record<string, unknown> = {
       "variant.inventory": { $gt: 0 },
       visibility: true,
     };
-
     if (categoryId) {
       baseQuery.categoryId = new Types.ObjectId(categoryId);
     }
-
     if (subCategoryId) {
       baseQuery.subCategoryId = new Types.ObjectId(subCategoryId);
     }
-
     if (excludeProductId) {
       baseQuery._id = { $ne: new Types.ObjectId(excludeProductId) };
     }
 
-    return Product.aggregate([
+    const products = await Product.aggregate([
       { $match: baseQuery },
       {
         $addFields: {
@@ -170,8 +163,11 @@ export class DiscoverService {
       },
       { $project: productService.buildProductProjection("priorityScore") },
       { $sort: { priorityScore: -1 } },
-      { $limit: 10 },
+      { $limit: limit },
+      { $skip: (page - 1) * limit },
     ]);
+
+    return products;
   }
 
   private buildCategoriesPipeline() {
