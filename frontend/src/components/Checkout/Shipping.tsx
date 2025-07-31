@@ -3,13 +3,28 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useGetUserQuery } from "@/redux/features/user-slice";
 
+type Profile = {
+  userId?: string;
+  familyName?: string;
+  givenName?: string;
+  fullName?: string;
+  phone?: string;
+  address?: Address;
+};
+
+type Address = {
+  line1?: string;
+  line2?: string;
+  city?: string;
+  country?: string;
+};
+
 const shippingSchema = z.object({
-  address1: z.string().min(1, "Street address is required"),
-  address2: z.string().optional(),
-  city: z.string().min(1, "Town/City is required"),
+  line1: z.string().min(1, "Street address is required"),
+  line2: z.string().optional(),
+  city: z.string().min(1, "City is required"),
   country: z.string().optional(),
   phone: z.string().min(1, "Phone is required"),
   email: z.string().email({ message: "Invalid email address" }),
@@ -18,24 +33,19 @@ type ShippingFormValues = z.infer<typeof shippingSchema>;
 
 const Shipping = () => {
   const [dropdown, setDropdown] = useState(true);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  useEffect(() => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-    setAccessToken(token);
-  }, []);
-  const { data: userData } = useGetUserQuery(undefined, { skip: !accessToken });
+  const { data: userData } = useGetUserQuery();
 
   // Memoize default values from user profile
   const defaultValues = useMemo(() => {
-    const profile = userData?.data?.profile;
-    const address = profile?.address || {};
+    const profile: Profile = userData?.data?.profile || {};
+    const address: Address = profile?.address || {};
     return {
-      address1: address.line1 || '',
-      address2: address.line2 || '',
-      city: address.city || '',
-      country: address.country || '',
-      phone: profile?.phone || '',
-      email: userData?.data?.email || '',
+      line1: address?.line1 || "",
+      line2: address?.line2 || "",
+      city: address?.city || "",
+      country: address?.country || "",
+      phone: profile?.phone || "",
+      email: userData?.data?.email || "",
     };
   }, [userData]);
 
@@ -66,7 +76,9 @@ const Shipping = () => {
       >
         Ship to a different address?
         <svg
-          className={`fill-current ease-out duration-200 ${dropdown && "rotate-180"}`}
+          className={`fill-current ease-out duration-200 ${
+            dropdown && "rotate-180"
+          }`}
           width="22"
           height="22"
           viewBox="0 0 22 22"
@@ -85,27 +97,31 @@ const Shipping = () => {
       <div className={`p-4 sm:p-8.5 ${dropdown ? "block" : "hidden"}`}>
         <form noValidate>
           <div className="mb-5">
-            <label htmlFor="address1" className="block mb-2.5">
+            <label htmlFor="line1" className="block mb-2.5">
               Street Address <span className="text-red">*</span>
             </label>
             <Input
               type="text"
-              id="address1"
+              id="line1"
               placeholder="House number and street name"
-              {...register("address1")}
+              {...register("line1")}
             />
-            {errors.address1 && (
-              <span className="text-red text-xs mt-1 block">{errors.address1.message}</span>
+            {errors.line1 && (
+              <span className="text-red text-xs mt-1 block">
+                {errors.line1.message}
+              </span>
             )}
             <div className="mt-5">
               <Input
                 type="text"
-                id="address2"
+                id="line2"
                 placeholder="Apartment, suite, unit, etc. (optional)"
-                {...register("address2")}
+                {...register("line2")}
               />
-              {errors.address2 && (
-                <span className="text-red text-xs mt-1 block">{errors.address2.message}</span>
+              {errors.line2 && (
+                <span className="text-red text-xs mt-1 block">
+                  {errors.line2.message}
+                </span>
               )}
             </div>
           </div>
@@ -120,7 +136,9 @@ const Shipping = () => {
               {...register("city")}
             />
             {errors.city && (
-              <span className="text-red text-xs mt-1 block">{errors.city.message}</span>
+              <span className="text-red text-xs mt-1 block">
+                {errors.city.message}
+              </span>
             )}
           </div>
           <div className="mb-5">
@@ -134,7 +152,9 @@ const Shipping = () => {
               {...register("country")}
             />
             {errors.country && (
-              <span className="text-red text-xs mt-1 block">{errors.country.message}</span>
+              <span className="text-red text-xs mt-1 block">
+                {errors.country.message}
+              </span>
             )}
           </div>
           <div className="mb-5">
@@ -148,7 +168,9 @@ const Shipping = () => {
               {...register("phone")}
             />
             {errors.phone && (
-              <span className="text-red text-xs mt-1 block">{errors.phone.message}</span>
+              <span className="text-red text-xs mt-1 block">
+                {errors.phone.message}
+              </span>
             )}
           </div>
           <div>
@@ -162,7 +184,9 @@ const Shipping = () => {
               {...register("email")}
             />
             {errors.email && (
-              <span className="text-red text-xs mt-1 block">{errors.email.message}</span>
+              <span className="text-red text-xs mt-1 block">
+                {errors.email.message}
+              </span>
             )}
           </div>
         </form>
