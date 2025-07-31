@@ -1,15 +1,33 @@
 import { ProductVariant } from "./product";
 
-type Product = {
+export type ProductCart = {
   _id: string;
   name: string;
-  image: string;
+  image?: string;
   variant: ProductVariant;
 };
 
 export type CartItem = {
+  itemId?: string;
   quantity: number;
   totalPrice?: number;
   totalPriceDecimal?: string;
-  product: Product;
+  product: ProductCart;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type Cart = {
+  _id: string;
+  amount: number;
+  amountDecimal?: string;
+  totalProducts: number;
+  totalItems: number;
+  cartItems: CartItem[];
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type CartApiResponse = {
+  data: Cart;
 };

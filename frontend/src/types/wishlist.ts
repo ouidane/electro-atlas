@@ -1,7 +1,7 @@
 import { ProductVariant } from "./product";
 
 export type WishlistItem = {
-  _Id: string;
+  _id: string;
   productId: string;
   productName: string;
   image: string;

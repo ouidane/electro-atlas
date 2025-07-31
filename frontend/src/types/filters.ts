@@ -1,4 +1,3 @@
-
 export type CategoryWithSubcategories = {
   category: {
     _id: string;
@@ -28,4 +27,4 @@ export type Filters = {
 
 export type FilterResponse = {
   data: Filters;
-}
+};
