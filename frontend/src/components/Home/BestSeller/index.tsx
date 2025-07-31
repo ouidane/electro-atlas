@@ -1,10 +1,17 @@
+"use client";
+
 import React from "react";
 import SingleItem from "./SingleItem";
+import SingleItemSkeleton from "./SingleItemSkeleton";
 import Image from "next/image";
 import Link from "next/link";
-import shopData from "@/components/Shop/shopData";
+import { useGetBestSellerQuery } from "@/redux/features/discover/discover-api";
 
 const BestSeller = () => {
+  // Fetch best selling products
+  const { data, isLoading } = useGetBestSellerQuery({ limit: 6 });
+  const products = Array.isArray(data?.data) ? data.data : [];
+
   return (
     <section className="overflow-hidden">
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -28,9 +35,11 @@ const BestSeller = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7.5">
           {/* <!-- Best Sellers item --> */}
-          {shopData.data.slice(1, 7).map((item) => (
-            <SingleItem item={item} key={item._id} />
-          ))}
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, idx) => (
+                <SingleItemSkeleton key={idx} />
+              ))
+            : products.map((item) => <SingleItem item={item} key={item._id} />)}
         </div>
 
         <div className="text-center mt-12.5">
