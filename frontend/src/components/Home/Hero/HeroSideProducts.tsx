@@ -21,16 +21,14 @@ const HeroSideProducts = () => {
                 </p>
                 <span className="flex items-center gap-3">
                   <span className="font-medium text-base text-red">
-                    ${
-                      product.variant.salePriceDecimal ||
-                      (product.variant.salePrice / 100).toFixed(2)
-                    }
+                    $
+                    {product.variant.salePriceDecimal ||
+                      (product.variant.salePrice / 100).toFixed(2)}
                   </span>
                   <span className="font-medium text-base text-dark-4 line-through">
-                    ${
-                      product.variant.globalPriceDecimal ||
-                      (product.variant.globalPrice / 100).toFixed(2)
-                    }
+                    $
+                    {product.variant.globalPriceDecimal ||
+                      (product.variant.globalPrice / 100).toFixed(2)}
                   </span>
                 </span>
               </div>
@@ -51,4 +49,4 @@ const HeroSideProducts = () => {
   );
 };
 
-export default HeroSideProducts; 
+export default HeroSideProducts;
