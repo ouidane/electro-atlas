@@ -1,11 +1,17 @@
-const Logo = ({ size = 40, color = "blue" }: { size?: number; color?: "blue" | "white" }) => {
+const Logo = ({
+  size = 40,
+  color = "blue",
+}: {
+  size?: number;
+  color?: "blue" | "white";
+}) => {
   const textSize = size * 0.6;
   const fillColor = color === "white" ? "fill-white" : "fill-blue";
   const textColor = color === "white" ? "text-white" : "text-blue";
 
   return (
     <div className="flex items-center gap-2">
-      <span 
+      <span
         className="flex items-center justify-center"
         style={{ width: `${size}px`, height: `${size}px` }}
       >
@@ -46,15 +52,15 @@ const Logo = ({ size = 40, color = "blue" }: { size?: number; color?: "blue" | "
       </span>
       <span
         className={`font-extrabold tracking-tight ${textColor} drop-shadow-sm animate-bounce-slow`}
-        style={{ 
+        style={{
           fontSize: `${textSize}px`,
-          fontFamily: "cursive" 
+          fontFamily: "cursive",
         }}
       >
         Electro Atlas
       </span>
     </div>
   );
-}
+};
 
 export default Logo;
