@@ -1,15 +1,25 @@
 "use client";
 import React from "react";
-import product from "@/components/Shop/shopData";
-import ProductItem from "@/components/Common/ProductItem";
+import SingleGridItem from "../Shop/SingleGridItem";
 import Image from "next/image";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useCallback, useRef } from "react";
 import "swiper/css/navigation";
 import "swiper/css";
+import { useGetRecommendedProductsQuery } from "@/redux/features/discover/discover-api";
+import SingleItemSkeleton from "@/components/Shop/SingleItemSkeleton";
 
-const RecentlyViewdItems = () => {
+interface RecommendedItemsProps {
+  excludeProductId: string;
+  categoryId?: string;
+  subCategoryId?: string;
+}
+
+const RecommendedItems: React.FC<RecommendedItemsProps> = ({
+  excludeProductId,
+  categoryId,
+  subCategoryId,
+}) => {
   const sliderRef = useRef(null);
 
   const handlePrev = useCallback(() => {
@@ -21,6 +31,14 @@ const RecentlyViewdItems = () => {
     if (!sliderRef.current) return;
     sliderRef.current.swiper.slideNext();
   }, []);
+
+  const { data, isLoading } = useGetRecommendedProductsQuery({
+    excludeProductId,
+    categoryId,
+    subCategoryId,
+    limit: 8,
+  });
+  const products = Array.isArray(data?.data) ? data.data : [];
 
   return (
     <section className="overflow-hidden pt-17.5">
@@ -88,11 +106,17 @@ const RecentlyViewdItems = () => {
             spaceBetween={20}
             className="justify-between"
           >
-            {product.data.map((item, key) => (
-              <SwiperSlide key={key}>
-                <ProductItem item={item} index={key} />
-              </SwiperSlide>
-            ))}
+            {isLoading
+              ? Array.from({ length: 4 }).map((_, idx) => (
+                  <SwiperSlide key={idx}>
+                    <SingleItemSkeleton />
+                  </SwiperSlide>
+                ))
+              : products.map((item, key) => (
+                  <SwiperSlide key={key}>
+                    <SingleGridItem item={item} index={key} />
+                  </SwiperSlide>
+                ))}
           </Swiper>
         </div>
       </div>
@@ -100,4 +124,4 @@ const RecentlyViewdItems = () => {
   );
 };
 
-export default RecentlyViewdItems;
+export default RecommendedItems;
