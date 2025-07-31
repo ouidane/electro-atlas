@@ -1,7 +1,5 @@
 import Signin from "@/components/Auth/Signin";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Sign In | Electro Atlas",
@@ -27,11 +25,6 @@ export const metadata: Metadata = {
 };
 
 const SigninPage = async () => {
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get("jid");
-
-  if (refreshToken) return redirect("/");
-
   return (
     <main>
       <Signin />

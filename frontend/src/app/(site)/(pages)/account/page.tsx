@@ -1,9 +1,7 @@
-import MyAccount from "@/components/MyAccount";
 import React from "react";
-
+import MyAccount from "@/components/MyAccount";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+
 export const metadata: Metadata = {
   title: "My Account | Electro Atlas",
   description:
@@ -27,11 +25,6 @@ export const metadata: Metadata = {
 };
 
 const MyAccountPage = async () => {
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get("jid");
-
-  if (!refreshToken) return redirect("/signin");
-
   return (
     <main>
       <MyAccount />

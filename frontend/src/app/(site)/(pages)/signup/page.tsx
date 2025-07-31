@@ -1,6 +1,5 @@
 import Signup from "@/components/Auth/Signup";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -27,11 +26,6 @@ export const metadata: Metadata = {
 };
 
 const SignupPage = async () => {
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get("jid");
-
-  if (refreshToken) return redirect("/");
-
   return (
     <main>
       <Signup />

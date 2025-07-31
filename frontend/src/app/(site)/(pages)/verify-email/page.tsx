@@ -1,6 +1,5 @@
 import VerifyEmail from "@/components/VerifyEmail";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -24,11 +23,6 @@ export const metadata: Metadata = {
 };
 
 const VerifyEmailPage = async () => {
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get("jid");
-
-  if (refreshToken) return redirect("/");
-
   return (
     <main>
       <VerifyEmail />
