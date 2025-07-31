@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { createContext, useContext, useState } from "react";
 
 interface ModalContextType {
@@ -33,4 +33,4 @@ export const ModalProvider = ({ children }) => {
       {children}
     </ModalContext.Provider>
   );
-}; 
+};
