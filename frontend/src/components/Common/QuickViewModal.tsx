@@ -2,22 +2,17 @@
 import React, { useEffect, useState } from "react";
 
 import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { addItemToCart as addItemToCartRedux, selectCartItems } from "@/redux/features/cart-slice";
-import { useAddItemToCartMutation, useGetCartQuery } from "@/redux/features/cart-slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
+import { Loader2, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
+import { ImageOff, CheckCircle, XCircle } from "lucide-react";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
 import { updateproductDetails } from "@/redux/features/product-details";
-import { ImageOff, CheckCircle, XCircle, Heart } from "lucide-react";
-import {
-  useGetWishlistQuery,
-  useAddItemToWishlistMutation,
-  useRemoveItemFromWishlistMutation,
-  addItemToWishlist as addItemToWishlistRedux,
-  removeItemFromWishlist as removeItemFromWishlistRedux,
-} from "@/redux/features/wishlist-slice";
-import { RootState } from "@/redux/store";
 
 const QuickViewModal = () => {
   const { isModalOpen, closeModal } = useModalContext();
@@ -25,89 +20,52 @@ const QuickViewModal = () => {
   const [quantity, setQuantity] = useState(1);
 
   const dispatch = useDispatch<AppDispatch>();
-  const reduxCartItems = useSelector(selectCartItems);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const { data: apiCart } = useGetCartQuery(undefined, { skip: !token });
+
   const {
-    data: wishlistData,
-  } = useGetWishlistQuery(undefined, { skip: !token });
-  const [addItemToWishlist, { isLoading: isAddingToWishlist }] = useAddItemToWishlistMutation();
-  const [removeItemFromWishlist, { isLoading: isRemovingFromWishlist }] = useRemoveItemFromWishlistMutation();
-
-  // get the product data
-  const product = useAppSelector((state) => state.quickViewReducer.value);
-
-  // Choose the correct cart source
-  let cartItems = reduxCartItems;
-  if (token && apiCart && apiCart.data && apiCart.data.cartItems) {
-    cartItems = apiCart.data.cartItems;
-  }
+    addItem: addToCart,
+    isLoading: cartLoading,
+    currentCartQuantity,
+    maxAvailableQuantity,
+  } = useCart();
+  const {
+    isLoading: wishlistLoading,
+    isInWishlist,
+    addItem: addToWishlist,
+    removeItem: removeFromWishlist,
+  } = useWishlist();
+  // get the product data (assume passed as prop or from context)
+  const product = useAppSelector((state) => state.quickView.value);
 
   // Get current quantity in cart for this product
-  const currentCartQuantity = cartItems.find(item => item.product?._id === product._id)?.quantity || 0;
-  // Calculate maximum available quantity (inventory minus what's already in cart)
-  const maxAvailableQuantity = product.variant.inventory - currentCartQuantity;
+  const currentQuantity = currentCartQuantity(product._id);
+  const maxQuantity = maxAvailableQuantity(product);
 
-  // Get guest wishlist items
-  const wishlistItemsRedux = useSelector((state: RootState) => state.wishlistReducer.items);
-  const isInReduxWishlist = wishlistItemsRedux.some((wishlistItem) => wishlistItem.productId === product._id);
-
-  const isInWishlist = wishlistData?.data?.items?.some(
-    (wishlistItem) => wishlistItem.productId === product._id
-  );
-
-  const handleWishlistClick = async () => {
-    if (!token) {
-      if (isInReduxWishlist) {
-        dispatch(removeItemFromWishlistRedux(product._id));
-      } else {
-        dispatch(
-          addItemToWishlistRedux({
-            _Id: product._id,
-            productId: product._id,
-            productName: product.name,
-            image: product.image.medium,
-            variant: product.variant,
-          })
-        );
-      }
-      return;
-    }
-    if (isInWishlist) {
-      await removeItemFromWishlist({ productId: product._id });
+  const inWishlist = isInWishlist(product._id);
+  const handleWishlistClick = () => {
+    if (inWishlist) {
+      removeFromWishlist(product._id);
     } else {
-      await addItemToWishlist({ productId: product._id });
+      addToWishlist({
+        productId: product._id,
+        productName: product.name,
+        image: product.image?.medium,
+        variant: product.variant,
+      });
     }
   };
 
   // preview modal
   const handlePreviewSlider = () => {
     dispatch(updateproductDetails(product));
-
     openPreviewModal();
   };
 
-  const [addItemToCart, { isLoading: isAdding }] = useAddItemToCartMutation();
-
-  // Reset quantity when product changes or cart updates
   useEffect(() => {
-    setQuantity(maxAvailableQuantity > 0 ? 1 : 0);
-  }, [product._id, currentCartQuantity, maxAvailableQuantity]);
+    setQuantity(maxQuantity > 0 ? 1 : 0);
+  }, [product._id, currentQuantity, maxQuantity]);
 
-  // add to cart
-  const handleAddToCart = async () => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-    if (token) {
-      await addItemToCart({ productId: product._id, quantity });
-    } else {
-      dispatch(
-        addItemToCartRedux({
-          product: { ...product, image: product.image.medium },
-          quantity,
-        })
-      );
-    }
-    closeModal();
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
   };
 
   useEffect(() => {
@@ -133,7 +91,7 @@ const QuickViewModal = () => {
     <div
       className={`${
         isModalOpen ? "z-99999" : "hidden"
-      } fixed top-0 left-0 overflow-y-auto no-scrollbar w-full h-screen sm:py-20 xl:py-25 2xl:py-[230px] bg-dark/70 sm:px-8 px-4 py-5`}
+      } fixed top-0 left-0 overflow-y-auto no-scrollbar w-full h-screen sm:py-10 sm:px-4 xl:py-14 2xl:py-16 bg-dark/70 px-2 py-3`}
     >
       <div className="flex items-center justify-center ">
         <div className="w-full max-w-[1100px] rounded-xl shadow-3 bg-white p-7.5 relative modal-content">
@@ -232,18 +190,16 @@ const QuickViewModal = () => {
                   SALE {product.variant.discountPercent}% OFF
                 </span>
               )}
-              {product.variant.inventory <= 5 && product.variant.inventory > 0 && (
-                <span className="inline-block text-custom-xs font-medium text-white py-1 px-3 bg-orange mb-6.5 ml-2">
-                  Only {product.variant.inventory} left
-                </span>
-              )}
+              {product.variant.inventory <= 5 &&
+                product.variant.inventory > 0 && (
+                  <span className="inline-block text-custom-xs font-medium text-white py-1 px-3 bg-orange mb-6.5 ml-2">
+                    Only {product.variant.inventory} left
+                  </span>
+                )}
 
               <h3 className="font-semibold text-xl xl:text-heading-5 text-dark mb-4">
                 {product.name}
               </h3>
-              {product.brand && (
-                <div className="mb-2 text-sm text-meta-4">Brand: {product.brand}</div>
-              )}
 
               <div className="flex flex-wrap items-center gap-5 mb-6">
                 <div className="flex items-center gap-1.5">
@@ -252,7 +208,11 @@ const QuickViewModal = () => {
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
-                        className={i < product.reviews.roundAvgRate ? "fill-yellow" : "fill-gray-4"}
+                        className={
+                          i < product.reviews.roundAvgRate
+                            ? "fill-yellow"
+                            : "fill-gray-4"
+                        }
                         width="18"
                         height="18"
                         viewBox="0 0 18 18"
@@ -277,7 +237,10 @@ const QuickViewModal = () => {
                     <span className="font-medium text-dark">
                       {product.reviews.avgRate.toFixed(1)} Rating
                     </span>
-                    <span className="text-dark-2"> ({product.reviews.count} reviews) </span>
+                    <span className="text-dark-2">
+                      {" "}
+                      ({product.reviews.count} reviews){" "}
+                    </span>
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -287,17 +250,16 @@ const QuickViewModal = () => {
                     <XCircle className="w-5 h-5 text-red" />
                   )}
 
-                  <span className={`font-medium ${product.variant.isInStock ? "text-green" : "text-red"}`}>
+                  <span
+                    className={`font-medium ${
+                      product.variant.isInStock ? "text-green" : "text-red"
+                    }`}
+                  >
                     {product.variant.isInStock ? "In Stock" : "Out of Stock"}
                   </span>
                 </div>
               </div>
-
-              <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has.
-              </p>
-
+              <Separator />
               <div className="flex flex-wrap justify-between gap-5 mt-6 mb-7.5">
                 <div>
                   <h4 className="font-semibold text-lg text-dark mb-3.5">
@@ -332,7 +294,9 @@ const QuickViewModal = () => {
                       onClick={() => quantity > 1 && setQuantity(quantity - 1)}
                       aria-label="button for remove product"
                       className={`flex items-center justify-center w-10 h-10 rounded-[5px] bg-gray-2 ease-out duration-200 ${
-                        quantity > 1 ? 'text-dark hover:text-blue' : 'text-gray-4 cursor-not-allowed'
+                        quantity > 1
+                          ? "text-dark hover:text-blue"
+                          : "text-gray-4 cursor-not-allowed"
                       }`}
                       disabled={quantity <= 1}
                     >
@@ -361,12 +325,16 @@ const QuickViewModal = () => {
                     </span>
 
                     <button
-                      onClick={() => quantity < maxAvailableQuantity && setQuantity(quantity + 1)}
+                      onClick={() =>
+                        quantity <= maxQuantity && setQuantity(quantity + 1)
+                      }
                       aria-label="button for add product"
                       className={`flex items-center justify-center w-10 h-10 rounded-[5px] bg-gray-2 ease-out duration-200 ${
-                        quantity < maxAvailableQuantity ? 'text-dark hover:text-blue' : 'text-gray-4 cursor-not-allowed'
+                        quantity < maxQuantity
+                          ? "text-dark hover:text-blue"
+                          : "text-gray-4 cursor-not-allowed"
                       }`}
-                      disabled={quantity >= maxAvailableQuantity}
+                      disabled={quantity >= maxQuantity}
                     >
                       <svg
                         className="fill-current"
@@ -392,57 +360,54 @@ const QuickViewModal = () => {
                     </button>
                   </div>
                 </div>
-                
               </div>
-              {currentCartQuantity > 0 && (
+              {currentQuantity > 0 && (
                 <div className="text-xs text-meta-4 mb-7.5">
-                  {currentCartQuantity} in cart • {maxAvailableQuantity} available
+                  {currentQuantity} in cart • {maxQuantity} available
                 </div>
               )}
 
               <div className="flex flex-wrap items-center gap-4">
-                <button
-                  disabled={quantity === 0 || isAdding || maxAvailableQuantity <= 0}
-                  onClick={() => handleAddToCart()}
-                  className={`inline-flex font-medium text-white py-3 px-7 rounded-md ease-out duration-200 ${
-                    maxAvailableQuantity > 0 ? 'bg-blue hover:bg-blue-dark' : 'bg-gray-4 cursor-not-allowed'
-                  } ${isAdding ? 'opacity-60 cursor-not-allowed' : ''}`}
+                <Button
+                  disabled={quantity === 0 || cartLoading || maxQuantity <= 0}
+                  onClick={handleAddToCart}
+                  className={`py-6 px-7 ${
+                    maxQuantity > 0
+                      ? "bg-blue hover:bg-blue-dark"
+                      : "bg-gray-4 cursor-not-allowed"
+                  } ${cartLoading ? "opacity-60 cursor-not-allowed" : ""}`}
                 >
-                  {isAdding ? (
+                  {cartLoading ? (
                     <>
-                      <svg className="animate-spin mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                      </svg>
+                      <Loader2 className="animate-spin mr-2 h-5 w-5 text-white" />
                       Adding...
                     </>
                   ) : (
-                    'Add to Cart'
+                    "Add to Cart"
                   )}
-                </button>
+                </Button>
 
-                <button
+                <Button
                   type="button"
                   onClick={handleWishlistClick}
-                  disabled={isAddingToWishlist || isRemovingFromWishlist}
-                  className={`inline-flex items-center justify-center w-12 h-12 rounded-md border border-gray-3 ease-out duration-200 ${
-                    (isInWishlist || isInReduxWishlist) ? "text-red" : ""
+                  disabled={wishlistLoading}
+                  variant="outline"
+                  size="icon"
+                  className={`w-12 h-12 rounded-md border-gray-3 ${
+                    inWishlist ? "text-red" : ""
                   }`}
                   aria-label="Add to wishlist"
                 >
-                  {(isAddingToWishlist || isRemovingFromWishlist) ? (
-                    <svg className="animate-spin h-5 w-5 text-red" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                    </svg>
+                  {wishlistLoading ? (
+                    <Loader2 className="animate-spin h-5 w-5 text-red" />
                   ) : (
                     <Heart
                       className="h-5 w-5"
-                      color={(isInWishlist || isInReduxWishlist) ? "#ef4444" : "currentColor"}
-                      fill={(isInWishlist || isInReduxWishlist) ? "#ef4444" : "none"}
+                      color={inWishlist ? "#ef4444" : "currentColor"}
+                      fill={inWishlist ? "#ef4444" : "none"}
                     />
                   )}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
