@@ -34,7 +34,9 @@ const HeroCarousal = () => {
                     {product.variant.discountPercent}%
                   </span>
                   <span className="block text-dark text-sm sm:text-custom-1 sm:leading-[24px]">
-                    Sale<br />Off
+                    Sale
+                    <br />
+                    Off
                   </span>
                 </div>
               )}
