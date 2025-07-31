@@ -35,9 +35,7 @@ const OrderDetails = ({ orderItem }: any) => {
           </p>
         </div>
         <div className="min-w-[175px]">
-          <p className="text-custom-sm text-dark">
-            {orderItem.createdAt}
-          </p>
+          <p className="text-custom-sm text-dark">{orderItem.createdAt}</p>
         </div>
 
         <div className="min-w-[128px]">
@@ -61,9 +59,7 @@ const OrderDetails = ({ orderItem }: any) => {
         </div> */}
 
         <div className="min-w-[113px]">
-          <p className="text-custom-sm text-dark">
-            {orderItem.total}
-          </p>
+          <p className="text-custom-sm text-dark">{orderItem.total}</p>
         </div>
       </div>
       <div className="px-7.5 w-full">

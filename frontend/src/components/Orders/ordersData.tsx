@@ -19,7 +19,7 @@ const ordersData = [
     status: "delivered",
     total: "$100",
     title: "Cancelled",
-  }
+  },
 ];
 
 export default ordersData;
