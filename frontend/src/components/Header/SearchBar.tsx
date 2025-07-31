@@ -1,17 +1,8 @@
 "use client";
 import { Search, X, Clock, Loader2 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState, useEffect, useCallback, useRef } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -20,13 +11,15 @@ import {
 } from "@/hooks/use-search-history";
 import { categories } from "./menuData";
 import { Product } from "@/types/product";
-import { revalidatePath } from "next/cache";
+import { Combobox } from "./Combobox";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function SearchBar() {
   const router = useRouter();
   const { searchHistory, saveSearchHistory } = useSearchHistory();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [query, setQuery] = useState<string>("");
+  const debouncedQuery = useDebounce(query, { delay: 300 });
   const [results, setResults] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [showResults, setShowResults] = useState<boolean>(false);
@@ -40,7 +33,7 @@ export default function SearchBar() {
 
   // Debounced API Call with request cancellation
   const fetchResults = useCallback(() => {
-    if (query.trim().length < 2) {
+    if (debouncedQuery.trim().length < 2) {
       setResults([]);
       setError("");
       return;
@@ -92,17 +85,21 @@ export default function SearchBar() {
     };
 
     fetchData();
-  }, [query, selectedCategory]);
+  }, [debouncedQuery, query, selectedCategory]);
 
   useEffect(() => {
-    const debounceTimer = setTimeout(() => fetchResults(), 300);
+    if (debouncedQuery.trim().length < 2) {
+      setResults([]);
+      setError("");
+      return;
+    }
+    fetchResults();
     return () => {
-      clearTimeout(debounceTimer);
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
     };
-  }, [query, fetchResults]);
+  }, [debouncedQuery, query, fetchResults]);
 
   const handleSearch = useCallback(() => {
     if (!query.trim()) return;
@@ -111,15 +108,17 @@ export default function SearchBar() {
     setShowResults(false);
     setSelectedIndex(-1);
 
-    // Use the same parameter names as the API
-    const searchParams = new URLSearchParams({
+    const filters: Record<string, string> = {
       "filters[query]": query.trim(),
-      ...(selectedCategory !== "All" && {
-        "filters[categoryId]": selectedCategory,
-      }),
-    });
+    };
+    if (selectedCategory !== "All") {
+      filters["filters[categoryId]"] = selectedCategory;
+    }
+    const searchParams = new URLSearchParams(filters);
 
     router.push(`/products?${searchParams.toString()}`);
+
+    inputRef.current?.blur();
   }, [query, selectedCategory, saveSearchHistory, router]);
 
   // Keyboard navigation
@@ -192,6 +191,7 @@ export default function SearchBar() {
     setResults([]);
     setError("");
     setSelectedIndex(-1);
+    setSelectedCategory("All");
     inputRef.current?.focus();
   };
 
@@ -222,16 +222,16 @@ export default function SearchBar() {
 
     const highlight = product.highlights.find((h) => h.path === field);
     if (!highlight) {
-      // Fall back to client-side highlighting for fields not highlighted by backend
       return highlightQuery(product[field] || "", query);
     }
 
-    // highlight.texts is always an array of { value: string; type: "hit" | "text" }
     return Array.isArray(highlight.texts)
       ? highlight.texts.map((text, index) => (
           <span
             key={index}
-            className={text.type === "hit" ? "bg-blue-light-4 font-semibold" : ""}
+            className={
+              text.type === "hit" ? "bg-blue-light-4 font-semibold" : ""
+            }
           >
             {text.value}
           </span>
@@ -244,29 +244,39 @@ export default function SearchBar() {
     index: number,
     type: "result" | "history"
   ) => {
-    const isSelected = index === selectedIndex;
-    const baseClasses =
-      "p-3 hover:bg-gray-1 focus:bg-gray-1 cursor-pointer transition-colors duration-200 flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-blue focus:ring-inset";
-    const selectedClasses = isSelected
-      ? "bg-blue-light-5 border-l-4 border-blue"
-      : "";
-
     if (type === "result") {
       const product = item as Product;
       const price = product.variant?.salePrice || product.variant?.globalPrice;
       const isOnSale = product.variant?.inventory > 0;
-      const hasDiscount = product.variant && product.variant.salePrice < product.variant.globalPrice;
+      const hasDiscount =
+        product.variant &&
+        product.variant.salePrice < product.variant.globalPrice;
 
       return (
-        <Link
+        <div
           key={product._id}
-          href={`/products/${product._id}`}
-          className={`${baseClasses} ${selectedClasses}`}
-          onClick={() => {
+          className={`p-3 hover:bg-gray-1 focus:bg-gray-1 cursor-pointer transition-colors duration-200 flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-blue focus:ring-inset ${
+            index === selectedIndex
+              ? "bg-blue-light-5 border-l-4 border-blue"
+              : ""
+          }`}
+          role="button"
+          tabIndex={0}
+          onClick={(e) => {
+            e.stopPropagation();
             setShowResults(false);
             saveSearchHistory(query, selectedCategory);
+            router.push(`/products/${product._id}`);
           }}
-          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.stopPropagation();
+              e.preventDefault();
+              setShowResults(false);
+              saveSearchHistory(query, selectedCategory);
+              router.push(`/products/${product._id}`);
+            }
+          }}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
             {product.image ? (
@@ -286,11 +296,6 @@ export default function SearchBar() {
             <div className="text-sm font-medium text-gray-900 line-clamp-1">
               {renderHighlightedText(product, "name")}
             </div>
-            {product.brand && (
-              <div className="text-xs text-blue-600 font-medium">
-                {renderHighlightedText(product, "brand")}
-              </div>
-            )}
             <div className="flex items-center justify-between mt-1">
               {price && (
                 <div className="text-xs font-semibold">
@@ -319,7 +324,7 @@ export default function SearchBar() {
               )}
             </div>
           </div>
-        </Link>
+        </div>
       );
     }
 
@@ -328,10 +333,15 @@ export default function SearchBar() {
     return (
       <div
         key={`history-${index}`}
-        className={`${baseClasses} ${selectedClasses}`}
+        className={`p-3 hover:bg-gray-1 focus:bg-gray-1 cursor-pointer transition-colors duration-200 flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-blue focus:ring-inset ${
+          index === selectedIndex
+            ? "bg-blue-light-5 border-l-4 border-blue"
+            : ""
+        }`}
         onClick={() => {
           setQuery(historyItem.query);
           setSelectedCategory(historyItem.category);
+          inputRef.current?.focus();
           setShowResults(false);
         }}
         tabIndex={0}
@@ -341,6 +351,7 @@ export default function SearchBar() {
             e.preventDefault();
             setQuery(historyItem.query);
             setSelectedCategory(historyItem.category);
+            inputRef.current?.focus();
             setShowResults(false);
           }
         }}
@@ -356,64 +367,51 @@ export default function SearchBar() {
   const hasContent = query.length >= 2 || showResults;
 
   return (
-    <div className="relative max-w-[475px] w-full" ref={containerRef}>
+    <div className="relative w-[475px]" ref={containerRef}>
       <form
         onSubmit={handleSubmit}
-        className="relative flex items-center justify-between w-full border border-gray-3 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus-within:ring-2 focus-within:ring-blue focus-within:border-blue"
+        className="relative flex items-center justify-between w-full border border-gray-3 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
         role="search"
-        onFocus={() => setShowResults(true)}
         onClick={() => setShowResults(true)}
+        onFocus={() => setShowResults(true)}
       >
-        <Select
-          onValueChange={(value) => {
-            setSelectedCategory(value);
+        <Combobox
+          value={selectedCategory}
+          onClick={() => {
             setShowResults(false);
           }}
-          value={selectedCategory}
+          onFocus={() => {
+            setShowResults(false);
+          }}
           onOpenChange={(open) => {
             setDropdownOpen(open);
             if (open) setShowResults(false);
           }}
-        >
-          <SelectTrigger
-            className="w-[200px] rounded-l-[5px] rounded-r-none border-r-0 bg-gray-1 border-gray-3 focus:ring-0 focus:ring-offset-0"
-            aria-label="Select category"
-            onFocus={() => setShowResults(false)}
-            onClick={() => setShowResults(false)}
-          >
-            <SelectValue placeholder="All" />
-          </SelectTrigger>
-          <SelectContent className="z-[99999]">
-            <SelectGroup>
-              <SelectItem value="All" className="cursor-pointer">
-                All Categories
-              </SelectItem>
-              {categories.map((category) => (
-                <SelectItem
-                  key={category._id}
-                  value={category._id}
-                  className="cursor-pointer"
-                >
-                  {category.name.replace(/\b\w/g, (match) =>
-                    match.toUpperCase()
-                  )}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+          onValueChange={(newCategory) => {
+            setSelectedCategory(newCategory);
+            inputRef.current?.focus();
+          }}
+          options={[
+            { label: "All", value: "All" },
+            ...categories.map((c) => ({
+              label: c.name.charAt(0).toUpperCase() + c.name.slice(1),
+              value: c._id,
+            })),
+          ]}
+          placeholder="All"
+          className="w-auto rounded-l-[5px] rounded-r-none border-r-0 bg-gray-1 border-gray-3"
+        />
 
         <div className="relative grow">
           <Input
             ref={inputRef}
             type="text"
-            placeholder="Search products, brands, and more..."
+            placeholder="Search products, brands..."
             className="w-full text-xs sm:text-sm shadow-none outline-none rounded-none border-none focus-visible:outline-none focus-visible:ring-0 bg-transparent cursor-text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             aria-label="Search input"
-            onFocus={() => setShowResults(true)}
           />
           {query && (
             <Button
@@ -435,15 +433,7 @@ export default function SearchBar() {
           aria-label="Search"
           disabled={loading}
         >
-          {loading ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <>
-              {/* <span className="hidden sm:block font-medium">Search</span> */}
-              {/* <Search size={16} strokeWidth={2.5} className="sm:hidden" /> */}
-              <Search size={16} strokeWidth={2.5} className="text-white" />
-            </>
-          )}
+          <Search size={16} strokeWidth={2.5} className="text-white" />
         </Button>
 
         {/* Search Results Dropdown - Moved inside form for better positioning */}

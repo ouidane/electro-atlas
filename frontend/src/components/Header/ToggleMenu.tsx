@@ -5,6 +5,7 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
+  SheetOverlay,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -72,15 +73,17 @@ export default function ToggleMenu() {
       <SheetTrigger asChild>
         <Button
           aria-label="Browse all departments"
-          className="flex items-center px-2 sm:px-4 py-2 rounded-lg bg-blue-light-5 hover:bg-blue-light-4 transition-colors duration-200 font-semibold text-dark cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-dark text-xs sm:text-sm lg:text-sm"
+          className="flex items-center px-2 sm:px-4 py-2 rounded-lg bg-blue-light-5 hover:bg-blue-light-4 transition-colors duration-200 font-semibold text-dark cursor-pointer text-xs sm:text-sm lg:text-sm"
+          tabIndex={-1}
         >
-          <Menu className="mr-1" size={18} />
-          <span className="hidden sm:flex">All Departments</span>
+          <Menu className="mr-0 xl:mr-1" size={18} />
+          <span className="hidden xl:block">All Departments</span>
         </Button>
       </SheetTrigger>
+      <SheetOverlay className="z-[9999]" />
       <SheetContent
         side="left"
-        className="z-99999 p-0 w-[85vw] sm:w-[90vw] max-w-xs"
+        className="z-999999 p-0 border-r-0 w-[85vw] sm:w-[90vw] max-w-xs"
       >
         <SheetDescription className="sr-only">
           Navigation menu for browsing product categories and departments

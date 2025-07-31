@@ -18,7 +18,7 @@ export const menuData: Menu[] = [
     title: "Contact",
     newTab: false,
     path: "/contact",
-  }
+  },
 ];
 
 export const categories = [
