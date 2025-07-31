@@ -87,7 +87,11 @@ const PromoBanner = () => {
               </span>
 
               <h2 className="font-bold text-xl lg:text-heading-4 text-dark mb-2.5">
-                Up to <span className="text-blue">{watchUltra.variant.discountPercent}%</span> off
+                Up to{" "}
+                <span className="text-blue">
+                  {watchUltra.variant.discountPercent}%
+                </span>{" "}
+                off
               </h2>
 
               <p className="max-w-[285px] text-custom-sm">
