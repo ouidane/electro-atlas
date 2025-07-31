@@ -5,8 +5,6 @@ interface CartModalContextType {
   isCartModalOpen: boolean;
   openCartModal: () => void;
   closeCartModal: () => void;
-  cartItems: any[];
-  totalPrice: string;
 }
 
 const CartModalContext = createContext<CartModalContextType | undefined>(
@@ -23,8 +21,6 @@ export const useCartModalContext = () => {
 
 export const CartModalProvider = ({ children }) => {
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<any[]>([]);
-  const [totalPrice, setTotalPrice] = useState<string>("0.00");
 
   const openCartModal = () => {
     setIsCartModalOpen(true);
@@ -36,7 +32,7 @@ export const CartModalProvider = ({ children }) => {
 
   return (
     <CartModalContext.Provider
-      value={{ isCartModalOpen, openCartModal, closeCartModal, cartItems, totalPrice }}
+      value={{ isCartModalOpen, openCartModal, closeCartModal }}
     >
       {children}
     </CartModalContext.Provider>
