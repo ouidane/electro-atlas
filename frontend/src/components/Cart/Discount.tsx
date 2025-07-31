@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "../ui/button";
 
 const Discount = () => {
   return (
@@ -22,12 +23,16 @@ const Discount = () => {
                 />
               </div>
 
-              <button
+              <Button
                 type="submit"
-                className="inline-flex font-medium text-white bg-blue py-3 px-8 rounded-md ease-out duration-200 hover:bg-blue-dark"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+                variant="outline"
+                className="inline-flex font-medium text-white bg-blue py-5.5 px-8 rounded-md ease-out duration-200 hover:text-white hover:bg-blue-dark"
               >
                 Apply Code
-              </button>
+              </Button>
             </div>
           </div>
         </div>
