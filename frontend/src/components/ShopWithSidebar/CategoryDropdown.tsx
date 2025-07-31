@@ -3,7 +3,11 @@
 import { CategoryWithSubcategories } from "@/types";
 import { useState } from "react";
 
-const CategoryItem = ({ category }: { category: CategoryWithSubcategories }) => {
+const CategoryItem = ({
+  category,
+}: {
+  category: CategoryWithSubcategories;
+}) => {
   const [selected, setSelected] = useState(false);
   return (
     <button
@@ -51,11 +55,14 @@ const CategoryItem = ({ category }: { category: CategoryWithSubcategories }) => 
   );
 };
 
-const CategoryDropdown = ({ categories }: { categories: CategoryWithSubcategories[] }) => {
+const CategoryDropdown = ({
+  categories,
+}: {
+  categories: CategoryWithSubcategories[];
+}) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
 
   console.log(categories);
-  
 
   return (
     <div className="bg-white shadow-1 rounded-lg">
