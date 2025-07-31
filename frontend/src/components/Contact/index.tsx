@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import { useForm } from "react-hook-form";
@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useGetUserQuery } from "@/redux/features/user-slice";
+import { useUser } from "@/hooks/useUser";
 
 const contactSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -20,30 +20,21 @@ const contactSchema = z.object({
 type ContactFormValues = z.infer<typeof contactSchema>;
 
 const Contact = () => {
-  const [accessToken, setAccessToken] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-    setAccessToken(token);
-  }, []);
-
-  const { data: userData, isLoading: userLoading } = useGetUserQuery(undefined, {
-    skip: !accessToken,
-  });
+  const { user } = useUser();
 
   // Prefill form with user data if available
   const defaultValues = React.useMemo(() => {
-    if (userData && userData.data && userData.data.profile) {
+    if (user && user.profile) {
       return {
-        firstName: userData.data.profile.givenName || '',
-        lastName: userData.data.profile.familyName || '',
-        subject: '',
-        phone: userData.data.profile.phone || '',
-        message: '',
+        firstName: user.profile.givenName || "",
+        lastName: user.profile.familyName || "",
+        subject: "",
+        phone: user.profile.phone || "",
+        message: "",
       };
     }
     return undefined;
-  }, [userData]);
+  }, [user]);
 
   const {
     register,
@@ -75,7 +66,7 @@ const Contact = () => {
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex flex-col xl:flex-row gap-7.5">
             {/* Only show contact info if user and profile exist */}
-            {userData && userData.data && userData.data.profile ? (
+            {user && user.profile ? (
               <div className="xl:max-w-[370px] w-full bg-white rounded-xl shadow-1">
                 <div className="py-5 px-4 sm:px-7.5 border-b border-gray-3">
                   <p className="font-medium text-xl text-dark">
@@ -100,7 +91,11 @@ const Contact = () => {
                           fill="#3C50E0"
                         />
                       </svg>
-                      Name: {userData.data.profile.fullName || `${userData.data.profile.givenName || ''} ${userData.data.profile.familyName || ''}`}
+                      Name:{" "}
+                      {user.profile.fullName ||
+                        `${user.profile.givenName || ""} ${
+                          user.profile.familyName || ""
+                        }`}
                     </p>
 
                     <p className="flex items-center gap-4">
@@ -128,7 +123,7 @@ const Contact = () => {
                           fill="#3C50E0"
                         />
                       </svg>
-                      Phone: {userData.data.profile.phone || 'N/A'}
+                      Phone: {user.profile.phone || "N/A"}
                     </p>
 
                     <p className="flex gap-4">
@@ -147,7 +142,7 @@ const Contact = () => {
                           fill="#3C50E0"
                         />
                       </svg>
-                      Address: {userData.data.profile.address?.line1 || 'N/A'}
+                      Address: {user.profile.address?.line1 || "N/A"}
                     </p>
                   </div>
                 </div>
@@ -168,7 +163,9 @@ const Contact = () => {
                       {...register("firstName")}
                     />
                     {errors.firstName && (
-                      <span className="text-red text-xs mt-1 block">{errors.firstName.message}</span>
+                      <span className="text-red text-xs mt-1 block">
+                        {errors.firstName.message}
+                      </span>
                     )}
                   </div>
                   <div className="w-full">
@@ -182,7 +179,9 @@ const Contact = () => {
                       {...register("lastName")}
                     />
                     {errors.lastName && (
-                      <span className="text-red text-xs mt-1 block">{errors.lastName.message}</span>
+                      <span className="text-red text-xs mt-1 block">
+                        {errors.lastName.message}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -223,7 +222,9 @@ const Contact = () => {
                     {...register("message")}
                   />
                   {errors.message && (
-                    <span className="text-red text-xs mt-1 block">{errors.message.message}</span>
+                    <span className="text-red text-xs mt-1 block">
+                      {errors.message.message}
+                    </span>
                   )}
                 </div>
 
@@ -235,7 +236,9 @@ const Contact = () => {
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
                 {isSubmitSuccessful && (
-                  <div className="text-green-600 mt-4">Message sent successfully!</div>
+                  <div className="text-green-600 mt-4">
+                    Message sent successfully!
+                  </div>
                 )}
               </form>
             </div>
