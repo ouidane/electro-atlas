@@ -1,31 +1,59 @@
 import React from "react";
 import ShopDetails from "@/components/ShopDetails";
 import { Metadata } from "next";
-import { getProductById } from "@/actions/product/queries";
+import { getProductById } from "./_lib/queries";
+import ShopDetailsSkeleton from "@/components/ShopDetails/ShopDetailsSkeleton";
 
-export async function generateMetadata({ params }: { params: Promise<{ productId: string }> }): Promise<Metadata> {
-  const awaitedParams = await params;
-  const response = await getProductById(awaitedParams.productId);
-  const product = response.data;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ productId: string }>;
+}): Promise<Metadata> {
+  const product = await getProductById(params);
+
+  const title = product?.name
+    ? `${product.name} | Buy Online at Electro Atlas`
+    : "Product Details | Electro Atlas";
+  const description =
+    product?.description ||
+    "Explore detailed information, specifications, pricing, and customer reviews for this product on Electro Atlas.";
+  const image = product?.image?.tiny
+    ? [product.image.tiny]
+    : ["https://electro-atlas.com/default-product-og.jpg"];
 
   return {
-    title: `${product?.name || "Product Details"} | Electro Atlas`,
-    description: product?.description || "Explore detailed information, specifications, and reviews for this product on Electro Atlas.",
+    title,
+    description,
+    keywords: [
+      product?.name,
+      "Electro Atlas",
+      "product details",
+      "specifications",
+      "buy online",
+      "electronics",
+      "reviews",
+    ].filter(Boolean) as string[],
     openGraph: {
-      title: `${product?.name || "Product Details"} | Electro Atlas`,
-      description: product?.description || "Explore detailed information, specifications, and reviews for this product on Electro Atlas.",
-      images: product?.image?.tiny ? [product.image.tiny] : undefined,
+      title,
+      description,
+      images: image,
+      url: `https://electro-atlas.com/products/${product?.id || ""}`,
+      siteName: "Electro Atlas",
     },
   };
 }
 
-export default async function ShopDetailsPage({ params }: { params: Promise<{ productId: string }> }) {
-  const awaitedParams = await params;
-  const response = await getProductById(awaitedParams.productId);
-  const product = response.data;
+export default async function ShopDetailsPage({
+  params,
+}: {
+  params: Promise<{ productId: string }>;
+}) {
+  const product = getProductById(params);
   return (
     <main>
-      <ShopDetails product={product} />
+      <React.Suspense fallback={<ShopDetailsSkeleton />}>
+        <ShopDetails productPromise={product} />
+      </React.Suspense>
     </main>
   );
 }
