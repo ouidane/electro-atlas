@@ -1,102 +1,54 @@
 "use client";
+
 import React from "react";
 import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import { updateQuickView } from "@/redux/features/quickView-slice";
-import {
-  useAddItemToWishlistMutation,
-  useRemoveItemFromWishlistMutation,
-  useGetWishlistQuery,
-  addItemToWishlist as addItemToWishlistRedux,
-  removeItemFromWishlist as removeItemFromWishlistRedux,
-} from "@/redux/features/wishlist-slice";
-import { RootState } from "@/redux/store";
-import {
-  addItemToCart as addItemToCartRedux,
-  selectCartItems,
-  useAddItemToCartMutation,
-  useGetCartQuery,
-} from "@/redux/features/cart-slice";
-import { useSelector } from "react-redux";
-import { ImageOff, Heart } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
+import { Loader2, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ImageOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { updateQuickView } from "@/redux/features/quickView-slice";
+import { useDispatch } from "react-redux";
 
 const SingleItem = ({ item }: { item: Product }) => {
   const { openModal } = useModalContext();
-  const dispatch = useDispatch<AppDispatch>();
-  const reduxCartItems = useSelector(selectCartItems);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const { data: apiCart } = useGetCartQuery(undefined, { skip: !token });
+  const dispatch = useDispatch();
+  const {
+    addItem: addToCart,
+    isLoading: cartLoading,
+    maxAvailableQuantity,
+  } = useCart();
+  const {
+    isLoading: wishlistLoading,
+    isInWishlist,
+    addItem: addToWishlist,
+    removeItem: removeFromWishlist,
+  } = useWishlist();
 
-  // Wishlist API hooks
-  const { data: wishlistData } = useGetWishlistQuery(undefined, { skip: !token });
-  const [addItemToWishlistApi, { isLoading: isAddingToWishlist }] = useAddItemToWishlistMutation();
-  const [removeItemFromWishlistApi, { isLoading: isRemovingFromWishlist }] = useRemoveItemFromWishlistMutation();
+  const handleAddToCart = () => {
+    if (maxAvailableQuantity(item) <= 0) return;
+    addToCart(item, 1);
+  };
 
-  // Get guest wishlist items
-  const wishlistItemsRedux = useSelector((state: RootState) => state.wishlistReducer.items);
-  const isInReduxWishlist = wishlistItemsRedux.some((wishlistItem) => wishlistItem.productId === item._id);
-
-  // Choose the correct cart source
-  let cartItems = reduxCartItems;
-  if (token && apiCart && apiCart.data && apiCart.data.cartItems) {
-    cartItems = apiCart.data.cartItems;
-  }
-
-  // Get current quantity in cart for this product
-  const currentCartQuantity = cartItems.find(cartItem => cartItem.product?._id === item._id)?.quantity || 0;
-  // Calculate maximum available quantity (inventory minus what's already in cart)
-  const maxAvailableQuantity = item.variant.inventory - currentCartQuantity;
-
-  // Check if item is in wishlist (for authenticated users)
-  const isInWishlist = wishlistData?.data?.items?.some((wishlistItem) => wishlistItem.productId === item._id);
+  const handleItemToWishList = () => {
+    if (isInWishlist(item._id)) {
+      removeFromWishlist(item._id);
+    } else {
+      addToWishlist({
+        productId: item._id,
+        productName: item.name,
+        image: item.image.medium,
+        variant: item.variant,
+      });
+    }
+  };
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
     dispatch(updateQuickView({ ...item }));
-  };
-
-  const [addItemToCart, { isLoading: isAdding }] = useAddItemToCartMutation();
-  const handleAddToCart = async () => {
-    // Don't add if no inventory available
-    if (maxAvailableQuantity <= 0) return;
-    if (token) {
-      await addItemToCart({ productId: item._id, quantity: 1 });
-    } else {
-      dispatch(
-        addItemToCartRedux({
-          product: { ...item, image: item.image.medium },
-          quantity: 1,
-        })
-      );
-    }
-  };
-
-  const handleItemToWishList = async () => {
-    if (!token) {
-      if (isInReduxWishlist) {
-        dispatch(removeItemFromWishlistRedux(item._id));
-      } else {
-        dispatch(
-          addItemToWishlistRedux({
-            _Id: item._id,
-            productId: item._id,
-            productName: item.name,
-            image: item.image.medium,
-            variant: item.variant,
-          })
-        );
-      }
-      return;
-    }
-    if (isInWishlist) {
-      await removeItemFromWishlistApi({ productId: item._id });
-    } else {
-      await addItemToWishlistApi({ productId: item._id });
-    }
   };
 
   return (
@@ -105,43 +57,43 @@ const SingleItem = ({ item }: { item: Product }) => {
         <div className="text-center px-4 py-7.5">
           <div className="flex items-center justify-center gap-2.5 mb-2">
             <div className="flex items-center gap-1">
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={14}
-                height={14}
-              />
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={14}
-                height={14}
-              />
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={14}
-                height={14}
-              />
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={14}
-                height={14}
-              />
-              <Image
-                src="/images/icons/icon-star.svg"
-                alt="star icon"
-                width={14}
-                height={14}
-              />
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  className={
+                    i < item.reviews.roundAvgRate
+                      ? "fill-yellow"
+                      : "fill-gray-4"
+                  }
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clipPath="url(#clip0_375_9172)">
+                    <path
+                      d="M16.7906 6.72187L11.7 5.93438L9.39377 1.09688C9.22502 0.759375 8.77502 0.759375 8.60627 1.09688L6.30002 5.9625L1.23752 6.72187C0.871891 6.77812 0.731266 7.25625 1.01252 7.50938L4.69689 11.3063L3.82502 16.6219C3.76877 16.9875 4.13439 17.2969 4.47189 17.0719L9.05627 14.5687L13.6125 17.0719C13.9219 17.2406 14.3156 16.9594 14.2313 16.6219L13.3594 11.3063L17.0438 7.50938C17.2688 7.25625 17.1563 6.77812 16.7906 6.72187Z"
+                      fill=""
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_375_9172">
+                      <rect width="18" height="18" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              ))}
             </div>
 
             <p className="text-custom-sm">({item.reviews.roundAvgRate})</p>
           </div>
 
           <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-            <Link href="/shop-details" className="line-clamp-2 break-words">
+            <Link
+              href={`/products/${item._id}`}
+              className="line-clamp-2 break-words"
+            >
               {item.name}
             </Link>
           </h3>
@@ -171,14 +123,16 @@ const SingleItem = ({ item }: { item: Product }) => {
         </div>
 
         <div className="absolute right-0 bottom-0 translate-x-full u-w-full flex flex-col gap-2 p-5.5 ease-linear duration-300 group-hover:translate-x-0">
-          <button
+          <Button
             onClick={() => {
               handleQuickViewUpdate();
               openModal();
             }}
             aria-label="button for quick view"
             id="bestOne"
-            className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-white hover:bg-blue"
+            variant="outline"
+            size="icon"
+            className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 text-dark bg-white hover:text-white hover:bg-blue"
           >
             <svg
               className="fill-current"
@@ -197,28 +151,27 @@ const SingleItem = ({ item }: { item: Product }) => {
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
-                d="M7.99992 2.16663C4.9905 2.16663 2.96345 3.96942 1.78696 5.49787L1.76575 5.52543C1.49968 5.87098 1.25463 6.18924 1.08838 6.56556C0.910348 6.96854 0.833252 7.40775 0.833252 7.99996C0.833252 8.59217 0.910348 9.03138 1.08838 9.43436C1.25463 9.81068 1.49968 10.1289 1.76575 10.4745L1.78696 10.5021C2.96345 12.0305 4.9905 13.8333 7.99992 13.8333C11.0093 13.8333 13.0364 12.0305 14.2129 10.5021L14.2341 10.4745C14.5002 10.1289 14.7452 9.81069 14.9115 9.43436C15.0895 9.03138 15.1666 8.59217 15.1666 7.99996C15.1666 7.40775 15.0895 6.96854 14.9115 6.56556C14.7452 6.18923 14.5002 5.87097 14.2341 5.52541L14.2129 5.49787C13.0364 3.96942 11.0093 2.16663 7.99992 2.16663ZM2.5794 6.10783C3.66568 4.69657 5.43349 3.16663 7.99992 3.16663C10.5663 3.16663 12.3342 4.69657 13.4204 6.10783C13.7128 6.48769 13.8841 6.71466 13.9967 6.96966C14.102 7.20797 14.1666 7.49925 14.1666 7.99996C14.1666 8.50067 14.102 8.79195 13.9967 9.03026C13.8841 9.28526 13.7128 9.51223 13.4204 9.89209C12.3342 11.3033 10.5663 12.8333 7.99992 12.8333C5.43349 12.8333 3.66568 11.3033 2.5794 9.89209C2.28701 9.51223 2.11574 9.28525 2.00309 9.03026C1.89781 8.79195 1.83325 8.50067 1.83325 7.99996C1.83325 7.49925 1.89781 7.20797 2.00309 6.96966C2.11574 6.71466 2.28701 6.48769 2.5794 6.10783Z"
+                d="M7.99992 2.16663C4.9905 2.16663 2.96345 3.96942 1.78696 5.49787L1.76575 5.52543C1.49968 5.87098 1.25463 6.18924 1.08838 6.56556C0.910348 6.96854 0.833252 7.40775 0.833252 7.99996C0.833252 8.59217 0.910348 9.03138 1.08838 9.43436C1.25463 9.81068 1.49968 10.1289 1.76575 10.4745L1.78696 10.5021C2.96345 12.0305 4.9905 13.8333 7.99992 13.8333C11.0093 13.8333 13.0364 12.0305 14.2129 10.5021L14.2341 10.4745C14.5004 10.1289 14.7455 9.81069 14.9115 9.4344C15.0895 9.03142 15.1666 8.5922 15.1666 8C15.1666 7.40779 15.0895 6.96858 14.9117 6.5656C14.7455 6.18927 14.5004 5.87101 14.2343 5.52545L14.2131 5.49791C13.0366 3.96946 11.0096 2.16666 7.99992 2.16666ZM2.5794 6.10783C3.66568 4.69657 5.43349 3.16663 7.99992 3.16663C10.5663 3.16663 12.3342 4.69657 13.4204 6.10783C13.7128 6.48769 13.8841 6.71466 13.9967 6.96966C14.102 7.20797 14.1666 7.49925 14.1666 7.99996C14.1666 8.50067 14.102 8.79195 13.9967 9.03026C13.8841 9.28526 13.7128 9.51223 13.4204 9.89209C12.3342 11.3033 10.5663 12.8333 7.99992 12.8333C5.43349 12.8333 3.66568 11.3033 2.5794 9.89209C2.28701 9.51223 2.11574 9.28525 2.00309 9.03026C1.89781 8.79195 1.83325 8.50067 1.83325 7.99996C1.83325 7.49925 1.89781 7.20797 2.00309 6.96966C2.11599 6.7147 2.28725 6.48772 2.57964 6.10786Z"
                 fill=""
               />
             </svg>
-          </button>
+          </Button>
 
-          <button
+          <Button
             onClick={handleAddToCart}
-            disabled={isAdding || maxAvailableQuantity <= 0}
+            disabled={cartLoading || maxAvailableQuantity(item) <= 0}
             aria-label="button for add to cart"
             id="addCartOne"
-            className={`flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-white hover:bg-blue ${
-              maxAvailableQuantity > 0 ? '' : 'bg-gray-4 cursor-not-allowed'
-            } ${isAdding ? 'opacity-60 cursor-not-allowed' : ''}`}
+            variant="outline"
+            size="icon"
+            className={`flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 text-dark bg-white hover:text-white hover:bg-blue ${
+              maxAvailableQuantity(item) > 0
+                ? ""
+                : "bg-gray-4 cursor-not-allowed"
+            } ${cartLoading ? "opacity-60 cursor-not-allowed" : ""}`}
           >
-            {isAdding ? (
-              <>
-                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                </svg>
-              </>
+            {cartLoading ? (
+              <Loader2 className="animate-spin h-5 w-5 text-white" />
             ) : (
               <svg
                 className="fill-current"
@@ -248,30 +201,29 @@ const SingleItem = ({ item }: { item: Product }) => {
                 />
               </svg>
             )}
-          </button>
+          </Button>
 
-          <button
+          <Button
             onClick={handleItemToWishList}
             aria-label="button for favorite select"
             id="favOne"
-            disabled={isAddingToWishlist || isRemovingFromWishlist}
-            className={`flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue relative ${
-              (isInWishlist || isInReduxWishlist) ? "text-red" : ""
+            disabled={wishlistLoading}
+            variant="outline"
+            size="icon"
+            className={`flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 text-dark bg-white hover:text-blue relative ${
+              isInWishlist(item._id) ? "text-red" : ""
             }`}
           >
-            {(isAddingToWishlist || isRemovingFromWishlist) ? (
-              <svg className="animate-spin h-5 w-5 text-red" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-              </svg>
+            {wishlistLoading ? (
+              <Loader2 className="animate-spin h-5 w-5 text-red" />
             ) : (
               <Heart
                 className="h-5 w-5"
-                color={(isInWishlist || isInReduxWishlist) ? "#ef4444" : "currentColor"}
-                fill={(isInWishlist || isInReduxWishlist) ? "#ef4444" : "none"}
+                color={isInWishlist(item._id) ? "#ef4444" : "currentColor"}
+                fill={isInWishlist(item._id) ? "#ef4444" : "none"}
               />
             )}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
