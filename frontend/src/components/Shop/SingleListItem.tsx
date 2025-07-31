@@ -3,93 +3,51 @@ import React from "react";
 
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart as addItemToCartRedux, selectCartItems, useGetCartQuery } from "@/redux/features/cart-slice";
-import {
-  useAddItemToWishlistMutation,
-  useRemoveItemFromWishlistMutation,
-  useGetWishlistQuery,
-  addItemToWishlist as addItemToWishlistRedux,
-  removeItemFromWishlist as removeItemFromWishlistRedux,
-} from "@/redux/features/wishlist-slice";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/types/product";
 import { ImageOff, Heart } from "lucide-react";
-import { useAddItemToCartMutation } from "@/redux/features/cart-slice";
+import { useDispatch } from "react-redux";
 
 const SingleListItem = ({ item, index }: { item: Product; index: number }) => {
   const { openModal } = useModalContext();
-  const dispatch = useDispatch<AppDispatch>();
-  const reduxCartItems = useSelector(selectCartItems);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const { data: apiCart } = useGetCartQuery(undefined, { skip: !token });
-
-  // Wishlist API hooks
-  const { data: wishlistData } = useGetWishlistQuery(undefined, { skip: !token });
-  const [addItemToWishlistApi, { isLoading: isAddingToWishlist }] = useAddItemToWishlistMutation();
-  const [removeItemFromWishlistApi, { isLoading: isRemovingFromWishlist }] = useRemoveItemFromWishlistMutation();
-
-  // Choose the correct cart source
-  let cartItems = reduxCartItems;
-  if (token && apiCart && apiCart.data && apiCart.data.cartItems) {
-    cartItems = apiCart.data.cartItems;
-  }
-  // Get current quantity in cart for this product
-  const currentCartQuantity = cartItems.find(cartItem => cartItem.product?._id === item._id)?.quantity || 0;
-  // Calculate maximum available quantity (inventory minus what's already in cart)
-  const maxAvailableQuantity = item.variant.inventory - currentCartQuantity;
-
-  // Check if item is in wishlist (for authenticated users)
-  const isInWishlist = wishlistData?.data?.items?.some((wishlistItem) => wishlistItem.productId === item._id);
-  // Get guest wishlist items
-  const wishlistItemsRedux = useSelector((state: RootState) => state.wishlistReducer.items);
-  const isInReduxWishlist = wishlistItemsRedux.some((wishlistItem) => wishlistItem.productId === item._id);
+  const dispatch = useDispatch();
+  const {
+    addItem: addToCart,
+    isLoading: cartLoading,
+    maxAvailableQuantity,
+  } = useCart();
+  const {
+    isLoading: wishlistLoading,
+    isInWishlist,
+    addItem: addToWishlist,
+    removeItem: removeFromWishlist,
+  } = useWishlist();
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
     dispatch(updateQuickView({ ...item }));
   };
 
-  const [addItemToCart, { isLoading: isAdding }] = useAddItemToCartMutation();
-  const handleAddToCart = async () => {
-    if (maxAvailableQuantity <= 0) return;
-    if (token) {
-      await addItemToCart({ productId: item._id, quantity: 1 });
-    } else {
-      dispatch(
-        addItemToCartRedux({
-          product: { ...item, image: item.image.medium },
-          quantity: 1,
-        })
-      );
-    }
+  const handleAddToCart = () => {
+    if (maxAvailableQuantity(item) <= 0) return;
+    addToCart(item, 1);
   };
 
-  const handleItemToWishList = async () => {
-    if (!token) {
-      if (isInReduxWishlist) {
-        dispatch(removeItemFromWishlistRedux(item._id));
-      } else {
-        dispatch(
-          addItemToWishlistRedux({
-            _Id: item._id,
-            productId: item._id,
-            productName: item.name,
-            image: item.image.medium,
-            variant: item.variant,
-          })
-        );
-      }
-      return;
-    }
-    if (isInWishlist) {
-      await removeItemFromWishlistApi({ productId: item._id });
+  const handleItemToWishList = () => {
+    if (isInWishlist(item._id)) {
+      removeFromWishlist(item._id);
     } else {
-      await addItemToWishlistApi({ productId: item._id });
+      addToWishlist({
+        productId: item._id,
+        productName: item.name,
+        image: item.image.medium,
+        variant: item.variant,
+      });
     }
   };
 
@@ -121,21 +79,25 @@ const SingleListItem = ({ item, index }: { item: Product; index: number }) => {
             <span className="absolute top-2 right-2 z-10 bg-gray-500 text-white text-xs font-bold px-2 py-1 rounded">
               Out of stock
             </span>
-          ) : item.variant.inventory <= 5 && (
-            <span className="absolute top-2 right-2 z-10 bg-orange text-white text-xs font-bold px-2 py-1 rounded">
-              Only {item.variant.inventory} left
-            </span>
+          ) : (
+            item.variant.inventory <= 5 && (
+              <span className="absolute top-2 right-2 z-10 bg-orange text-white text-xs font-bold px-2 py-1 rounded">
+                Only {item.variant.inventory} left
+              </span>
+            )
           )}
           {/* <Image src={item.image.large} alt="" width={250} height={250} /> */}
 
           <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
-            <button
+            <Button
               onClick={() => {
                 openModal();
                 handleQuickViewUpdate();
               }}
               aria-label="button for quick view"
-              className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
+              variant="outline"
+              size="icon"
+              className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 text-dark bg-white hover:text-blue"
             >
               <svg
                 className="fill-current"
@@ -158,22 +120,21 @@ const SingleListItem = ({ item, index }: { item: Product; index: number }) => {
                   fill=""
                 />
               </svg>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={handleAddToCart}
-              disabled={isAdding || maxAvailableQuantity <= 0}
-              className={`flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-white hover:bg-blue ${
-                maxAvailableQuantity > 0 ? '' : 'bg-gray-4 cursor-not-allowed'
-              } ${isAdding ? 'opacity-60 cursor-not-allowed' : ''}`}
+              disabled={cartLoading || maxAvailableQuantity(item) <= 0}
+              variant="outline"
+              size="icon"
+              className={`flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 text-dark bg-white hover:text-white hover:bg-blue ${
+                maxAvailableQuantity(item) > 0
+                  ? ""
+                  : "bg-gray-4 cursor-not-allowed"
+              } ${cartLoading ? "opacity-60 cursor-not-allowed" : ""}`}
             >
-              {isAdding ? (
-                <>
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                  </svg>
-                </>
+              {cartLoading ? (
+                <Loader2 className="animate-spin h-5 w-5 text-white" />
               ) : (
                 <svg
                   className="fill-current"
@@ -203,36 +164,41 @@ const SingleListItem = ({ item, index }: { item: Product; index: number }) => {
                   />
                 </svg>
               )}
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={handleItemToWishList}
               aria-label="button for favorite select"
-              disabled={isAddingToWishlist || isRemovingFromWishlist}
-              className={`flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue relative ${
-                (isInWishlist || isInReduxWishlist) ? "text-red" : ""
+              disabled={wishlistLoading}
+              variant="outline"
+              size="icon"
+              className={`flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 text-dark bg-white hover:text-blue relative ${
+                isInWishlist(item._id) ? "text-red" : ""
               }`}
             >
-              {(isAddingToWishlist || isRemovingFromWishlist) ? (
-                <svg className="animate-spin h-5 w-5 text-red" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                </svg>
+              {wishlistLoading ? (
+                <Loader2 className="animate-spin h-5 w-5 text-red" />
               ) : (
                 <Heart
                   className="h-5 w-5"
-                  color={(isInWishlist || isInReduxWishlist) ? "#ef4444" : "currentColor"}
-                  fill={(isInWishlist || isInReduxWishlist) ? "#ef4444" : "none"}
+                  color={isInWishlist(item._id) ? "#ef4444" : "currentColor"}
+                  fill={isInWishlist(item._id) ? "#ef4444" : "none"}
                 />
               )}
-            </button>
+            </Button>
           </div>
         </div>
 
         <div className="w-full flex flex-col gap-5 sm:flex-row sm:items-center justify-center sm:justify-between py-5 px-4 sm:px-7.5 lg:pl-11 lg:pr-12">
           <div>
             <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-              <Link href="/shop-details" className="line-clamp-2 break-words leading-5 sm:leading-6 hover:text-blue-600"> {item.name} </Link>
+              <Link
+                href="/shop-details"
+                className="line-clamp-2 break-words leading-5 sm:leading-6 hover:text-blue-600"
+              >
+                {" "}
+                {item.name}{" "}
+              </Link>
             </h3>
 
             <span className="flex items-center gap-2 font-medium text-lg">
@@ -247,31 +213,37 @@ const SingleListItem = ({ item, index }: { item: Product; index: number }) => {
 
           <div className="flex items-center gap-2.5 mb-2">
             <div className="flex items-center gap-1">
-              {(() => {
-                const rating = Number(item.reviews.avgRate) || 0;
-                const fullStars = Math.floor(rating);
-                const hasHalfStar = rating - fullStars >= 0.5;
-                const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-                const stars = [];
-                for (let i = 0; i < fullStars; i++) {
-                  stars.push(
-                    <svg key={`full-${i}`} width="15" height="15" viewBox="0 0 20 20" fill="currentColor" className="text-yellow" aria-label="Full star"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.967z" /></svg>
-                  );
-                }
-                if (hasHalfStar) {
-                  stars.push(
-                    <svg key="half" width="15" height="15" viewBox="0 0 20 20" fill="currentColor" className="text-yellow" aria-label="Half star"><defs><linearGradient id="half-grad"><stop offset="50%" stopColor="currentColor"/><stop offset="50%" stopColor="transparent"/></linearGradient></defs><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.967z" fill="url(#half-grad)"/></svg>
-                  );
-                }
-                for (let i = 0; i < emptyStars; i++) {
-                  stars.push(
-                    <svg key={`empty-${i}`} width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-yellow" aria-label="Empty star"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.967z" /></svg>
-                  );
-                }
-                return stars;
-              })()}
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  className={
+                    i < item.reviews.roundAvgRate
+                      ? "fill-yellow"
+                      : "fill-gray-4"
+                  }
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clipPath="url(#clip0_375_9172)">
+                    <path
+                      d="M16.7906 6.72187L11.7 5.93438L9.39377 1.09688C9.22502 0.759375 8.77502 0.759375 8.60627 1.09688L6.30002 5.9625L1.23752 6.72187C0.871891 6.77812 0.731266 7.25625 1.01252 7.50938L4.69689 11.3063L3.82502 16.6219C3.76877 16.9875 4.13439 17.2969 4.47189 17.0719L9.05627 14.5687L13.6125 17.0719C13.9219 17.2406 14.3156 16.9594 14.2313 16.6219L13.3594 11.3063L17.0438 7.50938C17.2688 7.25625 17.1563 6.77812 16.7906 6.72187Z"
+                      fill=""
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_375_9172">
+                      <rect width="18" height="18" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              ))}
             </div>
-            <p className="text-custom-sm">({Number(item.reviews.avgRate).toFixed(1)})</p>
+            <p className="text-custom-sm">
+              ({item.reviews.avgRate.toFixed(1)})
+            </p>
           </div>
         </div>
       </div>
