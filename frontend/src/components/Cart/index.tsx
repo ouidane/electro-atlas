@@ -2,33 +2,15 @@
 import React, { useEffect, useState } from "react";
 import Discount from "./Discount";
 import OrderSummary from "./OrderSummary";
-import { useAppSelector } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { removeAllItemsFromCart } from "@/redux/features/cart-slice";
-import { useGetCartQuery } from "@/redux/features/cart-slice";
-import { useClearCartMutation } from "@/redux/features/cart-slice";
+import { useCart } from "@/hooks/useCart";
 import SingleItem from "./SingleItem";
 import Breadcrumb from "../Common/Breadcrumb";
 import Link from "next/link";
 
 const Cart = () => {
-  const reduxCartItems = useAppSelector((state) => state.cartReducer.items);
-  const dispatch = useDispatch();
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const { data: apiCart, isLoading, isError } = useGetCartQuery(undefined, { skip: !token });
-  const [clearCartApi] = useClearCartMutation();
-  let cartItems = reduxCartItems;
-  
-  if (token && apiCart && apiCart.data && apiCart.data.cartItems) {
-    cartItems = apiCart.data.cartItems;
-  }
-
-  const handleClearCart = async () => {
-    if (token) {
-      await clearCartApi({});
-    } else {
-      dispatch(removeAllItemsFromCart());
-    }
+  const { items: cartItems, clearCart } = useCart();
+  const handleClearCart = () => {
+    clearCart();
   };
 
   return (
@@ -38,11 +20,7 @@ const Cart = () => {
         <Breadcrumb title={"Cart"} pages={["Cart"]} />
       </section>
       {/* <!-- ===== Breadcrumb Section End ===== --> */}
-      {isLoading ? (
-        <div className="text-center mt-8">Loading cart...</div>
-      ) : isError ? (
-        <div className="text-center mt-8 text-red-600">Failed to load cart from API.</div>
-      ) : cartItems.length > 0 ? (
+      {cartItems.length > 0 ? (
         <section className="overflow-hidden py-20 bg-gray-2">
           <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
             <div className="flex flex-wrap items-center justify-between gap-5 mb-7.5">
@@ -88,7 +66,7 @@ const Cart = () => {
         </section>
       ) : (
         <>
-          <div className="text-center mt-8">
+          <div className="text-center mt-8 pb-8">
             <div className="mx-auto pb-7.5">
               <svg
                 className="mx-auto"
@@ -121,7 +99,7 @@ const Cart = () => {
             </div>
             <p className="pb-6">Your cart is empty!</p>
             <Link
-              href="/shop-with-sidebar"
+              href="/products?sort=-score"
               className="w-96 mx-auto flex justify-center font-medium text-white bg-dark py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-opacity-95"
             >
               Continue Shopping
