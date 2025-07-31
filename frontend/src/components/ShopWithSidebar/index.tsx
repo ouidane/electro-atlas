@@ -9,13 +9,32 @@ import SingleGridItem from "../Shop/SingleGridItem";
 import SingleListItem from "../Shop/SingleListItem";
 import { Product, ProductListResponse, FilterResponse } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from "@/components/ui/pagination";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
 
-const ShopWithSidebar = ({ productsData, filtersData }: { productsData: ProductListResponse, filtersData: FilterResponse }) => {
+interface ShopProps {
+  productsPromise: Promise<ProductListResponse>;
+  // filtersPromise: Promise<FilterResponse>
+}
+
+const ShopWithSidebar = ({
+  productsPromise,
+}: // filtersPromise,
+ShopProps) => {
+  const productsData = React.use(productsPromise);
+  // const filtersData = React.use(filtersPromise);
+
   const [productStyle, setProductStyle] = useState("grid");
   const [productSidebar, setProductSidebar] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Loading indicator
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -29,15 +48,15 @@ const ShopWithSidebar = ({ productsData, filtersData }: { productsData: ProductL
 
   const options = [
     { label: "Recommended", value: "-score" },
-    { label: "Newest", value: "createdAt" },
-    { label: "Oldest", value: "-createdAt" },
+    { label: "Newest", value: "-createdAt" },
     { label: "Name (A-Z)", value: "name" },
     { label: "Name (Z-A)", value: "-name" },
     { label: "Price (Low to High)", value: "price" },
     { label: "Price (High to Low)", value: "-price" },
+    { label: "Highest Rating", value: "-rating" },
     { label: "Highest Discount", value: "-discount" },
-    { label: "Most Popular", value: "popularity" },
-    { label: "Best Selling", value: "bestSelling" },
+    { label: "Most Popular", value: "-popularity" },
+    { label: "Best Selling", value: "-bestSelling" },
   ];
 
   const categories = [
@@ -102,7 +121,15 @@ const ShopWithSidebar = ({ productsData, filtersData }: { productsData: ProductL
       if (page <= 4) {
         pages.push(1, 2, 3, 4, 5, "...", totalPages);
       } else if (page > totalPages - 4) {
-        pages.push(1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+        pages.push(
+          1,
+          "...",
+          totalPages - 4,
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages
+        );
       } else {
         pages.push(1, "...", page - 1, page, page + 1, "...", totalPages);
       }
@@ -110,28 +137,24 @@ const ShopWithSidebar = ({ productsData, filtersData }: { productsData: ProductL
     return pages;
   };
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = (newPage: number) => {
     if (productsData.metadata.page === newPage) return; // Don't reload current page
     setIsLoading(true);
     const params = new URLSearchParams(searchParams.toString());
-    params.set("page", newPage);
+    params.set("page", newPage.toString());
     router.push(`?${params.toString()}`);
     // Scroll to top after navigation
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Remove loading indicator when productsData changes (page transition complete)
   useEffect(() => {
     setIsLoading(false);
   }, [productsData]);
 
   return (
     <>
-      <Breadcrumb
-        title={"Explore All Products"}
-        pages={["products"]}
-      />
-      <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28 bg-[#f3f4f6]">
+      <Breadcrumb title={"Explore All Products"} pages={["products"]} />
+      <section className="overflow-hidden relative pb-20 pt-5 lg:pt-12 bg-[#f3f4f6]">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex gap-7.5">
             {/* <!-- Sidebar Start --> */}
@@ -320,17 +343,46 @@ const ShopWithSidebar = ({ productsData, filtersData }: { productsData: ProductL
                   {/* Loading indicator overlay */}
                   {isLoading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-10 rounded-md">
-                      <span className="loader border-2 border-blue border-t-transparent rounded-full w-6 h-6 animate-spin" aria-label="Loading" />
+                      <span
+                        className="loader border-2 border-blue border-t-transparent rounded-full w-6 h-6 animate-spin"
+                        aria-label="Loading"
+                      />
                     </div>
                   )}
                   <Pagination>
                     <PaginationContent>
                       <PaginationItem>
                         <PaginationPrevious
-                          aria-disabled={!productsData.metadata.hasPrevPage || isLoading}
-                          tabIndex={(!productsData.metadata.hasPrevPage || isLoading) ? -1 : 0}
-                          onClick={productsData.metadata.hasPrevPage && !isLoading ? () => handlePageChange(productsData.metadata.prevPage) : undefined}
-                          style={{ pointerEvents: (!productsData.metadata.hasPrevPage || isLoading) ? "none" : undefined, opacity: (!productsData.metadata.hasPrevPage || isLoading) ? 0.5 : 1, cursor: (!productsData.metadata.hasPrevPage || isLoading) ? "default" : "pointer" }}
+                          aria-disabled={
+                            !productsData.metadata.hasPrevPage || isLoading
+                          }
+                          tabIndex={
+                            !productsData.metadata.hasPrevPage || isLoading
+                              ? -1
+                              : 0
+                          }
+                          onClick={
+                            productsData.metadata.hasPrevPage && !isLoading
+                              ? () =>
+                                  handlePageChange(
+                                    productsData.metadata.prevPage
+                                  )
+                              : undefined
+                          }
+                          style={{
+                            pointerEvents:
+                              !productsData.metadata.hasPrevPage || isLoading
+                                ? "none"
+                                : undefined,
+                            opacity:
+                              !productsData.metadata.hasPrevPage || isLoading
+                                ? 0.5
+                                : 1,
+                            cursor:
+                              !productsData.metadata.hasPrevPage || isLoading
+                                ? "default"
+                                : "pointer",
+                          }}
                         />
                       </PaginationItem>
                       {getPageNumbers().map((pageNum, idx) =>
@@ -342,10 +394,40 @@ const ShopWithSidebar = ({ productsData, filtersData }: { productsData: ProductL
                           <PaginationItem key={idx}>
                             <PaginationLink
                               isActive={productsData.metadata.page === pageNum}
-                              aria-current={productsData.metadata.page === pageNum ? "page" : undefined}
-                              tabIndex={productsData.metadata.page === pageNum || isLoading ? -1 : 0}
-                              onClick={productsData.metadata.page !== pageNum && !isLoading ? () => handlePageChange(pageNum) : undefined}
-                              style={{ pointerEvents: (productsData.metadata.page === pageNum || isLoading) ? "none" : undefined, opacity: (productsData.metadata.page === pageNum || isLoading) ? 0.7 : 1, cursor: (productsData.metadata.page === pageNum || isLoading) ? "default" : "pointer" }}
+                              aria-current={
+                                productsData.metadata.page === pageNum
+                                  ? "page"
+                                  : undefined
+                              }
+                              tabIndex={
+                                productsData.metadata.page === pageNum ||
+                                isLoading
+                                  ? -1
+                                  : 0
+                              }
+                              onClick={
+                                productsData.metadata.page !== pageNum &&
+                                !isLoading
+                                  ? () => handlePageChange(pageNum)
+                                  : undefined
+                              }
+                              style={{
+                                pointerEvents:
+                                  productsData.metadata.page === pageNum ||
+                                  isLoading
+                                    ? "none"
+                                    : undefined,
+                                opacity:
+                                  productsData.metadata.page === pageNum ||
+                                  isLoading
+                                    ? 0.7
+                                    : 1,
+                                cursor:
+                                  productsData.metadata.page === pageNum ||
+                                  isLoading
+                                    ? "default"
+                                    : "pointer",
+                              }}
                             >
                               {pageNum}
                             </PaginationLink>
@@ -354,10 +436,36 @@ const ShopWithSidebar = ({ productsData, filtersData }: { productsData: ProductL
                       )}
                       <PaginationItem>
                         <PaginationNext
-                          aria-disabled={!productsData.metadata.hasNextPage || isLoading}
-                          tabIndex={(!productsData.metadata.hasNextPage || isLoading) ? -1 : 0}
-                          onClick={productsData.metadata.hasNextPage && !isLoading ? () => handlePageChange(productsData.metadata.nextPage) : undefined}
-                          style={{ pointerEvents: (!productsData.metadata.hasNextPage || isLoading) ? "none" : undefined, opacity: (!productsData.metadata.hasNextPage || isLoading) ? 0.5 : 1, cursor: (!productsData.metadata.hasNextPage || isLoading) ? "default" : "pointer" }}
+                          aria-disabled={
+                            !productsData.metadata.hasNextPage || isLoading
+                          }
+                          tabIndex={
+                            !productsData.metadata.hasNextPage || isLoading
+                              ? -1
+                              : 0
+                          }
+                          onClick={
+                            productsData.metadata.hasNextPage && !isLoading
+                              ? () =>
+                                  handlePageChange(
+                                    productsData.metadata.nextPage
+                                  )
+                              : undefined
+                          }
+                          style={{
+                            pointerEvents:
+                              !productsData.metadata.hasNextPage || isLoading
+                                ? "none"
+                                : undefined,
+                            opacity:
+                              !productsData.metadata.hasNextPage || isLoading
+                                ? 0.5
+                                : 1,
+                            cursor:
+                              !productsData.metadata.hasNextPage || isLoading
+                                ? "default"
+                                : "pointer",
+                          }}
                         />
                       </PaginationItem>
                     </PaginationContent>
