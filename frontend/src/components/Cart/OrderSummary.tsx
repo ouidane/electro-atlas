@@ -1,10 +1,8 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const OrderSummary = ({ cartItems = [] }) => {
-  const router = useRouter();
-  const totalPrice = cartItems.reduce((sum, item) => sum + (item.totalPrice), 0);
+  const totalPrice = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
 
   return (
     <div className="lg:max-w-[455px] w-full">
@@ -25,13 +23,22 @@ const OrderSummary = ({ cartItems = [] }) => {
           </div>
           {/* <!-- product item --> */}
           {cartItems.map((item, key) => (
-            <div key={key} className="flex items-center justify-between py-5 border-b border-gray-3">
+            <div
+              key={key}
+              className="flex items-center justify-between py-5 border-b border-gray-3"
+            >
               <div>
-                <p className="line-clamp-2 break-words leading-5 text-dark mr-2">{item.product?.name || item.name}</p>
+                <p className="line-clamp-2 break-words leading-5 text-dark mr-2">
+                  {item.product?.name || item.name}
+                </p>
               </div>
               <div>
                 <p className="text-dark text-right">
-                  ${item.totalPriceDecimal || ((item.variant?.salePrice || 0) * (item.quantity || 1)).toFixed(2)}
+                  $
+                  {item.totalPriceDecimal ||
+                    (
+                      (item.variant?.salePrice || 0) * (item.quantity || 1)
+                    ).toFixed(2)}
                 </p>
               </div>
             </div>
@@ -48,13 +55,13 @@ const OrderSummary = ({ cartItems = [] }) => {
             </div>
           </div>
           {/* <!-- checkout button --> */}
-          <Button
+          <Link
+            href="/checkout"
             type="button"
-            className="w-full flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark mt-7.5"
-            onClick={() => router.push("/checkout")}
+            className="w-full flex justify-center font-medium text-white bg-blue py-3 rounded-md ease-out duration-200 hover:bg-blue-dark mt-7.5"
           >
             Process to Checkout
-          </Button>
+          </Link>
         </div>
       </div>
     </div>
