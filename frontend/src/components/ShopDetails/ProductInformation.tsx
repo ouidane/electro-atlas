@@ -7,8 +7,16 @@ interface ProductInformationProps {
   specifications?: { [key: string]: string };
 }
 
-const ProductInformation: React.FC<ProductInformationProps> = ({ description, whatsInTheBox, specifications }) => {
-  if (!description && (!whatsInTheBox || whatsInTheBox.length === 0) && (!specifications || Object.keys(specifications).length === 0)) {
+const ProductInformation: React.FC<ProductInformationProps> = ({
+  description,
+  whatsInTheBox,
+  specifications,
+}) => {
+  if (
+    !description &&
+    (!whatsInTheBox || whatsInTheBox.length === 0) &&
+    (!specifications || Object.keys(specifications).length === 0)
+  ) {
     return null;
   }
 
@@ -26,7 +34,17 @@ const ProductInformation: React.FC<ProductInformationProps> = ({ description, wh
               <Info className="w-5 h-5 text-blue" />
               Description
             </h4>
-            <p className="text-meta-2 whitespace-pre-line leading-relaxed text-base md:text-[15px]">{description.replace(/\n{2,}/g, '\n')}</p>
+            {description
+              .split(/\[\d+\]/g)
+              .filter((part) => part.trim() !== "")
+              .map((part, idx) => (
+                <p
+                  key={idx}
+                  className="text-meta-2 whitespace-pre-line leading-relaxed text-base md:text-[15px]"
+                >
+                  {part.trim()}
+                </p>
+              ))}
           </div>
         )}
 
@@ -39,7 +57,9 @@ const ProductInformation: React.FC<ProductInformationProps> = ({ description, wh
             </h4>
             <ul className="list-disc list-inside text-meta-2 text-sm md:text-base space-y-1 pl-2">
               {whatsInTheBox.map((item, idx) => (
-                <li key={idx} className="marker:text-green">{item}</li>
+                <li key={idx} className="marker:text-green">
+                  {item}
+                </li>
               ))}
             </ul>
           </div>
@@ -55,9 +75,18 @@ const ProductInformation: React.FC<ProductInformationProps> = ({ description, wh
             <table className="min-w-full text-sm text-left text-meta-2 border border-gray-3 rounded-lg">
               <tbody>
                 {Object.entries(specifications).map(([key, value], idx) => (
-                  <tr key={key} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-2'}>
-                    <td className="pr-4 py-2 font-medium text-dark-2 whitespace-nowrap">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</td>
-                    <td className="py-2 text-meta-3 whitespace-nowrap">{value}</td>
+                  <tr
+                    key={key}
+                    className={idx % 2 === 0 ? "bg-white" : "bg-gray-2"}
+                  >
+                    <td className="pr-4 py-2 font-medium text-dark-2 whitespace-nowrap">
+                      {key
+                        .replace(/([A-Z])/g, " $1")
+                        .replace(/^./, (str) => str.toUpperCase())}
+                    </td>
+                    <td className="py-2 text-meta-3 whitespace-nowrap">
+                      {value}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -69,4 +98,4 @@ const ProductInformation: React.FC<ProductInformationProps> = ({ description, wh
   );
 };
 
-export default ProductInformation; 
+export default ProductInformation;
