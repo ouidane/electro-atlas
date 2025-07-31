@@ -1,8 +1,6 @@
 import { useState } from "react";
 
-/**
- * Generic localStorage utility functions
- */
+// Generic localStorage utility functions
 export class LocalStorage {
   static get<T>(key: string, defaultValue?: T): T | null {
     try {
