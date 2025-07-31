@@ -1,74 +1,34 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import { removeItemFromCart } from "@/redux/features/cart-slice";
-import { useRemoveCartItemMutation, selectCartItems, useGetCartQuery } from "@/redux/features/cart-slice";
+import { useCart } from "@/hooks/useCart";
 import Image from "next/image";
 import Link from "next/link";
 import { ImageOff } from "lucide-react";
-
-interface CartItem {
-  quantity: number;
-  totalPrice?: number;
-  totalPriceDecimal?: string;
-  name?: string;
-  image?: any;
-  variant?: any;
-  product?: {
-    _id: string;
-    name: string;
-    image: string;
-    variant: any;
-  };
-  _id?: string;
-}
+import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
+import { CartItem } from "@/types";
 
 interface SingleItemProps {
   item: CartItem;
-  isLoggedIn: boolean;
-  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
-  setTotalPrice: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SingleItem: React.FC<SingleItemProps> = ({ item, isLoggedIn}) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const [removeCartItem, { isLoading: isRemoving }] = useRemoveCartItemMutation();
+const SingleItem: React.FC<SingleItemProps> = ({ item }) => {
+  const { closeCartModal } = useCartModalContext();
+  const { removeItem, isLoading } = useCart();
 
-  // Get cart items from Redux or API
-  const reduxCartItems = useSelector(selectCartItems);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const { data: apiCart } = useGetCartQuery(undefined, { skip: !token });
-
-  let cartItems = reduxCartItems;
-  if (token && apiCart && apiCart.data && apiCart.data.cartItems) {
-    cartItems = apiCart.data.cartItems;
-  }
-
-  // Get current quantity in cart for this product
-  const currentCartQuantity = cartItems.find(cartItem => cartItem.product?._id === (item.product?._id || item._id))?.quantity || 0;
-  // Calculate maximum available quantity (inventory minus what's already in cart)
-  const maxAvailableQuantity = item.product?.variant?.inventory - currentCartQuantity;
-
-  const handleRemoveFromCart = async () => {
-    if (isLoggedIn) {
-      await removeCartItem({ productId: item.product?._id || item._id });
-      // RTK Query will update the cart state via cache invalidation
-    } else {
-      dispatch(removeItemFromCart(item.product?._id || item._id));
-    }
+  const handleRemoveFromCart = () => {
+    removeItem(item.product?._id);
   };
 
   return (
-    <div className="flex items-center justify-between gap-5">
+    <div className="flex items-center justify-between border-b border-gray-3 pb-3">
       <div className="w-full flex items-center gap-6">
-        <div className="flex items-center justify-center rounded-[10px] max-w-[90px] w-full h-22.5">
-          {item.product?.image ? (
-            <Image 
-              src={item.product.image} 
-              alt="product" 
-              width={40} 
-              height={40}
-              style={{ width: "auto", height: "auto" }}
+        <div className="flex items-center justify-center rounded-[10px] max-w-[60px] w-full h-[60px]">
+          {item.product.image ? (
+            <Image
+              src={item.product.image}
+              alt={item.product.name}
+              width={60}
+              height={60}
+              style={{ width: 60, height: 60, objectFit: "contain" }}
             />
           ) : (
             <ImageOff className="w-6 h-6 text-muted-foreground" />
@@ -77,16 +37,27 @@ const SingleItem: React.FC<SingleItemProps> = ({ item, isLoggedIn}) => {
 
         <div>
           <h3 className="font-medium text-dark mb-1 ease-out duration-200 hover:text-blue">
-            <Link href={item.product?._id ? `/products/${item.product._id}` : "#"} className="line-clamp-2 break-words leading-5 sm:leading-6">
+            <Link
+              onClick={() => closeCartModal()}
+              href={item.product?._id ? `/products/${item.product._id}` : "#"}
+              className="line-clamp-2 break-words leading-5 sm:leading-6"
+            >
               {item.product?.name}
             </Link>
           </h3>
-          <p className="text-custom-sm">Price: ${item.product?.variant?.salePriceDecimal} <span className="ml-2">x {item.quantity}</span></p>
-          {((item.product?.variant?.isInStock === false)) && (
-            <span className="text-red-500 text-xs font-semibold">Out of Stock</span>
+          <p className="text-custom-sm">
+            Price: ${item.product?.variant?.salePriceDecimal}{" "}
+            <span className="ml-2">x {item.quantity}</span>
+          </p>
+          {item.product?.variant?.isInStock === false && (
+            <span className="text-red-500 text-xs font-semibold">
+              Out of Stock
+            </span>
           )}
           {item.quantity > item.product?.variant?.inventory && (
-            <span className="text-red-500 text-xs font-semibold block mt-1">Quantity exceeds available stock!</span>
+            <span className="text-red-500 text-xs font-semibold block mt-1">
+              Quantity exceeds available stock!
+            </span>
           )}
         </div>
       </div>
@@ -94,13 +65,31 @@ const SingleItem: React.FC<SingleItemProps> = ({ item, isLoggedIn}) => {
       <button
         onClick={handleRemoveFromCart}
         aria-label="button for remove product from cart"
-        disabled={isRemoving}
-        className={`flex items-center justify-center rounded-lg max-w-[38px] w-full h-9.5 bg-gray-2 border border-gray-3 text-dark ease-out duration-200 hover:bg-red-light-6 hover:border-red-light-4 hover:text-red ${isRemoving ? 'opacity-60 cursor-not-allowed' : ''}`}
+        disabled={isLoading}
+        className={`flex items-center justify-center rounded-lg max-w-[38px] w-full h-9.5 bg-gray-2 border border-gray-3 text-dark ease-out duration-200 hover:bg-red-light-6 hover:border-red-light-4 hover:text-red ${
+          isLoading ? "opacity-60 cursor-not-allowed" : ""
+        }`}
       >
-        {isRemoving ? (
-          <svg className="animate-spin h-5 w-5 text-red" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        {isLoading ? (
+          <svg
+            className="animate-spin h-5 w-5 text-red"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
           </svg>
         ) : (
           <svg

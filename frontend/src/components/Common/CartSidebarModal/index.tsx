@@ -2,37 +2,14 @@
 import React, { useEffect, useState } from "react";
 
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
-import {
-  selectTotalPrice,
-  useGetCartQuery,
-  useRemoveCartItemMutation,
-} from "@/redux/features/cart-slice";
-import { useAppSelector } from "@/redux/store";
-import { useSelector } from "react-redux";
+import { useCart } from "@/hooks/useCart";
 import SingleItem from "./SingleItem";
 import Link from "next/link";
 import EmptyCart from "./EmptyCart";
 
 const CartSidebarModal = () => {
   const { isCartModalOpen, closeCartModal } = useCartModalContext();
-  const reduxCartItems = useAppSelector((state) => state.cartReducer.items);
-  const reduxTotalPrice = useSelector(selectTotalPrice);
-  const [cartItems, setCartItems] = useState(reduxCartItems);
-  const [totalPrice, setTotalPrice] = useState(reduxTotalPrice);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const { data: serverCart, isLoading: cartLoading } = useGetCartQuery(undefined, { skip: !token });
-
-  useEffect(() => {
-    setIsLoggedIn(!!token);
-    if (token && serverCart && serverCart.data) {
-      setCartItems(serverCart.data.cartItems);
-      setTotalPrice(serverCart.data.amountDecimal);
-    } else if (!token) {
-      setCartItems(reduxCartItems);
-      setTotalPrice(reduxTotalPrice);
-    }
-  }, [reduxCartItems, reduxTotalPrice, isCartModalOpen, token, serverCart]);
+  const { items: cartItems, totalPrice } = useCart();
 
   useEffect(() => {
     // closing modal while clicking outside
@@ -91,17 +68,11 @@ const CartSidebarModal = () => {
           </div>
 
           <div className="h-[66vh] overflow-y-auto no-scrollbar">
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
               {/* <!-- cart item --> */}
               {cartItems.length > 0 ? (
                 cartItems.map((item, key) => (
-                  <SingleItem
-                    key={key}
-                    item={item}
-                    isLoggedIn={isLoggedIn}
-                    setCartItems={setCartItems}
-                    setTotalPrice={setTotalPrice}
-                  />
+                  <SingleItem key={key} item={item} />
                 ))
               ) : (
                 <EmptyCart />
@@ -113,7 +84,9 @@ const CartSidebarModal = () => {
             <div className="flex items-center justify-between gap-5 mb-6">
               <p className="font-medium text-xl text-dark">Subtotal:</p>
 
-              <p className="font-medium text-xl text-dark">${totalPrice}</p>
+              <p className="font-medium text-xl text-dark">
+                ${String(totalPrice)}
+              </p>
             </div>
 
             <div className="flex items-center gap-4">
