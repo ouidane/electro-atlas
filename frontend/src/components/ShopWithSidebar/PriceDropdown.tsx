@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import RangeSlider from 'react-range-slider-input';
-import 'react-range-slider-input/dist/style.css';
+import { useState } from "react";
+import RangeSlider from "react-range-slider-input";
+import "react-range-slider-input/dist/style.css";
 
 const PriceDropdown = () => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
@@ -22,7 +22,7 @@ const PriceDropdown = () => {
           id="price-dropdown-btn"
           aria-label="button for price dropdown"
           className={`text-dark ease-out duration-200 ${
-            toggleDropdown && 'rotate-180'
+            toggleDropdown && "rotate-180"
           }`}
         >
           <svg
@@ -44,13 +44,13 @@ const PriceDropdown = () => {
       </div>
 
       {/* // <!-- dropdown menu --> */}
-      <div className={`p-6 ${toggleDropdown ? 'block' : 'hidden'}`}>
+      <div className={`p-6 ${toggleDropdown ? "block" : "hidden"}`}>
         <div id="pricingOne">
           <div className="price-range">
             <RangeSlider
               id="range-slider-gradient"
               className="margin-lg"
-              step={'any'}
+              step={"any"}
               onInput={(e) =>
                 setSelectedPrice({
                   from: Math.floor(e[0]),
