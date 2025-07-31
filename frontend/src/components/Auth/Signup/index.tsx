@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { useSignupMutation } from "@/redux/features/auth-slice";
+import { useSignupMutation } from "@/redux/features/auth/auth-api";
 
 const signupSchema = z
   .object({
@@ -22,10 +22,11 @@ const signupSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
-
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 const Signup = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -38,7 +39,6 @@ const Signup = () => {
 
   const [success, setSuccess] = React.useState<string | null>(null);
   const [serverError, setServerError] = React.useState<string | null>(null);
-  const router = useRouter();
   const [googleLoading, setGoogleLoading] = React.useState(false);
   const [signup, { isLoading }] = useSignupMutation();
 
@@ -100,11 +100,12 @@ const Signup = () => {
             </div>
 
             <div className="flex flex-col gap-4.5">
-              <button
+              <Button
+                variant="outline"
                 type="button"
                 onClick={handleGoogleSignUp}
                 disabled={googleLoading}
-                className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2"
+                className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-5 ease-out duration-200 hover:bg-gray-2"
               >
                 {/* Google SVG */}
                 <svg
@@ -151,7 +152,7 @@ const Signup = () => {
                   </defs>
                 </svg>
                 {googleLoading ? "Redirecting..." : "Sign Up with Google"}
-              </button>
+              </Button>
             </div>
 
             <span className="relative z-1 block font-medium text-center mt-4.5">
@@ -226,8 +227,9 @@ const Signup = () => {
                 </div>
 
                 <Button
+                  variant="outline"
                   type="submit"
-                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
+                  className="w-full flex justify-center font-medium text-white bg-blue py-5 px-6 rounded-lg ease-out duration-200 hover:bg-dark hover:text-white mt-7.5"
                   disabled={isSubmitting || isLoading}
                 >
                   {isSubmitting || isLoading

@@ -7,9 +7,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSigninMutation } from "@/redux/features/auth-slice";
-import { setCredentials } from "@/redux/features/auth-slice";
 import { useDispatch } from "react-redux";
+import { useSigninMutation } from "@/redux/features/auth/auth-api";
+import { setCredentials } from "@/redux/features/auth/auth-actions";
 
 const signinSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -37,7 +37,10 @@ const Signin = () => {
     setSuccess(null);
     setServerError(null);
     try {
-      const result = await signin(data).unwrap();
+      const result = await signin({
+        email: data.email,
+        password: data.password,
+      }).unwrap();
       if (result.accessToken) {
         dispatch(setCredentials({ accessToken: result.accessToken }));
         setSuccess("Signed in successfully!");
@@ -106,13 +109,14 @@ const Signin = () => {
                 </div>
               )}
               {/* Demo Account Button */}
-              <button
+              <Button
+                variant="outline"
                 type="button"
                 onClick={handleDemoLogin}
-                className="w-full mb-4 flex justify-center font-medium text-white bg-blue-500 py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+                className="w-full mb-4 flex justify-center font-medium text-white bg-dark-2 py-5 px-4 rounded-lg hover:bg-dark hover:text-white"
               >
                 Use Demo Account
-              </button>
+              </Button>
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="mb-5">
                   <label htmlFor="email" className="block mb-2.5">
@@ -150,7 +154,7 @@ const Signin = () => {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
+                  className="w-full flex justify-center font-medium text-white bg-blue py-5 px-6 rounded-lg ease-out duration-200 hover:bg-blue-dark mt-7.5"
                   disabled={isSubmitting || isLoading}
                 >
                   {isSubmitting || isLoading
@@ -168,11 +172,12 @@ const Signin = () => {
                   <span className="inline-block px-3 bg-white">Or</span>
                 </span>
                 <div className="flex flex-col gap-4.5 mt-4.5">
-                  <button
+                  <Button
+                    variant="outline"
                     type="button"
                     onClick={handleGoogleSignIn}
                     disabled={googleLoading}
-                    className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-3 ease-out duration-200 hover:bg-gray-2"
+                    className="flex justify-center items-center gap-3.5 rounded-lg border border-gray-3 bg-gray-1 p-5 ease-out duration-200 hover:bg-gray-2"
                   >
                     <svg
                       width="20"
@@ -218,7 +223,7 @@ const Signin = () => {
                       </defs>
                     </svg>
                     {googleLoading ? "Redirecting..." : "Sign In with Google"}
-                  </button>
+                  </Button>
                 </div>
                 <p className="text-center mt-6">
                   Don&apos;t have an account?
