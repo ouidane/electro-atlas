@@ -1,89 +1,92 @@
 import React from "react";
-import { AppDispatch } from "@/redux/store";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  useRemoveItemFromWishlistMutation,
-  removeItemFromWishlist as removeItemFromWishlistRedux 
-} from "@/redux/features/wishlist-slice";
-import {
-  addItemToCart as addItemToCartRedux,
-  selectCartItems,
-  useAddItemToCartMutation,
-  useGetCartQuery
-} from "@/redux/features/cart-slice";
 import Link from "next/link";
 import Image from "next/image";
 import { ImageOff } from "lucide-react";
+import { useWishlist } from "@/hooks/useWishlist";
+import { useCart } from "@/hooks/useCart";
+import type { WishlistItem, Product, ProductCart } from "@/types";
 
-const SingleItem = ({ item }: { item: {
-  _Id: string;
-  productId: string;
-  productName: string;
-  image: string;
-  variant: any;
-} }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const [removeItemFromWishlist, { isLoading: isRemoving }] = useRemoveItemFromWishlistMutation();
-  
-  const reduxCartItems = useSelector(selectCartItems);
-  const { data: apiCart } = useGetCartQuery(undefined, { skip: !token });
+interface SingleItemProps {
+  item: WishlistItem;
+}
+
+const SingleItem = ({ item }: SingleItemProps) => {
+  const { removeItem, isLoading: wishlistLoading } = useWishlist();
+  const { addItem: addToCart, maxAvailableQuantity } = useCart();
+  const [isRemoving, setIsRemoving] = React.useState(false);
+  const [isAdding, setIsAdding] = React.useState(false);
+
+  // Ensure all required fields for Product type are present
+  const product = {
+    ...item,
+    name: item.productName,
+    isFeatured: true,
+    reviews: {
+      count: 0,
+      avgRate: 0,
+      roundAvgRate: 0,
+    },
+    image: {
+      publicId: "",
+      tiny: item.image,
+      medium: item.image,
+      large: item.image,
+    },
+    createdAt: "",
+    updatedAt: "",
+  };
+
+  // Use maxAvailableQuantity from useCart
+  const availableQty = maxAvailableQuantity(product);
 
   const handleRemoveFromWishlist = async () => {
-    if (token) {
-      await removeItemFromWishlist({ productId: item.productId });
-    } else {
-      dispatch(removeItemFromWishlistRedux(item.productId));
+    setIsRemoving(true);
+    try {
+      await removeItem(item.productId);
+    } finally {
+      setIsRemoving(false);
     }
   };
 
-  // Choose the correct cart source
-  let cartItems = reduxCartItems;
-  if (token && apiCart && apiCart.data && apiCart.data.cartItems) {
-    cartItems = apiCart.data.cartItems;
-  }
-
-  // Get current quantity in cart for this product
-  const currentCartQuantity = cartItems.find(cartItem => cartItem.product?._id === item.productId)?.quantity || 0;
-  
-  // Calculate maximum available quantity (inventory minus what's already in cart)
-  const maxAvailableQuantity = item.variant.inventory - currentCartQuantity;
-
-  const [addItemToCart, { isLoading: isAdding }] = useAddItemToCartMutation();
   const handleAddToCart = async () => {
-    // Don't add if no inventory available
-    if (maxAvailableQuantity <= 0) return;;
-    
-    if (token) {
-      await addItemToCart({ productId: item.productId, quantity: 1 });
-    } else {
-      dispatch(
-        addItemToCartRedux({
-          product: {
-            _id: item.productId,
-            name: item.productName,
-            image: item.image,
-            variant: item.variant,
-          },
-          quantity: 1,
-        })
-      );
+    if (availableQty <= 0) return;
+    setIsAdding(true);
+    try {
+      addToCart(product, 1);
+    } finally {
+      setIsAdding(false);
     }
   };
 
   return (
-    <div className="flex items-center border-t border-gray-3 py-5 px-10">
+    <div className="flex items-center border-t border-gray-3 py-2 px-10">
       <div className="min-w-[83px]">
         <button
           onClick={handleRemoveFromWishlist}
           aria-label="button for remove product from wishlist"
           className="flex items-center justify-center rounded-lg max-w-[38px] w-full h-9.5 bg-gray-2 border border-gray-3 ease-out duration-200 hover:bg-red-light-6 hover:border-red-light-4 hover:text-red"
-          disabled={isRemoving}
+          disabled={isRemoving || wishlistLoading}
         >
           {isRemoving ? (
-            <svg className="animate-spin h-5 w-5 text-red" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            <svg
+              className="animate-spin h-5 w-5 text-red"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              ></path>
             </svg>
           ) : (
             <svg
@@ -111,18 +114,26 @@ const SingleItem = ({ item }: { item: {
 
       <div className="min-w-[387px]">
         <div className="flex items-center justify-between gap-5">
-          <div className="w-full flex items-center gap-5.5">
-            <div className="flex items-center justify-center rounded-[5px] bg-white max-w-[80px] w-full h-17.5">
+          <div className="w-full flex items-center gap-3">
+            <div className="flex items-center justify-center rounded-[5px] bg-white max-w-[60px] w-full h-[60px]">
               {item.image ? (
-                <Image src={item.image} alt={item.productName} width={40} height={40} />
+                <Image
+                  src={item.image}
+                  alt={item.productName}
+                  width={60}
+                  height={60}
+                  style={{ width: 60, height: 60, objectFit: "contain" }}
+                />
               ) : (
                 <ImageOff className="w-6 h-6 text-meta-4" />
               )}
             </div>
 
             <div>
-              <h3 className="line-clamp-2 break-words leading-5 sm:leading-6 hover:text-blue">
-                <Link href={`/products/${item.productId}`}>{item.productName}</Link>
+              <h3 className="line-clamp-2 break-words leading-5 pr-3 sm:leading-6 hover:text-blue">
+                <Link href={`/products/${item.productId}`}>
+                  {item.productName}
+                </Link>
               </h3>
             </div>
           </div>
@@ -145,22 +156,40 @@ const SingleItem = ({ item }: { item: {
 
       <div className="min-w-[150px] flex justify-end">
         <button
-          onClick={() => handleAddToCart()}
-          disabled={isAdding || maxAvailableQuantity <= 0}
+          onClick={handleAddToCart}
+          disabled={isAdding || availableQty <= 0}
           className={`inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] text-white ease-out duration-200 ${
-            maxAvailableQuantity > 0 ? 'bg-blue hover:bg-blue-dark' : 'bg-gray-4 cursor-not-allowed'
-          } ${isAdding ? 'opacity-60 cursor-not-allowed' : ''}`}
+            availableQty > 0
+              ? "bg-blue hover:bg-blue-dark"
+              : "bg-gray-4 cursor-not-allowed"
+          } ${isAdding ? "opacity-60 cursor-not-allowed" : ""}`}
         >
           {isAdding ? (
             <>
-              <svg className="animate-spin mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+              <svg
+                className="animate-spin mr-2 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                ></path>
               </svg>
               Adding...
             </>
           ) : (
-            'Add to cart'
+            "Add to cart"
           )}
         </button>
       </div>
